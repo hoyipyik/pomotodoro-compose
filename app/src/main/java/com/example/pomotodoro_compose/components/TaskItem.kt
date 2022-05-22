@@ -1,6 +1,7 @@
 package com.example.pomotodoro_compose.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -38,6 +39,8 @@ fun TaskItem(item: TasksData, type: String) {
             verticalAlignment = Alignment.CenterVertically
 
         ) {
+            if(type == "board" && toToday)
+                Box(modifier = Modifier.border(5.dp, Color.Black).width(5.dp).fillMaxHeight())
             Checkbox(
                 checked = isChecked,
                 onCheckedChange = {},
