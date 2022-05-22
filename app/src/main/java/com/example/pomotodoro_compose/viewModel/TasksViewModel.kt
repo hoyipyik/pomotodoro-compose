@@ -10,23 +10,17 @@ import com.example.pomotodoro_compose.data.getTodoTasksList
 
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
-    private val tasksList: MutableList<TasksData>
-        get() = _tasksList
-    private var _todoTasksList = getTodoTasksList(tasksList).toMutableStateList()
+
+    private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     val todoTasksList: MutableList<TasksData>
         get() = _todoTasksList
 
-    //    private var _boardTasksList = getBoardTasksList(tasksList).toMutableStateList()
-    private var _boardTasksList = tasksList.toMutableStateList()
     val boardTasksList: MutableList<TasksData>
-        get() = _boardTasksList
+        get() = _tasksList
 
-    fun deleteBoardTasksList(id: String) {
-        boardTasksList.removeAll{ it.id == id}
-    }
-
-    fun deleteTodoTasksList(id: String){
-        todoTasksList.removeAll{it.id == id}
+    fun delteTask(type: String, id: String){
+        _tasksList.removeAll{ it.id == id }
+        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 }
 

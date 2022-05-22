@@ -35,10 +35,7 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
             val state = rememberDismissState(
                 confirmStateChange = {
                     if (it == DismissValue.DismissedToStart) {
-                        if (type == "board")
-                            tasksViewModel.deleteBoardTasksList(item.id)
-                        else
-                            tasksViewModel.deleteTodoTasksList(item.id)
+                        tasksViewModel.delteTask(type = type, id = item.id)
                     }
 //                    if(it == DismissValue.DismissedToEnd){
 //                        if()
