@@ -21,7 +21,7 @@ fun PageNavigation(
 ) {
     NavHost(navController = navController as NavHostController, startDestination = "board"){
         composable("board"){ Board(scope = scope, state = bottomSheetState) }
-        composable("todo"){ Todo(scope = scope, state = bottomSheetState)}
+        composable("todo"){ Todo(scope = scope, state = bottomSheetState, navController = navController)}
         composable("account"){ Account()}
     }
 }

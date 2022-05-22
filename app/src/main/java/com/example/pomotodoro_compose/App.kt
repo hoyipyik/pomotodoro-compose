@@ -13,6 +13,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.pomotodoro_compose.container.BottomSheetContainer
 import com.example.pomotodoro_compose.router.BottomSheetNavigation
 import com.example.pomotodoro_compose.router.PageNavigation
 import com.example.pomotodoro_compose.viewModel.StateViewModel
@@ -31,7 +32,7 @@ fun App() {
         sheetState = bottomSheetState,
         sheetElevation = 16.dp,
         sheetShape = RoundedCornerShape(20.dp),
-        sheetContent = { SheetContent() }
+        sheetContent = { SheetContent(navController = navController) }
     ) {
         PageContent(
             scope = scope,
@@ -44,8 +45,8 @@ fun App() {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SheetContent() {
-    BottomSheetNavigation()
+fun SheetContent(navController: NavHostController) {
+    BottomSheetContainer(navController = navController)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
