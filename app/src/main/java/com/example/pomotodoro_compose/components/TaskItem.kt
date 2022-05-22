@@ -54,9 +54,7 @@ fun TaskItem(item: TasksData, type: String, tasksViewModel: TasksViewModel) {
                     .fillMaxWidth(0.82f)
                     .padding(start = 1.dp)
             )
-            IconButton(onClick = {
-                                        tasksViewModel.deleteBoardTasksList(id)
-                                 }, modifier = Modifier.padding(end = 4.dp)) {
+            IconButton(onClick = {}, modifier = Modifier.padding(end = 4.dp)) {
                 Icon(Icons.Filled.MoreVert, contentDescription = null)
             }
         }
