@@ -4,11 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pomotodoro_compose.components.GroupTagListContainer
 import com.example.pomotodoro_compose.components.TasksContainer
-import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 fun Board(scope: CoroutineScope, state: ModalBottomSheetState) {
     val tasksViewModel: TasksViewModel = viewModel()
     val type: String = "board"
-    val list: MutableList<TasksData> = tasksViewModel.boardTasksList
+    val list = tasksViewModel.boardTasksList.toMutableStateList()
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         GroupTagListContainer()
         TasksContainer(list = list, type = type, tasksViewModel = tasksViewModel)

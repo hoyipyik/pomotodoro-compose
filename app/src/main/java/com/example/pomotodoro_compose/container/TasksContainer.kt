@@ -1,6 +1,7 @@
 package com.example.pomotodoro_compose.components
 
 import android.util.Log
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,9 +13,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.TasksData
@@ -28,26 +31,38 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.92f)
     ) {
-        itemsIndexed(list) { index, item ->
+        items(list, {list: TasksData -> list.id}) { item ->
             val state = rememberDismissState(
                 confirmStateChange = {
                     if (it == DismissValue.DismissedToStart) {
-                        list.remove(item)
-                        Log.i("/remove", item.title)
+                        if (type == "board")
+                            tasksViewModel.deleteBoardTasksList(item.id)
+                        else
+                            tasksViewModel.deleteTodoTasksList(item.id)
                     }
-                    if(it == DismissValue.DismissedToEnd){
-
-                    }
+//                    if(it == DismissValue.DismissedToEnd){
+//                        if()
+//                    }
                     true
                 }
             )
+
             SwipeToDismiss(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
                     TaskItem(item, type, tasksViewModel = tasksViewModel)
                 },
-                directions = setOf(DismissDirection.EndToStart)
+                dismissThresholds = { direction ->
+                    FractionalThreshold(
+                        when (direction) {
+                            DismissDirection.EndToStart -> 0.2f
+                            DismissDirection.StartToEnd -> 0.2f
+                            else -> 0.05f
+                        }
+                    )
+                },
+//                directions = setOf(DismissDirection.EndToStart)
             )
         }
     }
@@ -56,6 +71,10 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SwipBackground(state: DismissState) {
+
+    val scale by animateFloatAsState(
+        if (state.targetValue == DismissValue.Default) 0.75f else 1f
+    )
     val colour = when (state.dismissDirection) {
         DismissDirection.EndToStart -> Color.Red
         DismissDirection.StartToEnd -> Bluelight
@@ -79,11 +98,11 @@ fun SwipBackground(state: DismissState) {
             when (state.dismissDirection) {
                 DismissDirection.StartToEnd -> {
                     Spacer(modifier = Modifier.fillMaxWidth(0.03f))
-                    Icon(Icons.Filled.AddBox, contentDescription = null)
+                    Icon(Icons.Filled.AddBox, contentDescription = null, modifier = Modifier.scale(scale))
                 }
                 DismissDirection.EndToStart -> {
                     Spacer(modifier = Modifier.fillMaxWidth(0.9f))
-                    Icon(Icons.Filled.Delete, contentDescription = null)
+                    Icon(Icons.Filled.Delete, contentDescription = null, modifier = Modifier.scale(scale))
                 }
             }
         }

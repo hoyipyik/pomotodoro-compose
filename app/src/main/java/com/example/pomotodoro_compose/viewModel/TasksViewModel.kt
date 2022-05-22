@@ -23,7 +23,10 @@ class TasksViewModel : ViewModel() {
 
     fun deleteBoardTasksList(id: String) {
         boardTasksList.removeAll{ it.id == id}
-        Log.i("/upgrade", boardTasksList[0].title)
+    }
+
+    fun deleteTodoTasksList(id: String){
+        todoTasksList.removeAll{it.id == id}
     }
 }
 

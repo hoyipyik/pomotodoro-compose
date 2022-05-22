@@ -28,7 +28,9 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Demo() {
-    val items = mutableListOf<String>("task1", "task2", "task3")
+    val items: MutableList<String> = remember {
+        mutableListOf("task 1", "task 2", "task 3").toMutableStateList()
+    }
 // This is an example of a list of dismissible items, similar to what you would see in an
 // email app. Swiping left reveals a 'delete' icon and swiping right reveals a 'done' icon.
 // The background will start as grey, but once the dismiss threshold is reached, the colour
@@ -40,8 +42,9 @@ fun Demo() {
             var unread by remember { mutableStateOf(false) }
             val dismissState = rememberDismissState(
                 confirmStateChange = {
-                    if (it == DismissValue.DismissedToEnd) unread = !unread
-                    it != DismissValue.DismissedToEnd
+                    if (it == DismissValue.DismissedToStart) unread = !unread
+                    it != DismissValue.DismissedToStart
+                    items.remove(item)
                 }
             )
             SwipeToDismiss(
@@ -73,7 +76,10 @@ fun Demo() {
                     )
 
                     Box(
-                        Modifier.fillMaxSize().background(color).padding(horizontal = 20.dp),
+                        Modifier
+                            .fillMaxSize()
+                            .background(color)
+                            .padding(horizontal = 20.dp),
                         contentAlignment = alignment
                     ) {
                         Icon(

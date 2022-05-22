@@ -17,8 +17,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PomotodorocomposeTheme {
-//                App()
-                Demo()
+                App()
+//                Demo()
             }
         }
     }
