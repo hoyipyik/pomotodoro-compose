@@ -1,5 +1,6 @@
 package com.example.pomotodoro_compose.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
@@ -19,5 +20,6 @@ fun GroupTagItem(name: String, colour: Color) {
         colors = ButtonDefaults.buttonColors(backgroundColor = colour)
     ) {
         Text(text = name, color = Color.White)
+        Log.i("/hi", "hi")
     }
 }
