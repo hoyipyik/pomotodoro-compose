@@ -12,10 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.router.BottomSheetNavigation
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheetContainer(navController: NavHostController) {
+fun BottomSheetContainer(navController: NavHostController, stateViewModel: StateViewModel) {
     Column( horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.padding(6.dp))
         Box(modifier = Modifier
@@ -24,6 +25,6 @@ fun BottomSheetContainer(navController: NavHostController) {
             .border(2.dp, Color.LightGray)
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = 5.dp))
-        BottomSheetNavigation(navController = navController)
+        BottomSheetNavigation(navController = navController, stateViewModel = stateViewModel, modifier = Modifier.fillMaxWidth())
     }
 }

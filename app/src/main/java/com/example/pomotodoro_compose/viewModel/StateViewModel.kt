@@ -18,10 +18,8 @@ class StateViewModel : ViewModel() {
         set(value) {
             _topBarTitle = value
         }
-
     fun changeTopBarTitle(newTitle: String) {
         topBarTitle = newTitle
-//        Log.i("/viewModelChanged", _topBarTitle)
     }
 
     private val _botomNavigationDataList = listOf<BottomNavigationData>(
@@ -29,9 +27,15 @@ class StateViewModel : ViewModel() {
         BottomNavigationData(type = "board", title = "Board", icon = Icons.Filled.Dashboard),
         BottomNavigationData(type = "account", title = "Account", icon = Icons.Filled.Person),
     )
-
     val bottomNavigationData
         get() = _botomNavigationDataList
 
 
+    private var _currentRouterPath by mutableStateOf("board")
+    val currentRouterPath
+        get() = _currentRouterPath
+
+    fun changeCurrentRouterPath(path: String){
+        _currentRouterPath = path
+    }
 }

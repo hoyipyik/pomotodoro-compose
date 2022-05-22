@@ -1,8 +1,10 @@
 package com.example.pomotodoro_compose.pages
 
 import androidx.compose.runtime.Composable
+import com.example.pomotodoro_compose.components.TasksContainer
+import com.example.pomotodoro_compose.data.TasksData
 
 @Composable
-fun Today(){
-
+fun Today(type: String, list: MutableList<TasksData>) {
+    TasksContainer(list, type)
 }
