@@ -2,6 +2,7 @@ package com.example.pomotodoro_compose.data
 
 data class TasksData(
     val id: String = "2019210737",
+    var subId: String = "fsdfsdfsfsa",
     var toToday: Boolean = true,
     var title: String = "Task",
     var isChecked: Boolean = false,

@@ -2,6 +2,7 @@ package com.example.pomotodoro_compose.data
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import java.time.LocalDateTime
 
 /*
 *  Used to generate a dummy data used for testing
@@ -11,7 +12,7 @@ fun getTasksList(): MutableList<TasksData> {
     return MutableList(30){ i ->
         var flag:Boolean = false
         if(i%2 == 0)  {flag = true}
-        TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag)
+        TasksData(id = i.toString(), subId = i.toString()+LocalDateTime.now().toString(), title = "Task $i", isChecked = false, toToday = flag)
     }
 }
 

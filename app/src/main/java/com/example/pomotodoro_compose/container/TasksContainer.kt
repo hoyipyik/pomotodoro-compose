@@ -1,18 +1,17 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.container
 
-import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,8 +19,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.pomotodoro_compose.components.TaskItem
 import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
@@ -31,18 +30,21 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.92f)
     ) {
-        items(list, {list: TasksData -> list.id}) { item ->
-            val state = rememberDismissState(
-                confirmStateChange = {
-                    if (it == DismissValue.DismissedToStart) {
-                        tasksViewModel.delteTask(type = type, id = item.id)
-                    }
-//                    if(it == DismissValue.DismissedToEnd){
-//                        if()
-//                    }
-                    true
+        items(list, {list: TasksData ->  list.subId}) { item ->
+            val state = rememberDismissState()
+
+            if(state.isDismissed(DismissDirection.EndToStart)){
+                tasksViewModel.delteTask(type = type, id = item.id)
+                LaunchedEffect(Unit) {
+                    state.reset()
                 }
-            )
+            }
+            if (state.isDismissed(DismissDirection.StartToEnd)) {
+                tasksViewModel.upgradeToToday(type = type, id = item.id, value = !item.toToday)
+                LaunchedEffect(Unit) {
+                    state.reset()
+                }
+            }
 
             SwipeToDismiss(
                 state = state,

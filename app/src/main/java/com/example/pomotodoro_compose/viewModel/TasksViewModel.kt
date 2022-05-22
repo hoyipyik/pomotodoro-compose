@@ -22,5 +22,12 @@ class TasksViewModel : ViewModel() {
         _tasksList.removeAll{ it.id == id }
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
+
+    fun upgradeToToday(type: String, id: String, value: Boolean){
+        _tasksList.find { it.id == id }?.let {
+            it.toToday = value
+        }
+        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+    }
 }
 

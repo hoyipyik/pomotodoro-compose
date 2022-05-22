@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pomotodoro_compose.components.GroupTagListContainer
-import com.example.pomotodoro_compose.components.TasksContainer
+import com.example.pomotodoro_compose.container.GroupTagListContainer
+import com.example.pomotodoro_compose.container.TasksContainer
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
