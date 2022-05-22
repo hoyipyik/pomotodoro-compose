@@ -1,12 +1,10 @@
 package com.example.pomotodoro_compose.pages
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pomotodoro_compose.components.GroupTagListContainer
 import com.example.pomotodoro_compose.components.TasksContainer
@@ -22,6 +20,6 @@ fun Board(scope: CoroutineScope, state: ModalBottomSheetState) {
     val list: MutableList<TasksData> = tasksViewModel.boardTasksList
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         GroupTagListContainer()
-        TasksContainer(list, type)
+        TasksContainer(list = list, type = type, tasksViewModel = tasksViewModel)
     }
 }

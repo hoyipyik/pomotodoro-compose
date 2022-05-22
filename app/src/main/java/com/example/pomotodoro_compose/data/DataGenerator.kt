@@ -1,11 +1,13 @@
 package com.example.pomotodoro_compose.data
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 
 /*
 *  Used to generate a dummy data used for testing
 * */
 fun getTasksList(): MutableList<TasksData> {
+    Log.i("/upgrade", "task generated")
     return MutableList(30){ i ->
         var flag:Boolean = false
         if(i%2 == 0)  {flag = true}

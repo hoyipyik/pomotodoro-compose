@@ -1,6 +1,7 @@
 package com.example.pomotodoro_compose.viewModel
 
-import androidx.compose.runtime.mutableStateListOf
+import android.util.Log
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.TasksData
@@ -14,9 +15,15 @@ class TasksViewModel : ViewModel() {
     private var _todoTasksList = getTodoTasksList(tasksList).toMutableStateList()
     val todoTasksList: MutableList<TasksData>
         get() = _todoTasksList
-//    private var _boardTasksList = getBoardTasksList(tasksList).toMutableStateList()
-    private  var _boardTasksList = tasksList.toMutableStateList()
+
+    //    private var _boardTasksList = getBoardTasksList(tasksList).toMutableStateList()
+    private var _boardTasksList = tasksList.toMutableStateList()
     val boardTasksList: MutableList<TasksData>
         get() = _boardTasksList
+
+    fun deleteBoardTasksList(id: String) {
+        boardTasksList.removeAll{ it.id == id}
+        Log.i("/upgrade", boardTasksList[0].title)
+    }
 }
 
