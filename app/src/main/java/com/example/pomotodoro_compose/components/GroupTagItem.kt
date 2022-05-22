@@ -20,6 +20,5 @@ fun GroupTagItem(name: String, colour: Color) {
         colors = ButtonDefaults.buttonColors(backgroundColor = colour)
     ) {
         Text(text = name, color = Color.White)
-        Log.i("/hi", "hi")
     }
 }
