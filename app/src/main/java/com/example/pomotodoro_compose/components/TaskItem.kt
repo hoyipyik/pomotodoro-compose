@@ -2,6 +2,7 @@ package com.example.pomotodoro_compose.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -26,7 +27,7 @@ fun TaskItem(item: TasksData, type: String) {
     var priority: Boolean = item.priority
     var finishTime: String? = item.finishTime
     Box(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().clickable(onClick = { /* Ignoring onClick */ })
     ) {
         Row(
             modifier = Modifier
@@ -49,7 +50,6 @@ fun TaskItem(item: TasksData, type: String) {
             Text(
                 text = title, modifier = Modifier
                     .fillMaxWidth(0.82f)
-//                .clickable(onClick = { /* Ignoring onClick */ })
                     .padding(start = 1.dp)
             )
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(end = 4.dp)) {
