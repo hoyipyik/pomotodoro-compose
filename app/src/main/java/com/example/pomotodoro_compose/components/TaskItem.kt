@@ -27,7 +27,7 @@ fun TaskItem(item: TasksData, type: String) {
     var priority: Boolean = item.priority
     var finishTime: String? = item.finishTime
     Box(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = { /* Ignoring onClick */ })
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
@@ -36,6 +36,7 @@ fun TaskItem(item: TasksData, type: String) {
                 .height(70.dp)
                 .padding(top = 1.dp, bottom = 9.dp)
                 .clip(RoundedCornerShape(10.dp))
+                .clickable(onClick = { /* Ignoring onClick */ })
                 .background(MaterialTheme.colors.onSecondary),
             verticalAlignment = Alignment.CenterVertically
 
