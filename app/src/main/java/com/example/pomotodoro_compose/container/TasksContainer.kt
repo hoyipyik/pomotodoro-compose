@@ -38,11 +38,17 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
                 LaunchedEffect(Unit) {
                     state.reset()
                 }
+                if(type == "todo"){
+                    list.remove(item)
+                }
             }
             if (state.isDismissed(DismissDirection.StartToEnd)) {
                 tasksViewModel.upgradeToToday(type = type, id = item.id, value = !item.toToday)
                 LaunchedEffect(Unit) {
                     state.reset()
+                }
+                if(type == "todo"){
+                    list.remove(item)
                 }
             }
 

@@ -27,7 +27,9 @@ class TasksViewModel : ViewModel() {
         _tasksList.find { it.id == id }?.let {
             it.toToday = value
         }
+
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+        Log.i("/upgradetodo", _todoTasksList[0].toToday.toString()+ _todoTasksList[0].title)
     }
 }
 
