@@ -23,13 +23,46 @@ class TasksViewModel : ViewModel() {
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 
-    fun upgradeToToday(type: String, id: String, value: Boolean){
-        _tasksList.find { it.id == id }?.let {
-            it.toToday = value
-        }
+//    fun upgradeToToday(type: String, id: String, value: Boolean){
+//        _tasksList.find { it.id == id }?.let { it.toToday = value }
+//        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+//    }
 
-        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
-        Log.i("/upgradetodo", _todoTasksList[0].toToday.toString()+ _todoTasksList[0].title)
+    fun upgradeTask(type: String, id: String, name: String, value: Any){
+        when(name){
+            "toToday" -> {
+                _tasksList.find { it.id == id }?.let { it.toToday = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "title" -> {
+                _tasksList.find { it.id == id }?.let { it.title = value as String }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "isChecked" -> {
+                _tasksList.find { it.id == id }?.let { it.isChecked = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "groupTag" -> {
+                _tasksList.find { it.id == id }?.let { it.groupTag = value as String }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "priority" -> {
+                _tasksList.find { it.id == id }?.let { it.priority = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "repeat" -> {
+                _tasksList.find { it.id == id }?.let { it.repeat = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "hasReminder" -> {
+                _tasksList.find { it.id == id }?.let { it.hasReminder = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "pomoTimes" -> {
+                _tasksList.find { it.id == id }?.let { it.pomoTimes = value as Int }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+        }
     }
 }
 

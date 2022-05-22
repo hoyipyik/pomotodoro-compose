@@ -30,9 +30,8 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.92f)
     ) {
-        items(list, {list: TasksData ->  list.subId}) { item ->
+        items(list, {list: TasksData ->  list.id}) { item ->
             val state = rememberDismissState()
-
             if(state.isDismissed(DismissDirection.EndToStart)){
                 tasksViewModel.delteTask(type = type, id = item.id)
                 LaunchedEffect(Unit) {
@@ -43,7 +42,7 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
                 }
             }
             if (state.isDismissed(DismissDirection.StartToEnd)) {
-                tasksViewModel.upgradeToToday(type = type, id = item.id, value = !item.toToday)
+                tasksViewModel.upgradeTask(type = type, id = item.id, value = !item.toToday, name = "toToday")
                 LaunchedEffect(Unit) {
                     state.reset()
                 }

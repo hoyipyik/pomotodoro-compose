@@ -8,11 +8,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
@@ -23,10 +22,13 @@ fun TaskItem(item: TasksData, type: String, tasksViewModel: TasksViewModel) {
     val id: String = item.id
     var toToday: Boolean = item.toToday
     var title: String = item.title
-    var isChecked: Boolean = item.isChecked
+    val isChecked: Boolean = item.isChecked
     var groupTag: String? = item.groupTag
     var priority: Boolean = item.priority
     var finishTime: String? = item.finishTime
+    var checked by remember {
+        mutableStateOf(isChecked)
+    }
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -42,11 +44,19 @@ fun TaskItem(item: TasksData, type: String, tasksViewModel: TasksViewModel) {
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            if(type == "board" && toToday)
-                Box(modifier = Modifier.border(5.dp, Color.Black).width(5.dp).fillMaxHeight())
+            if (type == "board" && toToday)
+                Box(
+                    modifier = Modifier
+                        .border(5.dp, MaterialTheme.colors.primary)
+                        .width(5.dp)
+                        .fillMaxHeight()
+                )
             Checkbox(
-                checked = isChecked,
-                onCheckedChange = {},
+                checked = checked,
+                onCheckedChange = {
+                    tasksViewModel.upgradeTask(type = type, name = "isChecked", id = id, value = it)
+                    checked = it
+                },
                 modifier = Modifier.padding(start = 4.dp)
             )
             Text(

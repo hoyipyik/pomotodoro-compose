@@ -16,8 +16,8 @@ import com.example.pomotodoro_compose.viewModel.TasksViewModel
 fun SubNavigation(
     navController: NavController,
     type: String,
+    tasksViewModel: TasksViewModel,
 ) {
-    val tasksViewModel: TasksViewModel = viewModel()
     val list = tasksViewModel.todoTasksList
     NavHost(navController = navController as NavHostController, startDestination = "today") {
         composable("timeline") { TimeLine(type = type, list = list) }

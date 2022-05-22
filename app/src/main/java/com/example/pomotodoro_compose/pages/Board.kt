@@ -15,8 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Board(scope: CoroutineScope, state: ModalBottomSheetState) {
-    val tasksViewModel: TasksViewModel = viewModel()
+fun Board(scope: CoroutineScope, state: ModalBottomSheetState, tasksViewModel: TasksViewModel) {
     val type: String = "board"
     val list = tasksViewModel.boardTasksList
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
