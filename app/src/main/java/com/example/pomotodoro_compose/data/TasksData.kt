@@ -10,7 +10,7 @@ data class TasksData(
     var repeat: Boolean = false,
     var finishTime: String? = null,
     var hasReminder: Boolean = false,
-    var pomoTimes: Int = 2,
+    var pomoTimes: Int = 0,
     var subTasks: MutableList<SubTasksData>? = null
 )
 

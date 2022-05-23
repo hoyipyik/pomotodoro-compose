@@ -11,12 +11,13 @@ import androidx.compose.material.icons.filled.Timer
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.ui.theme.Purple500
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -62,11 +63,18 @@ fun AddTodoTask(
     var pomoNum by remember { mutableStateOf(0) }
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
+    val focusRequester = FocusRequester()
     // need optimism
-    if (!bottomSheetState.isVisible) {
-        Log.i("/debug", "worked")
+//    LaunchedEffect(bottomSheetState.isVisible) {
+//        // open keyboard
+//        focusRequester.requestFocus()
+//        Log.i("/debug", "show")
+//    }
+    LaunchedEffect(!bottomSheetState.isVisible) {
         focusManager.clearFocus()
+        Log.i("/debug", "hide")
     }
+
     Column(modifier = modifier.padding(top = 15.dp, start = 15.dp, end = 5.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -77,7 +85,8 @@ fun AddTodoTask(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
                     .padding(start = 10.dp, end = 9.dp)
-                    .height(55.dp),
+                    .height(55.dp)
+                    .focusRequester(focusRequester),
                 value = text,
                 placeholder = { Text(text = "Add a task...") },
                 onValueChange = { text = it },
@@ -95,7 +104,10 @@ fun AddTodoTask(
                 )
             )
             Button(
-                onClick = { scope.launch { bottomSheetState.hide() } },
+                onClick = {
+                    tasksViewModel.addTask(type = type, text = text, pomoNum = pomoNum)
+                    scope.launch { bottomSheetState.hide() }
+                },
                 modifier = Modifier
                     .width(45.dp)
                     .height(45.dp)
@@ -132,8 +144,50 @@ fun AddBoardTask(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
-    Text(
-        text = "BOARD",
-        modifier = modifier
-    )
+    var text by remember { mutableStateOf("") }
+    val focusManager = LocalFocusManager.current
+    // need optimism
+    LaunchedEffect(!bottomSheetState.isVisible) {
+        focusManager.clearFocus()
+        Log.i("/debug", "hide")
+    }
+    Column(modifier = modifier.padding(top = 15.dp, start = 15.dp, end = 5.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .padding(start = 10.dp, end = 9.dp)
+                    .height(55.dp),
+                value = text,
+                placeholder = { Text(text = "Add a task...") },
+                onValueChange = { text = it },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                    }
+                )
+            )
+            Button(
+                onClick = {
+                    tasksViewModel.addTask(type = type, text = text)
+                    scope.launch { bottomSheetState.hide() }
+                },
+                modifier = Modifier
+                    .width(45.dp)
+                    .height(45.dp)
+            ) {
+                Icon(Icons.Filled.Add, contentDescription = null)
+            }
+        }
+    }
 }

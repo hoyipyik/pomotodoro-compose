@@ -1,12 +1,11 @@
 package com.example.pomotodoro_compose.viewModel
 
-import android.util.Log
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.data.getTodoTasksList
+import java.time.LocalDateTime
 
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
@@ -22,11 +21,6 @@ class TasksViewModel : ViewModel() {
         _tasksList.removeAll{ it.id == id }
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
-
-//    fun upgradeToToday(type: String, id: String, value: Boolean){
-//        _tasksList.find { it.id == id }?.let { it.toToday = value }
-//        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
-//    }
 
     fun upgradeTask(type: String, id: String, name: String, value: Any){
         when(name){
@@ -62,6 +56,18 @@ class TasksViewModel : ViewModel() {
                 _tasksList.find { it.id == id }?.let { it.pomoTimes = value as Int }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
+        }
+    }
+
+    fun addTask(type: String, text: String, pomoNum: Int = 0){
+        val id: String = LocalDateTime.now().toString()
+        val toToday: Boolean = type == "todo"
+        val title: String = text
+        val pomoTimes: Int = pomoNum
+        val item = TasksData(id = id, toToday = toToday, title = title, pomoTimes = pomoTimes)
+        _tasksList.add(item)
+        if (type == "todo"){
+            _todoTasksList.add(item)
         }
     }
 }

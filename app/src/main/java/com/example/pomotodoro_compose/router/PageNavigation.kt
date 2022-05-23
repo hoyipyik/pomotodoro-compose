@@ -23,7 +23,7 @@ fun PageNavigation(
     tasksViewModel: TasksViewModel
 ) {
 
-    NavHost(navController = navController as NavHostController, startDestination = "todo"){
+    NavHost(navController = navController as NavHostController, startDestination = "board"){
         composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel) }
         composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
         composable("account"){ Account(scope = scope, state = bottomSheetState)}

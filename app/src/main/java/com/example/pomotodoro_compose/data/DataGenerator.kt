@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 * */
 fun getTasksList(): MutableList<TasksData> {
     Log.i("/upgrade", "task generated")
-    return MutableList(30){ i ->
+    return MutableList(5){ i ->
         var flag:Boolean = false
         if(i%2 == 0)  {flag = true}
         TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag)
