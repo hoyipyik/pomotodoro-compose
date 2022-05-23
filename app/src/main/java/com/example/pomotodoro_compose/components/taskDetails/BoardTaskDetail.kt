@@ -12,7 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 fun BoardTaskDetail(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    type: String
 ) {
     Text("Board")
 }

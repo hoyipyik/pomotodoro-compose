@@ -73,8 +73,9 @@ fun AddTodoTask(
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
-        Log.i("/debug", "hide")
+//        Log.i("/debug", "hide")
     }
+
     Column(modifier = modifier.padding(top = 15.dp, start = 5.dp, end = 5.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

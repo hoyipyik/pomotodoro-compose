@@ -12,6 +12,12 @@ import java.time.LocalDateTime
 
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
+    private var _changeFlag by mutableStateOf(false)
+    val changeFlag
+        get() = _changeFlag
+    fun restoreChangeFlag(){
+        _changeFlag = false
+    }
 
     private var _selectedId: String by mutableStateOf("")
     val selectedId
@@ -24,13 +30,13 @@ class TasksViewModel : ViewModel() {
     val boardTasksList: MutableList<TasksData>
         get() = _tasksList
 
-    fun deleteTask(type: String, id: String){
-        _tasksList.removeAll{ it.id == id }
+    fun deleteTask(type: String, id: String) {
+        _tasksList.removeAll { it.id == id }
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 
-    fun upgradeTask(type: String, id: String, name: String, value: Any){
-        when(name){
+    fun upgradeTask(type: String, id: String, name: String, value: Any) {
+        when (name) {
             "toToday" -> {
                 _tasksList.find { it.id == id }?.let { it.toToday = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
@@ -55,35 +61,40 @@ class TasksViewModel : ViewModel() {
                 _tasksList.find { it.id == id }?.let { it.repeat = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
-            "hasReminder" -> {
-                _tasksList.find { it.id == id }?.let { it.hasReminder = value as Boolean }
+            "setTaskTime" -> {
+                _tasksList.find { it.id == id }?.let { it.setTaskTime = value as String }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "pomoTimes" -> {
                 _tasksList.find { it.id == id }?.let { it.pomoTimes = value as Int }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
+            "isRemindered" -> {
+                _tasksList.find { it.id == id }?.let { it.isRemindered = value as Boolean }
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
         }
+        _changeFlag = true
     }
 
-    fun addTask(type: String, text: String, pomoNum: Int = 0){
+    fun addTask(type: String, text: String, pomoNum: Int = 0) {
         val id: String = LocalDateTime.now().toString()
         val toToday: Boolean = type == "todo"
         val title: String = text
         val pomoTimes: Int = pomoNum
         val item = TasksData(id = id, toToday = toToday, title = title, pomoTimes = pomoTimes)
         _tasksList.add(item)
-        if (type == "todo"){
+        if (type == "todo") {
             _todoTasksList.add(item)
         }
     }
 
-    fun getItem(): TasksData{
-        val result = _tasksList.find { it.id == _selectedId }
+    fun getItem(id: String = _selectedId): TasksData {
+        val result = _tasksList.find { it.id == id }
         return result ?: TasksData()
     }
 
-    fun sendId(id: String){
+    fun sendId(id: String) {
         _selectedId = id
     }
 }

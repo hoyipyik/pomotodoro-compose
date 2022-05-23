@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.AnimBuilder
 import androidx.navigation.NavHostController
@@ -31,18 +32,24 @@ fun TaskItem(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     currentRouteBottomSheet: String?,
-    bottomSheetNavController: NavHostController
+    bottomSheetNavController: NavHostController,
 ) {
     val id: String = item.id
     val toToday: Boolean = item.toToday
     val title: String = item.title
     val isChecked: Boolean = item.isChecked
     var groupTag: String? = item.groupTag
-    var priority: Boolean = item.priority
+    val priority: Boolean = item.priority
     var finishTime: String? = item.finishTime
-    var checked by remember {
-        mutableStateOf(isChecked)
+    var checked by remember { mutableStateOf(isChecked) }
+    var priorityFlag by remember { mutableStateOf(priority) }
+
+    LaunchedEffect(tasksViewModel.changeFlag){
+        checked = tasksViewModel.getItem(id).isChecked
+        priorityFlag = tasksViewModel.getItem(id).priority
+        tasksViewModel.restoreChangeFlag()
     }
+
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -53,7 +60,10 @@ fun TaskItem(
                 .height(70.dp)
                 .padding(top = 0.dp, bottom = 10.dp)
                 .clip(RoundedCornerShape(10.dp))
-                .clickable(onClick = { /* Ignoring onClick */ })
+                .clickable(onClick = {
+                    priorityFlag = !priorityFlag
+                    tasksViewModel.upgradeTask(type = type, name = "priority", id = id, value = priorityFlag)
+                })
                 .background(MaterialTheme.colors.onSecondary),
             verticalAlignment = Alignment.CenterVertically
 
@@ -73,11 +83,14 @@ fun TaskItem(
                 },
                 modifier = Modifier.padding(start = 4.dp)
             )
-            Text(
-                text = title, modifier = Modifier
+            if(priorityFlag)
+                Text(text = title, modifier = Modifier
                     .fillMaxWidth(0.82f)
-                    .padding(start = 1.dp)
-            )
+                    .padding(start = 1.dp), fontWeight =  FontWeight.Bold)
+            else
+                Text(text = title, modifier = Modifier
+                    .fillMaxWidth(0.82f)
+                    .padding(start = 1.dp))
             IconButton(
                 onClick = {
                     bottomSheetNavController.navigate("taskdetail") {

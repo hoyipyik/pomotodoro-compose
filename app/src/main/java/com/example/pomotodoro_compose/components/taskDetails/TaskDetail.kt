@@ -17,7 +17,7 @@ fun TaskDetail(
     bottomSheetState: ModalBottomSheetState
 ) {
     when (type) {
-        "todo" -> TodoTaskDetail(tasksViewModel, scope, bottomSheetState)
-        "board" -> BoardTaskDetail(tasksViewModel, scope, bottomSheetState)
+        "todo" -> TodoTaskDetail(tasksViewModel, scope, bottomSheetState, type = type)
+        "board" -> BoardTaskDetail(tasksViewModel, scope, bottomSheetState, type = type)
     }
 }
