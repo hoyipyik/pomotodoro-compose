@@ -3,7 +3,6 @@ package com.example.pomotodoro_compose.router
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,12 +19,14 @@ fun PageNavigation(
     scope: CoroutineScope,
     navController: NavController,
     bottomSheetState: ModalBottomSheetState,
-    tasksViewModel: TasksViewModel
+    tasksViewModel: TasksViewModel,
+    currentRouteBottomSheet: String?,
+    bottomSheetNavController: NavHostController
 ) {
 
     NavHost(navController = navController as NavHostController, startDestination = "board"){
-        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel) }
-        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
+        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController) }
+        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController)}
         composable("account"){ Account(scope = scope, state = bottomSheetState)}
     }
 }

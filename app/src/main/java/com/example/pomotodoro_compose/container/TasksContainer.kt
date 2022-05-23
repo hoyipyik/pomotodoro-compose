@@ -19,21 +19,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.TaskItem
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: TasksViewModel) {
+fun TasksContainer(
+    list: MutableList<TasksData>,
+    type: String,
+    tasksViewModel: TasksViewModel,
+    bottomSheetState: ModalBottomSheetState,
+    scope: CoroutineScope,
+    bottomSheetNavController: NavHostController,
+    currentRouteBottomSheet: String?
+) {
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.92f)
     ) {
         items(list, {list: TasksData ->  list.id}) { item ->
             val state = rememberDismissState()
             if(state.isDismissed(DismissDirection.EndToStart)){
-                tasksViewModel.delteTask(type = type, id = item.id)
+                tasksViewModel.deleteTask(type = type, id = item.id)
                 LaunchedEffect(Unit) {
                     state.reset()
                 }
@@ -50,12 +60,11 @@ fun TasksContainer(list: MutableList<TasksData>, type: String, tasksViewModel: T
                     list.remove(item)
                 }
             }
-
             SwipeToDismiss(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
-                    TaskItem(item, type, tasksViewModel = tasksViewModel)
+                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController)
                 },
                 dismissThresholds = { direction ->
                     FractionalThreshold(

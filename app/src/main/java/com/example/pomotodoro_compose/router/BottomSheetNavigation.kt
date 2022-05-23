@@ -1,5 +1,6 @@
 package com.example.pomotodoro_compose.router
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -10,8 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.pomotodoro_compose.components.AddGroupTag
-import com.example.pomotodoro_compose.components.AddTask
+import com.example.pomotodoro_compose.components.addComponents.AddGroupTag
+import com.example.pomotodoro_compose.components.addComponents.AddTask
+import com.example.pomotodoro_compose.components.TaskDetail
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -27,15 +29,19 @@ fun BottomSheetNavigation(
     bottomSheetState: ModalBottomSheetState
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
+//    Log.i("/navigationpage", currentRouterPath)
     NavHost(navController = navController, startDestination = "blank"){
         composable("blank"){
-            Box(modifier = modifier.fillMaxSize())
+
         }
         composable("lazy"){
             Test()
         }
         composable("addtask"){
-            AddTask(type = currentRouterPath, modifier = modifier, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+            AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+        }
+        composable("taskdetail"){
+            TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
         }
         composable("addgrouptag"){
             AddGroupTag()

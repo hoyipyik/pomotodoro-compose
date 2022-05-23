@@ -1,5 +1,8 @@
 package com.example.pomotodoro_compose.viewModel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.TasksData
@@ -10,6 +13,10 @@ import java.time.LocalDateTime
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
 
+    private var _selectedId: String by mutableStateOf("")
+    val selectedId
+        get() = _selectedId
+
     private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     val todoTasksList: MutableList<TasksData>
         get() = _todoTasksList
@@ -17,7 +24,7 @@ class TasksViewModel : ViewModel() {
     val boardTasksList: MutableList<TasksData>
         get() = _tasksList
 
-    fun delteTask(type: String, id: String){
+    fun deleteTask(type: String, id: String){
         _tasksList.removeAll{ it.id == id }
         _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
@@ -69,6 +76,15 @@ class TasksViewModel : ViewModel() {
         if (type == "todo"){
             _todoTasksList.add(item)
         }
+    }
+
+    fun getItem(): TasksData{
+        val result = _tasksList.find { it.id == _selectedId }
+        return result ?: TasksData()
+    }
+
+    fun sendId(id: String){
+        _selectedId = id
     }
 }
 

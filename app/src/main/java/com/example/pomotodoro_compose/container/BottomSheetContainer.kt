@@ -25,7 +25,10 @@ fun BottomSheetContainer(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState
 ) {
-    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Spacer(modifier = Modifier.padding(6.dp))
         Box(modifier = Modifier
             .fillMaxWidth(0.15f)

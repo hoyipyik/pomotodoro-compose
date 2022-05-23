@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.components.addComponents
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

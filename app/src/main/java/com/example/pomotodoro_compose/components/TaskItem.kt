@@ -1,5 +1,7 @@
 package com.example.pomotodoro_compose.components
 
+import androidx.compose.animation.core.Animation
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -13,15 +15,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.navigation.AnimBuilder
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TaskItem(item: TasksData, type: String, tasksViewModel: TasksViewModel) {
+fun TaskItem(
+    item: TasksData,
+    type: String,
+    tasksViewModel: TasksViewModel,
+    scope: CoroutineScope,
+    state: ModalBottomSheetState,
+    currentRouteBottomSheet: String?,
+    bottomSheetNavController: NavHostController
+) {
     val id: String = item.id
-    var toToday: Boolean = item.toToday
-    var title: String = item.title
+    val toToday: Boolean = item.toToday
+    val title: String = item.title
     val isChecked: Boolean = item.isChecked
     var groupTag: String? = item.groupTag
     var priority: Boolean = item.priority
@@ -64,7 +78,24 @@ fun TaskItem(item: TasksData, type: String, tasksViewModel: TasksViewModel) {
                     .fillMaxWidth(0.82f)
                     .padding(start = 1.dp)
             )
-            IconButton(onClick = {}, modifier = Modifier.padding(end = 4.dp)) {
+            IconButton(
+                onClick = {
+                    bottomSheetNavController.navigate("taskdetail") {
+                        currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
+                    }
+                    tasksViewModel.sendId(id)
+                    scope.launch {
+                        state.show()
+//                        state.animateTo(
+//                            targetValue = ModalBottomSheetValue.HalfExpanded,
+//                            anim = tween(
+//                            durationMillis = 1000,
+//                            delayMillis = 0
+//                        ))
+                    }
+                },
+                modifier = Modifier.padding(end = 4.dp)
+            ) {
                 Icon(Icons.Filled.MoreVert, contentDescription = null)
             }
         }

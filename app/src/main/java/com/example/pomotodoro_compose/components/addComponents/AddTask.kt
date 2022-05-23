@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.components.addComponents
 
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddTask(
     type: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope
@@ -65,26 +65,25 @@ fun AddTodoTask(
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
     // need optimism
-//    LaunchedEffect(bottomSheetState.isVisible) {
+//    LaunchedEffect(bottomSheetState.currentValue != ModalBottomSheetValue.Hidden) {
 //        // open keyboard
 //        focusRequester.requestFocus()
 //        Log.i("/debug", "show")
 //    }
-    LaunchedEffect(!bottomSheetState.isVisible) {
+
+    LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
         Log.i("/debug", "hide")
     }
-
-    Column(modifier = modifier.padding(top = 15.dp, start = 15.dp, end = 5.dp)) {
+    Column(modifier = modifier.padding(top = 15.dp, start = 5.dp, end = 5.dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
-//            horizontalArrangement = Arrangement.Center
         ) {
             OutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth(0.8f)
-                    .padding(start = 10.dp, end = 9.dp)
+                    .padding(start = 1.dp, end = 9.dp)
                     .height(55.dp)
                     .focusRequester(focusRequester),
                 value = text,
@@ -105,8 +104,10 @@ fun AddTodoTask(
             )
             Button(
                 onClick = {
-                    tasksViewModel.addTask(type = type, text = text, pomoNum = pomoNum)
-                    scope.launch { bottomSheetState.hide() }
+                    if(text != "") {
+                        tasksViewModel.addTask(type = type, text = text, pomoNum = pomoNum)
+                        scope.launch { bottomSheetState.hide() }
+                    }
                 },
                 modifier = Modifier
                     .width(45.dp)
@@ -179,8 +180,10 @@ fun AddBoardTask(
             )
             Button(
                 onClick = {
-                    tasksViewModel.addTask(type = type, text = text)
-                    scope.launch { bottomSheetState.hide() }
+                    if(text != "") {
+                        tasksViewModel.addTask(type = type, text = text)
+                        scope.launch { bottomSheetState.hide() }
+                    }
                 },
                 modifier = Modifier
                     .width(45.dp)

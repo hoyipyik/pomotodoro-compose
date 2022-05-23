@@ -86,11 +86,12 @@ fun PageContent(
         floatingActionButton = {
             if (currentRoute != "account")
                 FloatingActionButton(onClick = {
-                    scope.launch { bottomSheetState.show() }
                     bottomSheetNavController.navigate("addtask") {
                         currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
                     }
-                    currentRoute?.let { stateViewModel.changeCurrentRouterPath(it) }
+                    scope.launch { bottomSheetState.show() }
+                    // useful when passing stateViewmodel but only one parametre is contained so useless
+//                    currentRoute?.let { stateViewModel.changeCurrentRouterPath(it) }
                 }) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
@@ -108,6 +109,8 @@ fun PageContent(
             bottomSheetState = bottomSheetState,
             navController = navController,
             tasksViewModel = tasksViewModel,
+            currentRouteBottomSheet = currentRouteBottomSheet,
+            bottomSheetNavController = bottomSheetNavController
         )
     }
 }
@@ -131,6 +134,7 @@ fun BottomBar(
                     navController.navigate(item.type) {
                         currentRoute?.let { popUpTo(it) { inclusive = true } }
                     }
+                    stateViewModel.changeCurrentRouterPath(item.type)
                     stateViewModel.changeTopBarTitle(item.title)
                 }
             )

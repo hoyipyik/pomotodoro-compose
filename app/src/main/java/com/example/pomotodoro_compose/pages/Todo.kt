@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.router.SubNavigation
 import com.example.pomotodoro_compose.components.TabBar
@@ -12,11 +13,17 @@ import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun Todo(scope: CoroutineScope, state: ModalBottomSheetState, tasksViewModel: TasksViewModel) {
+fun Todo(
+    scope: CoroutineScope,
+    state: ModalBottomSheetState,
+    tasksViewModel: TasksViewModel,
+    bottomSheetNavController: NavHostController,
+    currentRouteBottomSheet: String?
+) {
     val type: String = "todo"
     val navController = rememberNavController()
     Column {
         TabBar(navController = navController)
-        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel)
+        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController, scope = scope, state = state)
     }
 }
