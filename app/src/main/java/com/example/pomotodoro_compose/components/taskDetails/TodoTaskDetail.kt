@@ -61,7 +61,7 @@ fun TodoTaskDetail(
                 )
             }
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.height(55.dp)) {
-                Icon(Icons.Filled.Delete, contentDescription = null, tint = Purple500)
+                Icon(Icons.Filled.Delete, contentDescription = null, tint = MaterialTheme.colors.primary)
             }
         }
         Row(
@@ -70,7 +70,7 @@ fun TodoTaskDetail(
             for (it in listOf<Int>(1, 2, 3, 4, 5)) {
                 IconButton(onClick = { }, modifier = Modifier.width(35.dp)) {
                     if (it <= data.pomoTimes)
-                        Icon(Icons.Filled.Timer, contentDescription = null, tint = Purple500)
+                        Icon(Icons.Filled.Timer, contentDescription = null, tint = MaterialTheme.colors.primary)
                     else
                         Icon(Icons.Filled.Timer, contentDescription = null)
                 }
@@ -85,7 +85,7 @@ fun TodoTaskDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Priority", fontWeight = Bold)
-            Switch(checked = data.priority, onCheckedChange = {}, colors = SwitchDefaults.colors(checkedThumbColor = Purple500))
+            Switch(checked = data.priority, onCheckedChange = {}, colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colors.primary))
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))
             Text("Repeat", fontWeight = Bold)
             Switch(checked = data.repeat, onCheckedChange = {})
@@ -97,7 +97,7 @@ fun TodoTaskDetail(
                 Icon(
                     Icons.Filled.NotificationsActive,
                     contentDescription = null,
-                    tint = Purple700
+                    tint = MaterialTheme.colors.primary
                 )
             }
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))

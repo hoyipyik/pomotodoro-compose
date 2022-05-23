@@ -125,7 +125,7 @@ fun AddTodoTask(
             for (it in listOf<Int>(1, 2, 3, 4, 5)) {
                 IconButton(onClick = { pomoNum = it }, modifier = Modifier.width(35.dp)) {
                     if (it <= pomoNum)
-                        Icon(Icons.Filled.Timer, contentDescription = null, tint = Purple500)
+                        Icon(Icons.Filled.Timer, contentDescription = null, tint = MaterialTheme.colors.primary)
                     else
                         Icon(Icons.Filled.Timer, contentDescription = null)
                 }
