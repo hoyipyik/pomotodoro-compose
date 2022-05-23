@@ -16,13 +16,15 @@ import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.components.AddGroupTag
 import com.example.pomotodoro_compose.components.AddTask
 import com.example.pomotodoro_compose.viewModel.StateViewModel
+import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetNavigation(
     navController: NavHostController,
     stateViewModel: StateViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tasksViewModel: TasksViewModel
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
     NavHost(navController = navController, startDestination = "blank"){
@@ -33,7 +35,7 @@ fun BottomSheetNavigation(
             Test()
         }
         composable("addtask"){
-            AddTask(type = currentRouterPath, modifier = modifier)
+            AddTask(type = currentRouterPath, modifier = modifier, tasksViewModel = tasksViewModel)
         }
         composable("addgrouptag"){
             AddGroupTag()

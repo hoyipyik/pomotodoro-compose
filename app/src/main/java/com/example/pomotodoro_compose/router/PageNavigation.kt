@@ -19,10 +19,11 @@ import kotlinx.coroutines.CoroutineScope
 fun PageNavigation(
     scope: CoroutineScope,
     navController: NavController,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    tasksViewModel: TasksViewModel
 ) {
-    val tasksViewModel : TasksViewModel = viewModel()
-    NavHost(navController = navController as NavHostController, startDestination = "board"){
+
+    NavHost(navController = navController as NavHostController, startDestination = "todo"){
         composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel) }
         composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
         composable("account"){ Account(scope = scope, state = bottomSheetState)}

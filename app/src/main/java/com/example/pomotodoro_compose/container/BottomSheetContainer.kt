@@ -13,10 +13,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.router.BottomSheetNavigation
 import com.example.pomotodoro_compose.viewModel.StateViewModel
+import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BottomSheetContainer(navController: NavHostController, stateViewModel: StateViewModel) {
+fun BottomSheetContainer(
+    navController: NavHostController,
+    stateViewModel: StateViewModel,
+    tasksViewModel: TasksViewModel
+) {
     Column( horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.padding(6.dp))
         Box(modifier = Modifier
@@ -25,6 +30,6 @@ fun BottomSheetContainer(navController: NavHostController, stateViewModel: State
             .border(2.dp, Color.LightGray)
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = 5.dp))
-        BottomSheetNavigation(navController = navController, stateViewModel = stateViewModel, modifier = Modifier.fillMaxWidth())
+        BottomSheetNavigation(navController = navController, stateViewModel = stateViewModel, modifier = Modifier.fillMaxWidth(), tasksViewModel = tasksViewModel)
     }
 }
