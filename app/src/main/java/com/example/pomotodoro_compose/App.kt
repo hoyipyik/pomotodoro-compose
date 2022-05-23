@@ -35,7 +35,14 @@ fun App() {
         sheetState = bottomSheetState,
         sheetElevation = 16.dp,
         sheetShape = RoundedCornerShape(20.dp),
-        sheetContent = { SheetContent(navController = bottomSheetNavController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel) }
+        sheetContent = {
+            SheetContent(
+                navController = bottomSheetNavController,
+                scope = scope,
+                bottomSheetState = bottomSheetState,
+                stateViewModel = stateViewModel,
+                tasksViewModel = tasksViewModel)
+        }
     ) {
         PageContent(
             scope = scope,
@@ -53,9 +60,11 @@ fun App() {
 fun SheetContent(
     navController: NavHostController,
     stateViewModel: StateViewModel,
-    tasksViewModel: TasksViewModel
+    tasksViewModel: TasksViewModel,
+    bottomSheetState: ModalBottomSheetState,
+    scope: CoroutineScope
 ) {
-    BottomSheetContainer(navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel)
+    BottomSheetContainer(navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
 }
 
 @OptIn(ExperimentalMaterialApi::class)

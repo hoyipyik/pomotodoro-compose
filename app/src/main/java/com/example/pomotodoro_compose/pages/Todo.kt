@@ -5,7 +5,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pomotodoro_compose.components.SubNavigation
+import com.example.pomotodoro_compose.router.SubNavigation
 import com.example.pomotodoro_compose.components.TabBar
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
