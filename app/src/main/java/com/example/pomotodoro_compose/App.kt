@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -84,7 +85,7 @@ fun PageContent(
     val navBackStackEntryBottomSheet by bottomSheetNavController.currentBackStackEntryAsState()
     val currentRouteBottomSheet = navBackStackEntryBottomSheet?.destination?.route
     Scaffold(
-        topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute) },
+        topBar = { TopBar(bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState) },
         floatingActionButton = {
             if (currentRoute != "account")
                 FloatingActionButton(onClick = {
@@ -92,7 +93,7 @@ fun PageContent(
                         currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
                     }
                     scope.launch { bottomSheetState.show() }
-                    currentRouteBottomSheet?.let { stateViewModel.changeCurrentRouteBottomSheetPath(it) }
+                    stateViewModel.changeCurrentRouteBottomSheetPath("addtask")
                 }) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
@@ -143,8 +144,15 @@ fun BottomBar(
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun TopBar(stateViewModel: StateViewModel, currentRoute: String?) {
+fun TopBar(
+    stateViewModel: StateViewModel,
+    currentRoute: String?,
+    bottomSheetState: ModalBottomSheetState,
+    scope: CoroutineScope,
+    bottomSheetNavController: NavHostController
+) {
     val title = stateViewModel.topBarTitle
     TopAppBar(
         navigationIcon = {
@@ -163,15 +171,23 @@ fun TopBar(stateViewModel: StateViewModel, currentRoute: String?) {
                     }
                 }
                 "board" ->{
-                    Button(onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)) {
-                        Row() {
+                    Button(onClick = {
+                        bottomSheetNavController.navigate("addgrouptag") {
+                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+                        }
+                        scope.launch { bottomSheetState.show() }
+                        stateViewModel.changeCurrentRouteBottomSheetPath("addgrouptag")
+                    }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Icon(Icons.Filled.Add, contentDescription = null)
                             Text(text = "Add Tag")
                         }
                     }
                 }
                 "account" ->{
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { /*TODO*/ }) {
                         Icon(Icons.Filled.Favorite, contentDescription = null)
                     }       
                 }
