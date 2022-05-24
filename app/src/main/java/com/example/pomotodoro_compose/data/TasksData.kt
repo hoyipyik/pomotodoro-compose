@@ -7,7 +7,7 @@ data class TasksData(
     var toToday: Boolean = true,
     var title: String = "Task",
     var isChecked: Boolean = false,
-    var groupTag: MutableList<String> = mutableListOf("All"),
+    var groupTag: MutableList<String> = mutableListOf("tag"),
     var priority: Boolean = false,
     var repeat: Boolean = false,
     var finishTime: String? = null,

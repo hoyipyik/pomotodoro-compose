@@ -1,9 +1,6 @@
 package com.example.pomotodoro_compose.router
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -13,6 +10,7 @@ import com.example.pomotodoro_compose.components.addComponents.AddGroupTag
 import com.example.pomotodoro_compose.components.addComponents.AddTask
 import com.example.pomotodoro_compose.components.TaskDetail
 import com.example.pomotodoro_compose.components.pomodoro.Pomodoro
+import com.example.pomotodoro_compose.container.EditGroupTagContainer
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
@@ -44,6 +42,9 @@ fun BottomSheetNavigation(
         }
         composable("addgrouptag"){
             AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
+        }
+        composable("editgrouptag"){
+            EditGroupTagContainer(groupTagViewModel = groupTagViewModel)
         }
         composable("pomodoro"){
             Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)

@@ -17,6 +17,7 @@ import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -37,7 +38,13 @@ fun GroupTagListContainer(
             Box(modifier = Modifier.fillMaxWidth(0.85f)) {
                 GroupTagList(modifier = Modifier, groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel)
             }
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(start = 9.dp)) {
+            IconButton(onClick = {
+                bottomSheetNavController.navigate("editgrouptag") {
+                    popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+                }
+                scope.launch { bottomSheetState.show() }
+                stateViewModel.changeCurrentRouteBottomSheetPath("editgrouptag")
+            }, modifier = Modifier.padding(start = 9.dp)) {
                 Icon(Icons.Filled.Backspace, contentDescription = null)
             }
         }
