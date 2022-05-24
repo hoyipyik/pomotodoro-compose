@@ -1,5 +1,7 @@
 package com.example.pomotodoro_compose.components.taskDetails
 
+import android.app.TimePickerDialog
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -11,15 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -34,16 +39,42 @@ fun TodoTaskDetail(
     var priorityFlag by remember { mutableStateOf(data.priority) }
     var checked by remember { mutableStateOf(data.isChecked) }
     var reminder by remember { mutableStateOf(data.isRemindered) }
-    var setTaskTimeStr by remember { mutableStateOf(data.setTaskTime) }
+//    var setTaskTime by remember { mutableStateOf(data.setTaskTime) }
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
 
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
 
+    // Fetching local context
+    val mContext = LocalContext.current
+    // Declaring and initializing a calendar
+    val mCalendar = Calendar.getInstance()
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+    // Value for storing time as a string
+    var mTime by remember { mutableStateOf(data.setTaskTime) }
+    // Creating a TimePicker dialod
+    val mTimePickerDialog = TimePickerDialog(
+        mContext,
+        { _, mHour: Int, mMinute: Int ->
+            mTime = "$mHour:$mMinute"
+        }, mHour, mMinute, false
+    )
+
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
 //        Log.i("/debug", "hide")
+    }
+
+    LaunchedEffect(mTime != "Set Task Time") {
+        tasksViewModel.upgradeTask(
+            type = type,
+            id = data.id,
+            name = "setTaskTime",
+            value = mTime
+        )
+        Log.i("/check", mTime)
     }
 
     Column(
@@ -178,19 +209,28 @@ fun TodoTaskDetail(
         ) {
             IconButton(onClick = {
                 reminder = !reminder
-                tasksViewModel.upgradeTask(type = type, id = data.id, name = "isRemindered", value = reminder)
+                tasksViewModel.upgradeTask(
+                    type = type,
+                    id = data.id,
+                    name = "isRemindered",
+                    value = reminder
+                )
             }) {
-                if(reminder)
-                    Icon(Icons.Filled.NotificationsActive, contentDescription = null, tint = MaterialTheme.colors.primary)
+                if (reminder)
+                    Icon(
+                        Icons.Filled.NotificationsActive,
+                        contentDescription = null,
+                        tint = MaterialTheme.colors.primary
+                    )
                 else
                     Icon(Icons.Filled.NotificationsActive, contentDescription = null)
             }
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))
             OutlinedButton(
-                onClick = { /*TODO*/ },
+                onClick = { mTimePickerDialog.show() },
                 border = BorderStroke(2.dp, color = Color.LightGray),
             ) {
-                Text(text = "Set Task Time", color = Color.LightGray)
+                Text(text = mTime, color = Color.LightGray)
             }
         }
 

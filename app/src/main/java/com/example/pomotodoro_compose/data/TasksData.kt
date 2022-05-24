@@ -12,7 +12,7 @@ data class TasksData(
     var repeat: Boolean = false,
     var finishTime: String? = null,
     var isRemindered: Boolean = false,
-    var setTaskTime: String = LocalDateTime.now().toString(),
+    var setTaskTime: String = "Set Task Time",
     var pomoTimes: Int = 0,
     var subTasks: MutableList<SubTasksData>? = null
 )
