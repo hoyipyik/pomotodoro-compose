@@ -32,7 +32,10 @@ class TasksViewModel : ViewModel() {
 
     fun deleteTask(type: String, id: String) {
         _tasksList.removeAll { it.id == id }
-        _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+        if(type == "todo")
+            _todoTasksList.removeAll{ it.id == id}
+        else
+            _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 
     fun upgradeTask(type: String, id: String, name: String, value: Any) {
