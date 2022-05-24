@@ -23,6 +23,8 @@ import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.TaskItem
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.ui.theme.Bluelight
+import com.example.pomotodoro_compose.ui.theme.Purple200
+import com.example.pomotodoro_compose.ui.theme.Teal200
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -91,8 +93,8 @@ fun SwipBackground(state: DismissState) {
         if (state.targetValue == DismissValue.Default) 0.75f else 1f
     )
     val colour = when (state.dismissDirection) {
-        DismissDirection.EndToStart -> Color.Red
-        DismissDirection.StartToEnd -> Bluelight
+        DismissDirection.EndToStart -> Teal200
+        DismissDirection.StartToEnd -> Purple200
         null -> Color.Unspecified
     }
     Row(

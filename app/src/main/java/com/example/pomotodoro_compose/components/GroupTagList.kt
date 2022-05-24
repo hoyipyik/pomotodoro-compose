@@ -15,7 +15,7 @@ fun GroupTagList(modifier: Modifier = Modifier){
     val groupTagViewModel: GroupTagViewModel = viewModel()
     val list: MutableList<GroupTagListData> = groupTagViewModel.groupTagList
     LazyRow{
-        item { GroupTagItem(name = "All", colour = Color.Blue) }
+//        item { GroupTagItem(name = "All", colour = Color.Blue) }
         items(list){ item ->
             GroupTagItem(name = item.groupTagName, colour = item.colour)
         }

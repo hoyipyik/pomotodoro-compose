@@ -1,7 +1,9 @@
 package com.example.pomotodoro_compose.data
 
 import android.util.Log
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.Color
+import com.example.pomotodoro_compose.ui.theme.Purple500
 import java.time.LocalDateTime
 
 /*
@@ -24,10 +26,10 @@ fun getTodoTasksList(list:MutableList<TasksData>): MutableList<TasksData>{
 
 fun getGroupTagList(): MutableList<GroupTagListData> {
     return mutableListOf(
-        GroupTagListData(groupTagName = "English", colour = Color.Green),
-        GroupTagListData(groupTagName = "Android", colour = Color.DarkGray),
-        GroupTagListData(groupTagName = "Python", colour = Color.Red),
-        GroupTagListData(groupTagName = "Life", colour = Color.Yellow),
-        GroupTagListData(groupTagName = "Open Flow", colour = Color.Magenta),
+        GroupTagListData(groupTagName = "All", colour = Purple500),
+//        GroupTagListData(groupTagName = "Android", colour = Color.DarkGray),
+//        GroupTagListData(groupTagName = "Python", colour = Color.Red),
+//        GroupTagListData(groupTagName = "Life", colour = Color.Yellow),
+//        GroupTagListData(groupTagName = "Open Flow", colour = Color.Magenta),
     )
 }
