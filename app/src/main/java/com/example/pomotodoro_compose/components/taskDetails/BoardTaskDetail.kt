@@ -166,7 +166,7 @@ fun BoardTaskDetail(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Tags", fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.fillMaxWidth(0.1f))
+            Spacer(modifier = Modifier.fillMaxWidth(0.12f))
             OutlinedButton(onClick = { /*TODO*/ }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -176,11 +176,20 @@ fun BoardTaskDetail(
                     Icon(imageVector = Icons.Filled.Add, contentDescription = null)
                 }
             }
+            Spacer(modifier = Modifier.fillMaxWidth(0.06f))
+            OutlinedButton(onClick = { /*TODO*/ }) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                }
+            }
         }
         Row(
             modifier = Modifier
                 .padding(top = 5.dp, bottom = 15.dp)
-                .fillMaxWidth(0.7f)
+                .fillMaxWidth(0.74f)
                 .height(50.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.colors.onSecondary),
