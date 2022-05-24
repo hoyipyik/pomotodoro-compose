@@ -36,7 +36,6 @@ fun TaskItem(
     val toToday: Boolean = item.toToday
     val title: String = item.title
     val isChecked: Boolean = item.isChecked
-    var groupTag: String? = item.groupTag
     val priority: Boolean = item.priority
     var finishTime: String? = item.finishTime
     var checked by remember { mutableStateOf(isChecked) }

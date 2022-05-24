@@ -52,10 +52,6 @@ class TasksViewModel : ViewModel() {
                 _tasksList.find { it.id == id }?.let { it.isChecked = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
-            "groupTag" -> {
-                _tasksList.find { it.id == id }?.let { it.groupTag = value as String }
-                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
-            }
             "priority" -> {
                 _tasksList.find { it.id == id }?.let { it.priority = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
