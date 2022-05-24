@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -21,7 +22,7 @@ fun Board(
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
     bottomSheetNavController: NavHostController,
-    currentRouteBottomSheet: String?
+    stateViewModel: StateViewModel
 ) {
     val type: String = "board"
     val list = tasksViewModel.boardTasksList
@@ -31,7 +32,7 @@ fun Board(
     ) {
         GroupTagListContainer()
         if(list.size >= 0)
-            TasksContainer(list = list, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController)
+            TasksContainer(list = list, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
         else
             BlankContainer()
     }

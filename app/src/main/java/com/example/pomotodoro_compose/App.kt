@@ -39,6 +39,7 @@ fun App() {
             SheetContent(
                 navController = bottomSheetNavController,
                 scope = scope,
+                bottomSheetNavController = bottomSheetNavController,
                 bottomSheetState = bottomSheetState,
                 stateViewModel = stateViewModel,
                 tasksViewModel = tasksViewModel)
@@ -62,9 +63,10 @@ fun SheetContent(
     stateViewModel: StateViewModel,
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    bottomSheetNavController: NavHostController
 ) {
-    BottomSheetContainer(navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+    BottomSheetContainer(navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -90,8 +92,7 @@ fun PageContent(
                         currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
                     }
                     scope.launch { bottomSheetState.show() }
-                    // useful when passing stateViewmodel but only one parametre is contained so useless
-//                    currentRoute?.let { stateViewModel.changeCurrentRouterPath(it) }
+                    currentRouteBottomSheet?.let { stateViewModel.changeCurrentRouteBottomSheetPath(it) }
                 }) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
@@ -109,7 +110,7 @@ fun PageContent(
             bottomSheetState = bottomSheetState,
             navController = navController,
             tasksViewModel = tasksViewModel,
-            currentRouteBottomSheet = currentRouteBottomSheet,
+            stateViewModel = stateViewModel,
             bottomSheetNavController = bottomSheetNavController
         )
     }

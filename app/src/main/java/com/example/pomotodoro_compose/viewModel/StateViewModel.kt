@@ -37,6 +37,14 @@ class StateViewModel : ViewModel() {
     val currentRouterPath
         get() = _currentRouterPath
 
+    private var _currentRouteBottomSheetPath by mutableStateOf("blank")
+    val currentRouteBottomSheetPath
+        get() = _currentRouteBottomSheetPath
+
+    fun changeCurrentRouteBottomSheetPath(path: String){
+        _currentRouteBottomSheetPath = path
+    }
+
     fun changeCurrentRouterPath(path: String){
         _currentRouterPath = path
     }

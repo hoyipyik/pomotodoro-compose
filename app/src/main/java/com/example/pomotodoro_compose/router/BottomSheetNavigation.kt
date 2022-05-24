@@ -1,7 +1,5 @@
 package com.example.pomotodoro_compose.router
 
-import android.util.Log
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,6 +12,7 @@ import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.components.addComponents.AddGroupTag
 import com.example.pomotodoro_compose.components.addComponents.AddTask
 import com.example.pomotodoro_compose.components.TaskDetail
+import com.example.pomotodoro_compose.components.pomodoro.Pomodoro
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +25,8 @@ fun BottomSheetNavigation(
     modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    bottomSheetNavController: NavHostController
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
 //    Log.i("/navigationpage", currentRouterPath)
@@ -41,10 +41,13 @@ fun BottomSheetNavigation(
             AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
         }
         composable("taskdetail"){
-            TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+            TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel)
         }
         composable("addgrouptag"){
             AddGroupTag()
+        }
+        composable("pomodoro"){
+            Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)
         }
     }
 }

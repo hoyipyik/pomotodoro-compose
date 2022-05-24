@@ -76,15 +76,19 @@ fun AddTodoTask(
 //        Log.i("/debug", "hide")
     }
 
-    Column(modifier = modifier.padding(top = 15.dp, start = 5.dp, end = 5.dp)) {
+    Column(
+        modifier = modifier.padding(top = 15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
         ) {
             OutlinedTextField(
                 modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .padding(start = 1.dp, end = 9.dp)
+                    .fillMaxWidth(0.74f)
+                    .padding( end = 9.dp)
                     .height(55.dp)
                     .focusRequester(focusRequester),
                 value = text,

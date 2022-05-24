@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.TasksContainer
 import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -16,9 +17,9 @@ fun Today(
     list: MutableList<TasksData>,
     tasksViewModel: TasksViewModel,
     bottomSheetNavController: NavHostController,
-    currentRouteBottomSheet: String?,
     scope: CoroutineScope,
-    state: ModalBottomSheetState
+    state: ModalBottomSheetState,
+    stateViewModel: StateViewModel
 ) {
     TasksContainer(
         list = list,
@@ -27,6 +28,6 @@ fun Today(
         bottomSheetState = state,
         scope = scope,
         bottomSheetNavController = bottomSheetNavController,
-        currentRouteBottomSheet = currentRouteBottomSheet
+        stateViewModel = stateViewModel
     )
 }

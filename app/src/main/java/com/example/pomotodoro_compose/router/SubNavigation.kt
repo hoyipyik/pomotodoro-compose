@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.pages.TimeLine
 import com.example.pomotodoro_compose.pages.Today
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -19,13 +20,13 @@ fun SubNavigation(
     type: String,
     tasksViewModel: TasksViewModel,
     bottomSheetNavController: NavHostController,
-    currentRouteBottomSheet: String?,
     state: ModalBottomSheetState,
     scope: CoroutineScope,
+    stateViewModel: StateViewModel,
 ) {
     val list = tasksViewModel.todoTasksList
     NavHost(navController = navController as NavHostController, startDestination = "today") {
         composable("timeline") { TimeLine(type = type, list = list) }
-        composable("today") { Today(type = type, list = list, tasksViewModel = tasksViewModel,  currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController, state = state, scope = scope) }
+        composable("today") { Today(type = type, list = list, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, state = state, scope = scope) }
     }
 }

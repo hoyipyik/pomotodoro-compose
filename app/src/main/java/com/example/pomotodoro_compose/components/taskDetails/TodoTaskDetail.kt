@@ -19,8 +19,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -32,7 +33,9 @@ fun TodoTaskDetail(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    type: String
+    type: String,
+    bottomSheetNavController: NavHostController,
+    stateViewModel: StateViewModel
 ) {
     val data: TasksData = tasksViewModel.getItem()
     var pomoNum by remember { mutableStateOf(data.pomoTimes) }
@@ -169,7 +172,18 @@ fun TodoTaskDetail(
                         Icon(Icons.Filled.Timer, contentDescription = null)
                 }
             }
-            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(start = 30.dp)) {
+            IconButton(
+                onClick = {
+                    if(pomoNum > 0 ){
+                        bottomSheetNavController.navigate("pomodoro") {
+                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+                        }
+                        stateViewModel.changeCurrentRouteBottomSheetPath("pomodoro")
+                        scope.launch { bottomSheetState.show() }
+                    }
+                },
+                modifier = Modifier.padding(start = 30.dp)
+            ) {
                 Icon(Icons.Filled.PlayCircle, contentDescription = null)
             }
         }

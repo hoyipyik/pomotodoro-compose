@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.TaskItem
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.ui.theme.Bluelight
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -35,7 +36,7 @@ fun TasksContainer(
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
     bottomSheetNavController: NavHostController,
-    currentRouteBottomSheet: String?
+    stateViewModel: StateViewModel
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.92f)
@@ -64,7 +65,7 @@ fun TasksContainer(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
-                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController)
+                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
                 },
                 dismissThresholds = { direction ->
                     FractionalThreshold(

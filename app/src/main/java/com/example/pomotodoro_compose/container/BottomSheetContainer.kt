@@ -23,7 +23,8 @@ fun BottomSheetContainer(
     stateViewModel: StateViewModel,
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    bottomSheetNavController: NavHostController
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,6 +38,7 @@ fun BottomSheetContainer(
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = 5.dp))
         BottomSheetNavigation(
+            bottomSheetNavController = bottomSheetNavController,
             navController = navController,
             stateViewModel = stateViewModel,
             modifier = Modifier.fillMaxWidth(),

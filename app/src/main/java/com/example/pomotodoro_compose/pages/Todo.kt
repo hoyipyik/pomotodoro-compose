@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.router.SubNavigation
 import com.example.pomotodoro_compose.components.TabBar
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -18,12 +19,12 @@ fun Todo(
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
     bottomSheetNavController: NavHostController,
-    currentRouteBottomSheet: String?
+    stateViewModel: StateViewModel
 ) {
     val type: String = "todo"
     val navController = rememberNavController()
     Column {
         TabBar(navController = navController)
-        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController, scope = scope, state = state)
+        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, scope = scope, state = state)
     }
 }

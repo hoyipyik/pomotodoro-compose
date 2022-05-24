@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.pages.Account
 import com.example.pomotodoro_compose.pages.Board
 import com.example.pomotodoro_compose.pages.Todo
+import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
@@ -20,13 +21,13 @@ fun PageNavigation(
     navController: NavController,
     bottomSheetState: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    currentRouteBottomSheet: String?,
-    bottomSheetNavController: NavHostController
+    bottomSheetNavController: NavHostController,
+    stateViewModel: StateViewModel
 ) {
 
     NavHost(navController = navController as NavHostController, startDestination = "board"){
-        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController) }
-        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, currentRouteBottomSheet = currentRouteBottomSheet, bottomSheetNavController = bottomSheetNavController)}
+        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController) }
+        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)}
         composable("account"){ Account(scope = scope, state = bottomSheetState)}
     }
 }
