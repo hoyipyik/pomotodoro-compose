@@ -13,11 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 @Composable
-fun GroupTagItem(name: String, colour: Color) {
+fun GroupTagItem(name: String, colour: Color, tasksViewModel: TasksViewModel) {
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = {
+                  tasksViewModel.upgradeSelectedGroupTag(name = name)
+        },
         modifier = Modifier.padding(end = 5.dp),
         border = BorderStroke(2.dp, color = colour),
 //        colors = ButtonDefaults.buttonColors(backgroundColor = colour)

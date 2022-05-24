@@ -96,5 +96,13 @@ class TasksViewModel : ViewModel() {
     fun sendId(id: String) {
         _selectedId = id
     }
+
+    private var _selectedGroupTag by mutableStateOf("All")
+    val selectedGroupTag
+        get() = _selectedGroupTag
+
+    fun upgradeSelectedGroupTag(name: String){
+        _selectedGroupTag = name
+    }
 }
 

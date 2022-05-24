@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
+import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,13 +28,21 @@ fun Board(
 ) {
     val type: String = "board"
     val list = tasksViewModel.boardTasksList
+    val filteredList: MutableList<TasksData> = mutableListOf()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        GroupTagListContainer()
+        list.forEachIndexed{ index, data ->
+            for (item in data.groupTag){
+                if(item == tasksViewModel.selectedGroupTag){
+                    filteredList.add(list[index])
+                }
+            }
+        }
+        GroupTagListContainer(tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
         if(list.size >= 0)
-            TasksContainer(list = list, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
+            TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
         else
             BlankContainer()
     }

@@ -3,7 +3,9 @@ package com.example.pomotodoro_compose.data
 import android.util.Log
 import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.graphics.Color
+import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.ui.theme.Purple500
+import com.example.pomotodoro_compose.ui.theme.Purple700
 import java.time.LocalDateTime
 
 /*
@@ -14,6 +16,11 @@ fun getTasksList(): MutableList<TasksData> {
     return MutableList(5){ i ->
         var flag:Boolean = false
         if(i%2 == 0)  {flag = true}
+        if(i == 0){
+            TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag, groupTag = mutableListOf("All", "Python", "Android"))
+        }else if(i == 1){
+            TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag, groupTag = mutableListOf("All", "Android"))
+        }else
         TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag)
     }
 }
@@ -26,9 +33,9 @@ fun getTodoTasksList(list:MutableList<TasksData>): MutableList<TasksData>{
 
 fun getGroupTagList(): MutableList<GroupTagListData> {
     return mutableListOf(
-        GroupTagListData(groupTagName = "All", colour = Purple500),
-//        GroupTagListData(groupTagName = "Android", colour = Color.DarkGray),
-//        GroupTagListData(groupTagName = "Python", colour = Color.Red),
+        GroupTagListData(groupTagName = "All", colour = Purple700),
+        GroupTagListData(groupTagName = "Android", colour = Purple500),
+        GroupTagListData(groupTagName = "Python", colour = Bluelight),
 //        GroupTagListData(groupTagName = "Life", colour = Color.Yellow),
 //        GroupTagListData(groupTagName = "Open Flow", colour = Color.Magenta),
     )
