@@ -103,7 +103,7 @@ fun AddGroupTag(
       horizontalArrangement = Arrangement.Center,
       modifier = Modifier.padding(top = 1.dp, bottom = 25.dp, start = 10.dp, end = 10.dp).fillMaxWidth(0.85f),
     ) {
-      for (it in listOf<Color>(Color.DarkGray, Purple700, Purple500, Purple200, Bluelight, Teal200, Color.Red)) {
+      for (it in listOf<Color>(Color.LightGray, Purple700, Purple500, Purple200, Bluelight, Teal200, Color.Red)) {
         IconButton(onClick = { colour = it }, modifier = Modifier.width(40.dp)) {
           Box(modifier = Modifier.size(30.dp).clip(CircleShape).background(it))
         }

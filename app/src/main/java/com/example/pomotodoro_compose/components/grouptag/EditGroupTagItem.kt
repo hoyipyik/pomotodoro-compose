@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.components.grouptag
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

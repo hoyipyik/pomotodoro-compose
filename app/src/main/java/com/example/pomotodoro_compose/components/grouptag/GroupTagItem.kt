@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.components.grouptag
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
