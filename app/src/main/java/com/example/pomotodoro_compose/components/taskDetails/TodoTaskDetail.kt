@@ -174,7 +174,7 @@ fun TodoTaskDetail(
             }
             IconButton(
                 onClick = {
-                    if(pomoNum > 0 ){
+                    if (pomoNum > 0) {
                         bottomSheetNavController.navigate("pomodoro") {
                             popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
                         }
@@ -249,5 +249,4 @@ fun TodoTaskDetail(
         }
 
     }
-
 }

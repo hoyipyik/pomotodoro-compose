@@ -16,4 +16,17 @@ class GroupTagViewModel: ViewModel() {
         val item = GroupTagListData(groupTagName = name, colour = colour, tagId = LocalDateTime.now().toString())
         _groupTagList.add(item)
     }
+
+    fun getMatchedGroupTagData(list: MutableList<String>): MutableList<GroupTagListData>{
+        // list is id only
+        val result : MutableList<GroupTagListData> = mutableListOf()
+        _groupTagList.forEachIndexed { _, data ->
+            for (item in list){
+                if(item == data.tagId && data.tagId != "tag"){
+                    result.add(data)
+                }
+            }
+        }
+        return result
+    }
 }
