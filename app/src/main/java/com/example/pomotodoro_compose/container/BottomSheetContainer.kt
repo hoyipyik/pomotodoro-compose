@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.router.BottomSheetNavigation
+import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +25,8 @@ fun BottomSheetContainer(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController
+    bottomSheetNavController: NavHostController,
+    groupTagViewModel: GroupTagViewModel
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -39,6 +41,7 @@ fun BottomSheetContainer(
             .padding(vertical = 5.dp))
         BottomSheetNavigation(
             bottomSheetNavController = bottomSheetNavController,
+            groupTagViewModel = groupTagViewModel,
             navController = navController,
             stateViewModel = stateViewModel,
             modifier = Modifier.fillMaxWidth(),

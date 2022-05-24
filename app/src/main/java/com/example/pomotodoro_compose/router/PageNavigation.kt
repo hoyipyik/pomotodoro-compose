@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.pages.Account
 import com.example.pomotodoro_compose.pages.Board
 import com.example.pomotodoro_compose.pages.Todo
+import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -22,11 +23,12 @@ fun PageNavigation(
     bottomSheetState: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
     bottomSheetNavController: NavHostController,
-    stateViewModel: StateViewModel
+    stateViewModel: StateViewModel,
+    groupTagViewModel: GroupTagViewModel
 ) {
 
     NavHost(navController = navController as NavHostController, startDestination = "board"){
-        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController) }
+        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, groupTagViewModel = groupTagViewModel,) }
         composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)}
         composable("account"){ Account(scope = scope, state = bottomSheetState)}
     }

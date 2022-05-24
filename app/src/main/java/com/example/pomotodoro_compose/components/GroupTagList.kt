@@ -11,8 +11,12 @@ import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 
 @Composable
-fun GroupTagList(modifier: Modifier = Modifier, tasksViewModel: TasksViewModel){
-    val groupTagViewModel: GroupTagViewModel = viewModel()
+fun GroupTagList(
+    modifier: Modifier = Modifier,
+    tasksViewModel: TasksViewModel,
+    groupTagViewModel: GroupTagViewModel
+){
+
     val list: MutableList<GroupTagListData> = groupTagViewModel.groupTagList
     LazyRow{
 //        item { GroupTagItem(name = "All", colour = Color.Blue) }

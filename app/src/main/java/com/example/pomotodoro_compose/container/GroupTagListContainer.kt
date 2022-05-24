@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.GroupTagList
+import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -25,15 +26,16 @@ fun GroupTagListContainer(
     stateViewModel: StateViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-    type: String
+    type: String,
+    groupTagViewModel: GroupTagViewModel
 ) {
-    Box(modifier = Modifier.fillMaxHeight(0.08f)) {
+    Box(modifier = Modifier.height(55.dp).padding(vertical = 10.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth(0.87f),
+            modifier = Modifier.fillMaxWidth(0.86f),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(modifier = Modifier.fillMaxWidth(0.85f)) {
-                GroupTagList(modifier = Modifier, tasksViewModel = tasksViewModel)
+                GroupTagList(modifier = Modifier, groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel)
             }
             IconButton(onClick = { /*TODO*/ }, modifier = Modifier.padding(start = 9.dp)) {
                 Icon(Icons.Filled.Backspace, contentDescription = null)

@@ -13,6 +13,7 @@ import com.example.pomotodoro_compose.components.addComponents.AddGroupTag
 import com.example.pomotodoro_compose.components.addComponents.AddTask
 import com.example.pomotodoro_compose.components.TaskDetail
 import com.example.pomotodoro_compose.components.pomodoro.Pomodoro
+import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,16 +27,14 @@ fun BottomSheetNavigation(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController
+    bottomSheetNavController: NavHostController,
+    groupTagViewModel: GroupTagViewModel
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
 //    Log.i("/navigationpage", currentRouterPath)
     NavHost(navController = navController, startDestination = "blank"){
         composable("blank"){
 
-        }
-        composable("lazy"){
-            Test()
         }
         composable("addtask"){
             AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
@@ -44,28 +43,10 @@ fun BottomSheetNavigation(
             TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel)
         }
         composable("addgrouptag"){
-            AddGroupTag()
+            AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
         }
         composable("pomodoro"){
             Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun Test(){
-    LazyColumn {
-        items(12) {
-            ListItem(
-                text = { Text("Item $it") },
-                icon = {
-                    Icon(
-                        Icons.Default.Favorite,
-                        contentDescription = "Localized description"
-                    )
-                }
-            )
         }
     }
 }

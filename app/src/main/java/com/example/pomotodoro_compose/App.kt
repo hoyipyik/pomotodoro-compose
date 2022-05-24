@@ -16,6 +16,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.container.BottomSheetContainer
 import com.example.pomotodoro_compose.router.PageNavigation
+import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 fun App() {
     val stateViewModel: StateViewModel = viewModel()
     val tasksViewModel : TasksViewModel = viewModel()
+    val groupTagViewModel: GroupTagViewModel = viewModel()
     val navController = rememberNavController()
     val bottomSheetNavController = rememberNavController()
     val bottomSheetState = rememberModalBottomSheetState(
@@ -38,6 +40,7 @@ fun App() {
         sheetShape = RoundedCornerShape(20.dp),
         sheetContent = {
             SheetContent(
+                groupTagViewModel = groupTagViewModel,
                 navController = bottomSheetNavController,
                 scope = scope,
                 bottomSheetNavController = bottomSheetNavController,
@@ -48,6 +51,7 @@ fun App() {
     ) {
         PageContent(
             scope = scope,
+            groupTagViewModel = groupTagViewModel,
             bottomSheetState = bottomSheetState,
             navController = navController,
             bottomSheetNavController = bottomSheetNavController,
@@ -65,9 +69,10 @@ fun SheetContent(
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-    bottomSheetNavController: NavHostController
+    bottomSheetNavController: NavHostController,
+    groupTagViewModel: GroupTagViewModel
 ) {
-    BottomSheetContainer(navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController)
+    BottomSheetContainer(groupTagViewModel = groupTagViewModel, navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -78,7 +83,8 @@ fun PageContent(
     stateViewModel: StateViewModel,
     bottomSheetState: ModalBottomSheetState,
     bottomSheetNavController: NavHostController,
-    tasksViewModel: TasksViewModel
+    tasksViewModel: TasksViewModel,
+    groupTagViewModel: GroupTagViewModel
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -108,6 +114,7 @@ fun PageContent(
     ) {
         PageNavigation(
             scope = scope,
+            groupTagViewModel = groupTagViewModel,
             bottomSheetState = bottomSheetState,
             navController = navController,
             tasksViewModel = tasksViewModel,
