@@ -222,13 +222,15 @@ fun TodoTaskDetail(
             modifier = Modifier.padding(top = 5.dp, bottom = 15.dp),
         ) {
             IconButton(onClick = {
-                reminder = !reminder
-                tasksViewModel.upgradeTask(
-                    type = type,
-                    id = data.id,
-                    name = "isRemindered",
-                    value = reminder
-                )
+                if(mTime != "Set Task Time"){
+                    reminder = !reminder
+                    tasksViewModel.upgradeTask(
+                        type = type,
+                        id = data.id,
+                        name = "isRemindered",
+                        value = reminder
+                    )
+                }
             }) {
                 if (reminder)
                     Icon(
@@ -242,9 +244,10 @@ fun TodoTaskDetail(
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))
             OutlinedButton(
                 onClick = { mTimePickerDialog.show() },
+                modifier = Modifier.width(149.dp),
                 border = BorderStroke(2.dp, color = Color.LightGray),
             ) {
-                Text(text = mTime, color = Color.LightGray)
+                Text(text = mTime, color = Color.LightGray, textAlign = TextAlign.Center)
             }
         }
 
