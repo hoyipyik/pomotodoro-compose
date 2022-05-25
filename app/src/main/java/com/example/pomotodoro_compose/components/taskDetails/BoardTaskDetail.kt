@@ -65,7 +65,8 @@ fun BoardTaskDetail(
     }
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth().padding(start = 5.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),

@@ -1,6 +1,5 @@
 package com.example.pomotodoro_compose.router
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -36,7 +35,7 @@ fun BottomSheetNavigation(
 
         }
         composable("addtask"){
-            AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+            AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, groupTagViewModel = groupTagViewModel)
         }
         composable("taskdetail"){
             TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
