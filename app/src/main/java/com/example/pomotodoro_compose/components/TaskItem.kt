@@ -70,10 +70,10 @@ fun TaskItem(
             verticalAlignment = Alignment.CenterVertically
 
         ) {
-            if (type == "board" && toToday)
+            if (type == "board" )
                 Box(
                     modifier = Modifier
-                        .border(5.dp, MaterialTheme.colors.primary)
+                        .border(5.dp, if (toToday) MaterialTheme.colors.primary else MaterialTheme.colors.onSecondary)
                         .width(5.dp)
                         .fillMaxHeight()
                 )
