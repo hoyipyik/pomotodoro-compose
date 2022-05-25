@@ -1,5 +1,9 @@
 package com.example.pomotodoro_compose.viewModel
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,6 +13,9 @@ import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.data.getTodoTasksList
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
@@ -103,6 +110,33 @@ class TasksViewModel : ViewModel() {
 
     fun upgradeSelectedGroupTag(id: String){
         _selectedGroupTag = id
+    }
+
+    private fun createNotificationChannel(context: Context, head: String){
+        val name = "Task notification"
+        val descriptionText = "Task: $head. \n Time to work :)"
+        val importance = NotificationManager.IMPORTANCE_HIGH
+        val channel  = NotificationChannel("Channel_id", name, importance).apply {
+            description = descriptionText
+        }
+
+        val notificationManager : NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
+    fun notificationJudger(context: Context, currentTime: LocalTime){
+        createNotificationChannel(context = context, head = "Hi")
+//        _tasksList.forEachIndexed{ _, data ->
+//            if(data.isRemindered){
+//                val newFormatedTime: LocalTime = LocalTime.parse(data.setTaskTime, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+//                val timeMinutes = newFormatedTime.hour * 60 + newFormatedTime.minute
+//                val currentMinutes = currentTime.hour * 60 + currentTime.minute
+//                Log.i("/notitester", newFormatedTime.toString() + data.setTaskTime)
+//                if(timeMinutes -5 >= currentMinutes){
+//                    createNotificationChannel(context = context, title = data.title)
+//                }
+//            }
+//        }
     }
 }
 

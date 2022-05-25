@@ -21,13 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.GroupTagListData
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EditGroupTagItem(
     item: GroupTagListData,
     groupTagViewModel: GroupTagViewModel,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    tasksViewModel: TasksViewModel
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -80,7 +82,12 @@ fun EditGroupTagItem(
             }
             else
             Text(item.groupTagName, modifier = Modifier.fillMaxWidth(0.7f), textAlign = TextAlign.Center)
-            IconButton(onClick = { groupTagViewModel.deleteGroupTag(item.tagId)}) {
+            IconButton(onClick = {
+                groupTagViewModel.deleteGroupTag(item.tagId)
+                if(item.tagId == tasksViewModel.selectedGroupTag){
+                    tasksViewModel.upgradeSelectedGroupTag("tag")
+                }
+            }) {
                 Icon(Icons.Filled.Delete, contentDescription = null)
             }
         }

@@ -1,5 +1,6 @@
 package com.example.pomotodoro_compose.components.taskDetails
 
+import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -25,6 +26,8 @@ import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -40,7 +43,7 @@ fun TodoTaskDetail(
     val data: TasksData = tasksViewModel.getItem()
     var pomoNum by remember { mutableStateOf(data.pomoTimes) }
     var priorityFlag by remember { mutableStateOf(data.priority) }
-    var checked by remember { mutableStateOf(data.isChecked) }
+    var checked by remember { mutableStateOf(data.repeat) }
     var reminder by remember { mutableStateOf(data.isRemindered) }
 //    var setTaskTime by remember { mutableStateOf(data.setTaskTime) }
     var text by remember { mutableStateOf(data.title) }
@@ -61,7 +64,7 @@ fun TodoTaskDetail(
     val mTimePickerDialog = TimePickerDialog(
         mContext,
         { _, mHour: Int, mMinute: Int ->
-            mTime = "$mHour:$mMinute"
+            mTime = "$mHour-$mMinute"
         }, mHour, mMinute, false
     )
 
@@ -207,13 +210,13 @@ fun TodoTaskDetail(
                 colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colors.primary)
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))
-            Text("Checked", fontWeight = Bold)
+            Text("Repeat", fontWeight = Bold)
             Switch(checked = checked, onCheckedChange = {
                 checked = it
                 tasksViewModel.upgradeTask(
                     type = type,
                     id = data.id,
-                    name = "isChecked",
+                    name = "repeat",
                     value = it
                 )
             })

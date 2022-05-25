@@ -118,7 +118,7 @@ fun Pomodoro(
                     .width(100.dp)
                     .height(45.dp),
             ) {
-                Text(text = "Restart", fontSize = 17.sp)
+                Text(text = "Return", fontSize = 17.sp)
             }
         }
     }

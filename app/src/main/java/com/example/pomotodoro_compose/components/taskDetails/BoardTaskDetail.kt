@@ -49,7 +49,7 @@ fun BoardTaskDetail(
 ) {
     val data: TasksData = tasksViewModel.getItem()
     var priorityFlag by remember { mutableStateOf(data.toToday) }
-    var isRepeat by remember { mutableStateOf(data.repeat) }
+    var isChecked by remember { mutableStateOf(data.isChecked) }
 //    var setTaskTime by remember { mutableStateOf(data.setTaskTime) }
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
@@ -151,13 +151,13 @@ fun BoardTaskDetail(
                 colors = SwitchDefaults.colors(checkedThumbColor = MaterialTheme.colors.primary)
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.1f))
-            Text("Repeat", fontWeight = FontWeight.Bold)
-            Switch(checked = isRepeat, onCheckedChange = {
-                isRepeat = it
+            Text("Checked", fontWeight = FontWeight.Bold)
+            Switch(checked = isChecked, onCheckedChange = {
+                isChecked = it
                 tasksViewModel.upgradeTask(
                     type = type,
                     id = data.id,
-                    name = "repeat",
+                    name = "isChecked",
                     value = it
                 )
             })

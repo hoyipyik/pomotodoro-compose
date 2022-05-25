@@ -30,6 +30,6 @@ fun PageNavigation(
     NavHost(navController = navController as NavHostController, startDestination = "board"){
         composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, groupTagViewModel = groupTagViewModel,) }
         composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)}
-        composable("account"){ Account(scope = scope, state = bottomSheetState)}
+        composable("account"){ Account(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
     }
 }

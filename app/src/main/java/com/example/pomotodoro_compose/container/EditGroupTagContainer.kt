@@ -11,12 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.components.grouptag.EditGroupTagItem
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.viewModel.TasksViewModel
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun EditGroupTagContainer(
     groupTagViewModel: GroupTagViewModel,
-    bottomSheetState: ModalBottomSheetState
+    bottomSheetState: ModalBottomSheetState,
+    tasksViewModel: TasksViewModel
 ) {
     val list = groupTagViewModel.groupTagList
     LazyColumn(
@@ -24,7 +26,7 @@ fun EditGroupTagContainer(
     ){
         items(list){ item ->
             if (item.tagId != "tag")
-            EditGroupTagItem(item, groupTagViewModel, bottomSheetState)
+            EditGroupTagItem(item, groupTagViewModel, bottomSheetState, tasksViewModel)
         }
     }
 }
