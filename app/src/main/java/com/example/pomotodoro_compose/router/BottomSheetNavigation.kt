@@ -1,5 +1,6 @@
 package com.example.pomotodoro_compose.router
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ fun BottomSheetNavigation(
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
 //    Log.i("/navigationpage", currentRouterPath)
-    NavHost(navController = navController, startDestination = "blank"){
+    NavHost(navController = navController, startDestination = "blank") {
         composable("blank"){
 
         }
@@ -44,7 +45,7 @@ fun BottomSheetNavigation(
             AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
         }
         composable("editgrouptag"){
-            EditGroupTagContainer(groupTagViewModel = groupTagViewModel)
+            EditGroupTagContainer(groupTagViewModel = groupTagViewModel, bottomSheetState = bottomSheetState)
         }
         composable("pomodoro"){
             Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)

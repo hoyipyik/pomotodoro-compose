@@ -3,6 +3,8 @@ package com.example.pomotodoro_compose.components.grouptag
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import com.example.pomotodoro_compose.components.grouptag.GroupTagItem
 import com.example.pomotodoro_compose.data.GroupTagListData
@@ -17,7 +19,12 @@ fun GroupTagList(
     groupTagViewModel: GroupTagViewModel
 ){
 
-    val list: MutableList<GroupTagListData> = groupTagViewModel.groupTagList
+    var list: MutableList<GroupTagListData> = groupTagViewModel.groupTagList
+
+    LaunchedEffect(groupTagViewModel.changeFlag){
+        list = groupTagViewModel.groupTagList
+        groupTagViewModel.restoreChangeFlag()
+    }
     LazyRow{
 //        item { GroupTagItem(name = "All", colour = Color.Blue) }
         items(list){ item ->
