@@ -47,7 +47,7 @@ fun AddTodoTask(
     }
 
     Column(
-        modifier = modifier.padding(top = 15.dp),
+        modifier = modifier.padding(top = 15.dp).fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(

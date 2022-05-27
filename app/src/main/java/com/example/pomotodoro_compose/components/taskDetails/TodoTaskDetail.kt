@@ -84,6 +84,7 @@ fun TodoTaskDetail(
     }
 
     Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
