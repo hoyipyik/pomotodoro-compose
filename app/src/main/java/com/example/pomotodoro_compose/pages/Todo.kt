@@ -18,7 +18,6 @@ fun Todo(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-      
     stateViewModel: StateViewModel
 ) {
     val type: String = "todo"
