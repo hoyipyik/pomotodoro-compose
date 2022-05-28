@@ -25,6 +25,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.pomotodoro_compose.data.GroupTagListData
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -43,14 +44,22 @@ fun AddBoardTask(
 ) {
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
-    var showSelector by remember { mutableStateOf(false)}
+    var showSelector by remember { mutableStateOf(false) }
+    var selectorId = remember{mutableListOf<String>("tag")}
+    var selectorData = remember{ mutableListOf<GroupTagListData>().toMutableStateList()}
     // need optimism
     LaunchedEffect(!bottomSheetState.isVisible) {
         focusManager.clearFocus()
+        selectorId = mutableListOf("tag")
+        text = ""
+        showSelector = false
+        selectorData = mutableListOf<GroupTagListData>().toMutableStateList()
 //        Log.i("/debug", "hide")
     }
     Column(
-        modifier = Modifier.fillMaxWidth().padding(top = 15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -81,9 +90,14 @@ fun AddBoardTask(
             )
             Button(
                 onClick = {
-                    if(text != "") {
-                        tasksViewModel.addTask(type = type, text = text)
+                    if (text != "") {
+                        Log.i("/testid", selectorId.toString())
+                        tasksViewModel.addTask(type = type, text = text, groupTag = selectorId)
                         scope.launch { bottomSheetState.hide() }
+                        selectorId = mutableListOf("tag")
+                        text = ""
+                        showSelector = false
+                        selectorData = mutableListOf<GroupTagListData>().toMutableStateList()
                     }
                 },
                 modifier = Modifier
@@ -97,9 +111,16 @@ fun AddBoardTask(
             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Tags", fontWeight = FontWeight.Bold)
+            Text(
+                text = if (showSelector) "Selector" else "   Tags   ",
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.fillMaxWidth(0.12f))
-            OutlinedButton(onClick = { /*TODO*/ }) {
+            OutlinedButton(onClick = {
+                if (showSelector) {
+                    showSelector = false
+                }
+            }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
@@ -114,10 +135,18 @@ fun AddBoardTask(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    if(showSelector)
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = null, tint = MaterialTheme.colors.primary)
+                    if (showSelector)
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.primary
+                        )
                     else
-                        Icon(imageVector = Icons.Filled.Menu, contentDescription = null, tint = Color.Gray)
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
                 }
             }
         }
@@ -130,6 +159,40 @@ fun AddBoardTask(
                 .background(MaterialTheme.colors.onSecondary),
         ) {
             LazyRow(Modifier.padding(horizontal = 6.dp)) {
+                if (showSelector) {
+                    val list = groupTagViewModel.groupTagList.toMutableList()
+                    list.removeAt(0)
+                    items(list) { item ->
+                        OutlinedButton(
+                            onClick = {
+                                selectorId.add(item.tagId)
+                                selectorData.add(item)
+                            },
+                            modifier = Modifier.padding(end = 5.dp),
+                            border = BorderStroke(2.dp, color = item.colour),
+                        ) {
+                            Text(
+                                text = item.groupTagName,
+                                color = item.colour,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                } else {
+                    items(selectorData) { item ->
+                        OutlinedButton(
+                            onClick = { selectorData.remove(item) },
+                            modifier = Modifier.padding(end = 5.dp),
+                            border = BorderStroke(2.dp, color = item.colour),
+                        ) {
+                            Text(
+                                text = item.groupTagName,
+                                color = item.colour,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                }
 //                items(tagData) { item ->
 //                    OutlinedButton(
 //                        onClick = {},
