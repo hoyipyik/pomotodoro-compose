@@ -42,7 +42,7 @@ fun App() {
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         sheetElevation = 16.dp,
-        sheetShape = RoundedCornerShape(20.dp),
+        sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetContent = {
             SheetContent(
                 groupTagViewModel = groupTagViewModel,
