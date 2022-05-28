@@ -20,23 +20,32 @@ import java.time.format.FormatStyle
 
 class TasksViewModel : ViewModel() {
     private var _tasksList = getTasksList().toMutableStateList()
-    private var _changeFlag by mutableStateOf(false)
-    val changeFlag
-        get() = _changeFlag
-    fun restoreChangeFlag(){
-        _changeFlag = false
-    }
-
-    private var _selectedId: String by mutableStateOf("")
-    val selectedId
-        get() = _selectedId
-
     private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     val todoTasksList: MutableList<TasksData>
         get() = _todoTasksList
 
     val boardTasksList: MutableList<TasksData>
         get() = _tasksList
+
+    private var _selectedId: String by mutableStateOf("")
+    val selectedId
+        get() = _selectedId
+
+    private var _changeTagListFlag by mutableStateOf(false)
+    val changeTagListFlag
+        get() = _changeTagListFlag
+
+    private var _changeFlag by mutableStateOf(false)
+    val changeFlag
+        get() = _changeFlag
+
+    fun restoreChangeFlag(){
+        _changeFlag = false
+    }
+
+    fun restoreChangeTagListFlag(){
+        _changeTagListFlag = false
+    }
 
     fun deleteTask(type: String, id: String) {
         _tasksList.removeAll { it.id == id }
@@ -63,7 +72,7 @@ class TasksViewModel : ViewModel() {
                 }
             }
         }
-        _changeFlag = true
+        _changeTagListFlag = true
     }
 
     fun upgradeTask(type: String, id: String, name: String, value: Any) {

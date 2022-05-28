@@ -34,9 +34,9 @@ fun Board(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        LaunchedEffect(tasksViewModel.changeFlag) {
+        LaunchedEffect(tasksViewModel.changeTagListFlag) {
             list = tasksViewModel.boardTasksList
-            tasksViewModel.restoreChangeFlag()
+            tasksViewModel.restoreChangeTagListFlag()
         }
         list.forEachIndexed{ index, data ->
             for (item in data.groupTag){
