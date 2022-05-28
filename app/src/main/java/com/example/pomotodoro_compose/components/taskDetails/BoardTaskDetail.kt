@@ -1,7 +1,5 @@
 package com.example.pomotodoro_compose.components.taskDetails
 
-import android.app.TimePickerDialog
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,7 +8,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,23 +19,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import com.example.pomotodoro_compose.components.grouptag.GroupTagItem
-import com.example.pomotodoro_compose.data.GroupTagListData
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,24 +51,32 @@ fun BoardTaskDetail(
 
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
+    var deleteFlag by remember { mutableStateOf(false) }
+    var selectorFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem()) {
+    LaunchedEffect(tasksViewModel.getItem(), deleteFlag) {
         data = tasksViewModel.getItem()
         priorityFlag = data.toToday
         isChecked = data.isChecked
         text = data.title
         editFlag = false
         tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
+        deleteFlag = false
+        selectorFlag = false
     }
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
         editFlag = false
+        deleteFlag = false
+        selectorFlag = false
     }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxWidth().padding(start = 5.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 5.dp)
     ) {
         Row(
             modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
@@ -173,24 +176,33 @@ fun BoardTaskDetail(
             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Tags", fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.fillMaxWidth(0.12f))
-            OutlinedButton(onClick = { /*TODO*/ }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Text(text = "Add", modifier = Modifier.padding(end = 3.dp, start = 8.dp))
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = null)
-                }
-            }
+            Text(text = if(selectorFlag) "Selctor" else "Tags", fontWeight = FontWeight.Bold, modifier = Modifier.width(58.dp))
+            Spacer(modifier = Modifier.padding(5.dp))
+            Text(text = if(selectorFlag)"  Tag to add  " else "Tap to delete")
+            Spacer(modifier = Modifier.padding(5.dp))
+//            OutlinedButton(onClick = { /*TODO*/ }) {
+//                Row(
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    horizontalArrangement = Arrangement.Center
+//                ) {
+//                    Text(text = "Add", modifier = Modifier.padding(end = 3.dp, start = 8.dp))
+//                    Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+//                }
+//            }
             Spacer(modifier = Modifier.fillMaxWidth(0.06f))
-            OutlinedButton(onClick = { /*TODO*/ }) {
+            OutlinedButton(onClick = { selectorFlag = !selectorFlag }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                    if (selectorFlag)
+                        Icon(imageVector = Icons.Filled.Menu, contentDescription = null)
+                    else
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            tint = Color.LightGray
+                        )
                 }
             }
         }
@@ -203,16 +215,51 @@ fun BoardTaskDetail(
                 .background(MaterialTheme.colors.onSecondary),
         ) {
             LazyRow(Modifier.padding(horizontal = 6.dp)) {
-                items(tagData) { item ->
-                    OutlinedButton(
-                        onClick = { tasksViewModel.upgradeGroupTag(type = type, id = data.id, value = item.tagId, name = "remove") },
-                        modifier = Modifier.padding(end = 5.dp),
-                        border = BorderStroke(2.dp, color = item.colour),
-//        colors = ButtonDefaults.buttonColors(backgroundColor = colour)
-                    ) {
-                        Text(text = item.groupTagName, color = item.colour, textAlign = TextAlign.Center)
-                        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.height(1.dp).width(1.dp)){}
-//                                Icon(imageVector = Icons.Filled.CancelPresentation, contentDescription = null, modifier = Modifier.height(40.dp).width(35.dp))
+                if (selectorFlag) {
+                    val list = groupTagViewModel.groupTagList.toMutableList()
+                    list.removeAt(0)
+                    items(list) { item ->
+                        OutlinedButton(
+                            onClick = {
+                                tasksViewModel.upgradeGroupTag(
+                                    type = type,
+                                    id = data.id,
+                                    value = item.tagId,
+                                    name = "add"
+                                )
+                                deleteFlag = true
+                            },
+                            modifier = Modifier.padding(end = 5.dp),
+                            border = BorderStroke(2.dp, color = item.colour),
+                        ) {
+                            Text(
+                                text = item.groupTagName,
+                                color = item.colour,
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    }
+                } else {
+                    items(tagData) { item ->
+                        OutlinedButton(
+                            onClick = {
+                                tasksViewModel.upgradeGroupTag(
+                                    type = type,
+                                    id = data.id,
+                                    value = item.tagId,
+                                    name = "remove"
+                                )
+                                deleteFlag = true
+                            },
+                            modifier = Modifier.padding(end = 5.dp),
+                            border = BorderStroke(2.dp, color = item.colour),
+                        ) {
+                            Text(
+                                text = item.groupTagName,
+                                color = item.colour,
+                                textAlign = TextAlign.Center
+                            )
+                        }
                     }
                 }
             }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -27,12 +28,16 @@ fun Board(
     groupTagViewModel: GroupTagViewModel
 ) {
     val type: String = "board"
-    val list = tasksViewModel.boardTasksList
+    var list = tasksViewModel.boardTasksList
     val filteredList: MutableList<TasksData> = mutableListOf()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+        LaunchedEffect(tasksViewModel.changeFlag) {
+            list = tasksViewModel.boardTasksList
+            tasksViewModel.restoreChangeFlag()
+        }
         list.forEachIndexed{ index, data ->
             for (item in data.groupTag){
                 if(item == tasksViewModel.selectedGroupTag){

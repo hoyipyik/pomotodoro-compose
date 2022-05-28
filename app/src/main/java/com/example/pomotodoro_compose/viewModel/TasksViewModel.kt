@@ -63,6 +63,7 @@ class TasksViewModel : ViewModel() {
                 }
             }
         }
+        _changeFlag = true
     }
 
     fun upgradeTask(type: String, id: String, name: String, value: Any) {

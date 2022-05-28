@@ -116,7 +116,9 @@ fun AddBoardTask(
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.fillMaxWidth(0.12f))
-            OutlinedButton(onClick = {
+            OutlinedButton(
+                enabled = showSelector,
+                onClick = {
                 if (showSelector) {
                     showSelector = false
                 }
@@ -165,8 +167,10 @@ fun AddBoardTask(
                     items(list) { item ->
                         OutlinedButton(
                             onClick = {
-                                selectorId.add(item.tagId)
-                                selectorData.add(item)
+                                if(!selectorId.contains(item.tagId)) {
+                                    selectorId.add(item.tagId)
+                                    selectorData.add(item)
+                                }
                             },
                             modifier = Modifier.padding(end = 5.dp),
                             border = BorderStroke(2.dp, color = item.colour),
@@ -181,7 +185,10 @@ fun AddBoardTask(
                 } else {
                     items(selectorData) { item ->
                         OutlinedButton(
-                            onClick = { selectorData.remove(item) },
+                            onClick = {
+                                selectorData.remove(item)
+                                selectorId.remove(item.tagId)
+                                      },
                             modifier = Modifier.padding(end = 5.dp),
                             border = BorderStroke(2.dp, color = item.colour),
                         ) {
