@@ -1,12 +1,11 @@
 package com.example.pomotodoro_compose.data
 
 import android.util.Log
-import androidx.compose.material.MaterialTheme
-import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.ui.theme.Purple500
 import com.example.pomotodoro_compose.ui.theme.Purple700
-import java.time.LocalDateTime
 
 /*
 *  Used to generate a dummy data used for testing
@@ -23,6 +22,11 @@ fun getTasksList(): MutableList<TasksData> {
         }else
         TasksData(id = i.toString(), title = "Task $i", isChecked = false, toToday = flag)
     }
+}
+
+fun getBoardTasksList(list: LiveData<MutableList<TasksData>>): MutableList<TasksData> {
+    val result = list.value
+    return result!!
 }
 
 fun getTodoTasksList(list:MutableList<TasksData>): MutableList<TasksData>{

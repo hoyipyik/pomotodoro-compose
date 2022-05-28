@@ -1,5 +1,7 @@
 package  com.example.pomotodoro_compose
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
@@ -23,6 +25,7 @@ import com.example.pomotodoro_compose.router.PageNavigation
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.viewModel.TasksViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -31,8 +34,11 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun App() {
+    val context: Context = LocalContext.current
     val stateViewModel: StateViewModel = viewModel()
-    val tasksViewModel : TasksViewModel = viewModel()
+    val tasksViewModel : TasksViewModel = viewModel(
+        factory = TasksViewModelFactory(context.applicationContext as Application)
+    )
     val groupTagViewModel: GroupTagViewModel = viewModel()
     val navController = rememberNavController()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,)

@@ -1,26 +1,38 @@
 package com.example.pomotodoro_compose.viewModel
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.nfc.Tag
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.database.TasksDatabase
+import com.example.pomotodoro_compose.data.database.TasksRepository
+import com.example.pomotodoro_compose.data.getBoardTasksList
 import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.data.getTodoTasksList
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
-class TasksViewModel : ViewModel() {
+class TasksViewModel(application: Application) : ViewModel() {
+    private var _holderList: LiveData<MutableList<TasksData>>
+    private var repository: TasksRepository
+
+    init {
+        val tasksDao = TasksDatabase.getInstance(application).tasksDao()
+        repository = TasksRepository(tasksDao)
+        _holderList = repository.fullTasksData
+    }
+
+//    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
     private var _tasksList = getTasksList().toMutableStateList()
     private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+
     val todoTasksList: MutableList<TasksData>
         get() = _todoTasksList
 
@@ -39,33 +51,33 @@ class TasksViewModel : ViewModel() {
     val changeFlag
         get() = _changeFlag
 
-    fun restoreChangeFlag(){
+    fun restoreChangeFlag() {
         _changeFlag = false
     }
 
-    fun restoreChangeTagListFlag(){
+    fun restoreChangeTagListFlag() {
         _changeTagListFlag = false
     }
 
     fun deleteTask(type: String, id: String) {
         _tasksList.removeAll { it.id == id }
-        if(type == "todo")
-            _todoTasksList.removeAll{ it.id == id}
+        if (type == "todo")
+            _todoTasksList.removeAll { it.id == id }
         else
             _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 
-    fun upgradeGroupTag(type: String, id: String, value: String, name: String){
-        when(name){
+    fun upgradeGroupTag(type: String, id: String, value: String, name: String) {
+        when (name) {
             "remove" -> {
                 val item = _tasksList.find { it.id == id }
                 item?.groupTag!!.remove(value)
                 _tasksList.find { it.id == id }?.groupTag = item.groupTag
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
-            "add" ->{
+            "add" -> {
                 val item = _tasksList.find { it.id == id }
-                if(!item?.groupTag!!.contains(value)){
+                if (!item?.groupTag!!.contains(value)) {
                     item.groupTag.add(value)
                     _tasksList.find { it.id == id }?.groupTag = item.groupTag
                     _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
@@ -75,7 +87,7 @@ class TasksViewModel : ViewModel() {
         _changeTagListFlag = true
     }
 
-    fun upgradeTask(type: String, id: String, name: String, value: Any) {
+    fun upgradeTask(type: String, id: String, name: String, value: Any?) {
         when (name) {
             "toToday" -> {
                 _tasksList.find { it.id == id }?.let { it.toToday = value as Boolean }
@@ -113,13 +125,24 @@ class TasksViewModel : ViewModel() {
         _changeFlag = true
     }
 
-    fun addTask(type: String, text: String, pomoNum: Int = 0, groupTag: MutableList<String> = mutableListOf("tag")) {
+    fun addTask(
+        type: String,
+        text: String,
+        pomoNum: Int = 0,
+        groupTag: MutableList<String> = mutableListOf("tag")
+    ) {
         val id: String = LocalDateTime.now().toString()
         val toToday: Boolean = type == "todo"
         val title: String = text
         val pomoTimes: Int = pomoNum
         val groupTags: MutableList<String> = groupTag
-        val item = TasksData(id = id, toToday = toToday, title = title, pomoTimes = pomoTimes, groupTag = groupTags)
+        val item = TasksData(
+            id = id,
+            toToday = toToday,
+            title = title,
+            pomoTimes = pomoTimes,
+            groupTag = groupTags
+        )
         _tasksList.add(item)
         if (type == "todo") {
             _todoTasksList.add(item)
@@ -139,23 +162,24 @@ class TasksViewModel : ViewModel() {
     val selectedGroupTag
         get() = _selectedGroupTag
 
-    fun upgradeSelectedGroupTag(id: String){
+    fun upgradeSelectedGroupTag(id: String) {
         _selectedGroupTag = id
     }
 
-    private fun createNotificationChannel(context: Context, head: String){
+    private fun createNotificationChannel(context: Context, head: String) {
         val name = "Task notification"
         val descriptionText = "Task: $head. \n Time to work :)"
         val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel  = NotificationChannel("Channel_id", name, importance).apply {
+        val channel = NotificationChannel("Channel_id", name, importance).apply {
             description = descriptionText
         }
 
-        val notificationManager : NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun notificationJudger(context: Context, currentTime: LocalTime){
+    fun notificationJudger(context: Context, currentTime: LocalTime) {
         createNotificationChannel(context = context, head = "Hi")
 //        _tasksList.forEachIndexed{ _, data ->
 //            if(data.isRemindered){
