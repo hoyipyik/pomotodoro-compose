@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Menu
@@ -30,6 +29,7 @@ import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -164,6 +164,10 @@ fun BoardTaskDetail(
             Text("Checked", fontWeight = FontWeight.Bold)
             Switch(checked = isChecked, onCheckedChange = {
                 isChecked = it
+                if(it)
+                    tasksViewModel.upgradeTask(type = type, name = "finishTime", id = data.id, value = LocalDateTime.now().toString())
+                else
+                    tasksViewModel.upgradeTask(type = type, name = "finishTime", id = data.id, value = null)
                 tasksViewModel.upgradeTask(
                     type = type,
                     id = data.id,

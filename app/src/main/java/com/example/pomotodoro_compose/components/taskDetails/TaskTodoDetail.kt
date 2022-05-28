@@ -1,6 +1,5 @@
 package com.example.pomotodoro_compose.components.taskDetails
 
-import android.app.NotificationManager
 import android.app.TimePickerDialog
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
@@ -20,14 +19,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
-import java.time.LocalTime
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)

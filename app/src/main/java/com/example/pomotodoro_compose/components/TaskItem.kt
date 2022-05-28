@@ -14,12 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -80,6 +80,10 @@ fun TaskItem(
             Checkbox(
                 checked = checked,
                 onCheckedChange = {
+                    if(it)
+                        tasksViewModel.upgradeTask(type = type, name = "finishTime", id = id, value = LocalDateTime.now().toString())
+                    else
+                        tasksViewModel.upgradeTask(type = type, name = "finishTime", id = id, value = null)
                     tasksViewModel.upgradeTask(type = type, name = "isChecked", id = id, value = it)
                     checked = it
                 },
