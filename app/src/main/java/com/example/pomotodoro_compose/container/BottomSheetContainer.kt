@@ -20,12 +20,11 @@ import kotlinx.coroutines.CoroutineScope
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetContainer(
-    navController: NavHostController,
     stateViewModel: StateViewModel,
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController,
+      
     groupTagViewModel: GroupTagViewModel
 ) {
     Column(
@@ -40,9 +39,7 @@ fun BottomSheetContainer(
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = 5.dp))
         BottomSheetNavigation(
-            bottomSheetNavController = bottomSheetNavController,
             groupTagViewModel = groupTagViewModel,
-            navController = navController,
             stateViewModel = stateViewModel,
             modifier = Modifier.fillMaxWidth(),
             tasksViewModel = tasksViewModel,

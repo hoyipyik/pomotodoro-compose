@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun GroupTagListContainer(
     tasksViewModel: TasksViewModel,
-    bottomSheetNavController: NavHostController,
     stateViewModel: StateViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
@@ -39,11 +38,11 @@ fun GroupTagListContainer(
                 GroupTagList(modifier = Modifier, groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel)
             }
             IconButton(onClick = {
-                bottomSheetNavController.navigate("editgrouptag") {
-                    popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
-                }
-                scope.launch { bottomSheetState.show() }
+//                bottomSheetNavController.navigate("editgrouptag") {
+//                    popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+//                }
                 stateViewModel.changeCurrentRouteBottomSheetPath("editgrouptag")
+                scope.launch { bottomSheetState.show() }
             }, modifier = Modifier.padding(start = 9.dp)) {
                 Icon(Icons.Filled.Backspace, contentDescription = null)
             }

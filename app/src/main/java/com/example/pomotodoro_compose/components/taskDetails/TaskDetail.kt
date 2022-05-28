@@ -18,12 +18,12 @@ fun TaskDetail(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
     when (type) {
-        "todo" -> TodoTaskDetail(tasksViewModel, scope, bottomSheetState, type = type, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel)
-        "board" -> BoardTaskDetail(tasksViewModel, scope, bottomSheetState, type = type, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
+        "todo" -> TodoTaskDetail(tasksViewModel, scope, bottomSheetState, type = type, stateViewModel = stateViewModel)
+        "board" -> BoardTaskDetail(tasksViewModel, scope, bottomSheetState, type = type, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
     }
 }

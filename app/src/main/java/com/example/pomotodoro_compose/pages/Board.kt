@@ -23,7 +23,6 @@ fun Board(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    bottomSheetNavController: NavHostController,
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
@@ -41,9 +40,9 @@ fun Board(
                 }
             }
         }
-        GroupTagListContainer(groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
+        GroupTagListContainer(groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
         if(list.size >= 0)
-            TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
+            TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
         else
             BlankContainer()
     }

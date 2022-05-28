@@ -37,7 +37,7 @@ fun TasksContainer(
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel
 ) {
 
@@ -68,7 +68,7 @@ fun TasksContainer(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
-                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)
+                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel,  )
                 },
                 dismissThresholds = { direction ->
                     FractionalThreshold(

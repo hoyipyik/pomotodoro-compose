@@ -19,35 +19,43 @@ import kotlinx.coroutines.CoroutineScope
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BottomSheetNavigation(
-    navController: NavHostController,
     stateViewModel: StateViewModel,
     modifier: Modifier = Modifier,
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController,
+      
     groupTagViewModel: GroupTagViewModel
 ) {
     val currentRouterPath: String = stateViewModel.currentRouterPath
-//    Log.i("/navigationpage", currentRouterPath)
-    NavHost(navController = navController, startDestination = "blank") {
-        composable("blank"){
 
-        }
-        composable("addtask"){
-            AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, groupTagViewModel = groupTagViewModel)
-        }
-        composable("taskdetail"){
-            TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
-        }
-        composable("addgrouptag"){
-            AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
-        }
-        composable("editgrouptag"){
-            EditGroupTagContainer(groupTagViewModel = groupTagViewModel, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel)
-        }
-        composable("pomodoro"){
-            Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)
-        }
+    when(val currentRouteBottomSheetPath: String = stateViewModel.currentRouteBottomSheetPath){
+        "addtask" ->  AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, groupTagViewModel = groupTagViewModel)
+        "taskdetail" -> TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
+        "addgrouptag" -> AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
+        "editgrouptag" -> EditGroupTagContainer(groupTagViewModel = groupTagViewModel, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel)
+        "pomodoro" -> Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)
+
     }
+//    Log.i("/navigationpage", currentRouterPath)
+//    NavHost(navController = navController, startDestination = "blank") {
+//        composable("blank"){
+//
+//        }
+//        composable("addtask"){
+//            AddTask(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, groupTagViewModel = groupTagViewModel)
+//        }
+//        composable("taskdetail"){
+//            TaskDetail(type = currentRouterPath, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState,  , stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
+//        }
+//        composable("addgrouptag"){
+//            AddGroupTag(type = currentRouterPath, groupTagViewModel = groupTagViewModel, scope = scope, bottomSheetState = bottomSheetState)
+//        }
+//        composable("editgrouptag"){
+//            EditGroupTagContainer(groupTagViewModel = groupTagViewModel, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel)
+//        }
+//        composable("pomodoro"){
+//            Pomodoro(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, scope = scope, bottomSheetState = bottomSheetState)
+//        }
+//    }
 }

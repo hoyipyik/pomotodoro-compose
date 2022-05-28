@@ -18,13 +18,13 @@ fun Todo(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel
 ) {
     val type: String = "todo"
     val navController = rememberNavController()
     Column {
         TabBar(navController = navController)
-        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, scope = scope, state = state)
+        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, scope = scope, state = state)
     }
 }

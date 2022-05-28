@@ -16,7 +16,7 @@ fun Today(
     type: String,
     list: MutableList<TasksData>,
     tasksViewModel: TasksViewModel,
-    bottomSheetNavController: NavHostController,
+      
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     stateViewModel: StateViewModel
@@ -27,7 +27,6 @@ fun Today(
         tasksViewModel = tasksViewModel,
         bottomSheetState = state,
         scope = scope,
-        bottomSheetNavController = bottomSheetNavController,
         stateViewModel = stateViewModel
     )
 }

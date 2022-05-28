@@ -37,7 +37,7 @@ fun TodoTaskDetail(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
     type: String,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel
 ) {
     val data: TasksData = tasksViewModel.getItem()
@@ -179,11 +179,11 @@ fun TodoTaskDetail(
             IconButton(
                 onClick = {
                     if (pomoNum > 0) {
-                        bottomSheetNavController.navigate("pomodoro") {
-                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
-                        }
-                        stateViewModel.changeCurrentRouteBottomSheetPath("pomodoro")
+//                        bottomSheetNavController.navigate("pomodoro") {
+//                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+//                        }
                         scope.launch { bottomSheetState.show() }
+                        stateViewModel.changeCurrentRouteBottomSheetPath("pomodoro")
                     }
                 },
                 modifier = Modifier.padding(start = 30.dp)

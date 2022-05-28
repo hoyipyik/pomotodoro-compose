@@ -29,7 +29,7 @@ fun TaskItem(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     state: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel,
 ) {
     val id: String = item.id
@@ -99,9 +99,9 @@ fun TaskItem(
                 )
             IconButton(
                 onClick = {
-                    bottomSheetNavController.navigate("taskdetail") {
-                        popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
-                    }
+//                    bottomSheetNavController.navigate("taskdetail") {
+//                        popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+//                    }
                     stateViewModel.changeCurrentRouteBottomSheetPath("taskdetail")
                     tasksViewModel.sendId(id)
                     scope.launch {

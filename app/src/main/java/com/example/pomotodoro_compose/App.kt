@@ -1,6 +1,7 @@
 package  com.example.pomotodoro_compose
 
 import android.util.Log
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -8,7 +9,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +24,7 @@ import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
 import com.example.pomotodoro_compose.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 
@@ -31,7 +35,6 @@ fun App() {
     val tasksViewModel : TasksViewModel = viewModel()
     val groupTagViewModel: GroupTagViewModel = viewModel()
     val navController = rememberNavController()
-    val bottomSheetNavController = rememberNavController()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,)
     val scope = rememberCoroutineScope()
 
@@ -43,12 +46,11 @@ fun App() {
         sheetContent = {
             SheetContent(
                 groupTagViewModel = groupTagViewModel,
-                navController = bottomSheetNavController,
                 scope = scope,
-                bottomSheetNavController = bottomSheetNavController,
                 bottomSheetState = bottomSheetState,
                 stateViewModel = stateViewModel,
-                tasksViewModel = tasksViewModel)
+                tasksViewModel = tasksViewModel
+            )
         }
     ) {
         PageContent(
@@ -56,7 +58,6 @@ fun App() {
             groupTagViewModel = groupTagViewModel,
             bottomSheetState = bottomSheetState,
             navController = navController,
-            bottomSheetNavController = bottomSheetNavController,
             stateViewModel = stateViewModel,
             tasksViewModel = tasksViewModel,
         )
@@ -66,15 +67,13 @@ fun App() {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SheetContent(
-    navController: NavHostController,
     stateViewModel: StateViewModel,
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-    bottomSheetNavController: NavHostController,
     groupTagViewModel: GroupTagViewModel
 ) {
-    BottomSheetContainer(groupTagViewModel = groupTagViewModel, navController = navController, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState, bottomSheetNavController = bottomSheetNavController)
+    BottomSheetContainer(groupTagViewModel = groupTagViewModel, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -84,24 +83,21 @@ fun PageContent(
     navController: NavHostController,
     stateViewModel: StateViewModel,
     bottomSheetState: ModalBottomSheetState,
-    bottomSheetNavController: NavHostController,
     tasksViewModel: TasksViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
-    val navBackStackEntryBottomSheet by bottomSheetNavController.currentBackStackEntryAsState()
-    val currentRouteBottomSheet = navBackStackEntryBottomSheet?.destination?.route
     Scaffold(
-        topBar = { TopBar(bottomSheetNavController = bottomSheetNavController, stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState) },
+        topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState) },
         floatingActionButton = {
             if (currentRoute != "account")
                 FloatingActionButton(onClick = {
-                    bottomSheetNavController.navigate("addtask") {
-                        currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
-                    }
-                    scope.launch { bottomSheetState.show() }
+//                    bottomSheetNavController.navigate("addtask") {
+//                        currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
+//                    }
                     stateViewModel.changeCurrentRouteBottomSheetPath("addtask")
+                    scope.launch { bottomSheetState.show() }
                 }) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
@@ -120,8 +116,7 @@ fun PageContent(
             bottomSheetState = bottomSheetState,
             navController = navController,
             tasksViewModel = tasksViewModel,
-            stateViewModel = stateViewModel,
-            bottomSheetNavController = bottomSheetNavController
+            stateViewModel = stateViewModel
         )
     }
 }
@@ -159,8 +154,7 @@ fun TopBar(
     stateViewModel: StateViewModel,
     currentRoute: String?,
     bottomSheetState: ModalBottomSheetState,
-    scope: CoroutineScope,
-    bottomSheetNavController: NavHostController
+    scope: CoroutineScope
 ) {
     val title = stateViewModel.topBarTitle
     TopAppBar(
@@ -181,11 +175,11 @@ fun TopBar(
                 }
                 "board" ->{
                     Button(onClick = {
-                        bottomSheetNavController.navigate("addgrouptag") {
-                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
-                        }
-                        scope.launch { bottomSheetState.show() }
+//                        bottomSheetNavController.navigate("addgrouptag") {
+//                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+//                        }
                         stateViewModel.changeCurrentRouteBottomSheetPath("addgrouptag")
+                        scope.launch { bottomSheetState.show() }
                     }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically

@@ -22,14 +22,13 @@ fun PageNavigation(
     navController: NavController,
     bottomSheetState: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    bottomSheetNavController: NavHostController,
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
 
     NavHost(navController = navController as NavHostController, startDestination = "board"){
-        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController, groupTagViewModel = groupTagViewModel,) }
-        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, bottomSheetNavController = bottomSheetNavController)}
+        composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel,) }
+        composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel)}
         composable("account"){ Account(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
     }
 }

@@ -43,7 +43,7 @@ fun BoardTaskDetail(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
     type: String,
-    bottomSheetNavController: NavHostController,
+      
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
