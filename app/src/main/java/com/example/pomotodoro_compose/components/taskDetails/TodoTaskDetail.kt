@@ -37,10 +37,11 @@ fun TodoTaskDetail(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
     type: String,
-      
     stateViewModel: StateViewModel
 ) {
-    val data: TasksData = tasksViewModel.getItem()
+    var data: TasksData = tasksViewModel.getItem()
+
+    var mTime by remember { mutableStateOf(data.setTaskTime) }
     var pomoNum by remember { mutableStateOf(data.pomoTimes) }
     var priorityFlag by remember { mutableStateOf(data.priority) }
     var checked by remember { mutableStateOf(data.repeat) }
@@ -48,6 +49,19 @@ fun TodoTaskDetail(
 //    var setTaskTime by remember { mutableStateOf(data.setTaskTime) }
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
+
+    LaunchedEffect(tasksViewModel.getItem()) {
+//        if(tasksViewModel.getItem() != data)
+            data = tasksViewModel.getItem()
+        mTime = data.setTaskTime
+        pomoNum = data.pomoTimes
+        priorityFlag = data.priority
+        checked = data.repeat
+        reminder = data.isRemindered
+        text = data.title
+        editFlag = false
+        Log.i("/debugs", tasksViewModel.getItem().title)
+    }
 
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
@@ -59,7 +73,6 @@ fun TodoTaskDetail(
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
     // Value for storing time as a string
-    var mTime by remember { mutableStateOf(data.setTaskTime) }
     // Creating a TimePicker dialod
     val mTimePickerDialog = TimePickerDialog(
         mContext,
@@ -70,6 +83,7 @@ fun TodoTaskDetail(
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
+        editFlag = false
 //        Log.i("/debug", "hide")
     }
 

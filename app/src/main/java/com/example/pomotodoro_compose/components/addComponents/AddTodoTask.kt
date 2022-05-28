@@ -43,6 +43,8 @@ fun AddTodoTask(
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
+        pomoNum = 0
+        text = ""
 //        Log.i("/debug", "hide")
     }
 
@@ -82,6 +84,8 @@ fun AddTodoTask(
                     if(text != "") {
                         tasksViewModel.addTask(type = type, text = text, pomoNum = pomoNum)
                         scope.launch { bottomSheetState.hide() }
+                        pomoNum = 0
+                        text = ""
                     }
                 },
                 modifier = Modifier

@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.grouptag.GroupTagItem
+import com.example.pomotodoro_compose.data.GroupTagListData
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.viewModel.StateViewModel
@@ -43,25 +44,31 @@ fun BoardTaskDetail(
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
     type: String,
-      
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
-    val data: TasksData = tasksViewModel.getItem()
+    var data: TasksData = tasksViewModel.getItem()
     var priorityFlag by remember { mutableStateOf(data.toToday) }
     var isChecked by remember { mutableStateOf(data.isChecked) }
-//    var setTaskTime by remember { mutableStateOf(data.setTaskTime) }
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
-
-    val tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
+    var tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
 
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()
 
+    LaunchedEffect(tasksViewModel.getItem()) {
+        data = tasksViewModel.getItem()
+        priorityFlag = data.toToday
+        isChecked = data.isChecked
+        text = data.title
+        editFlag = false
+        tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
+    }
+
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
-//        Log.i("/debug", "hide")
+        editFlag = false
     }
 
     Column(
@@ -198,7 +205,7 @@ fun BoardTaskDetail(
             LazyRow(Modifier.padding(horizontal = 6.dp)) {
                 items(tagData) { item ->
                     OutlinedButton(
-                        onClick = {},
+                        onClick = { tasksViewModel.upgradeGroupTag(type = type, id = data.id, value = item.tagId, name = "remove") },
                         modifier = Modifier.padding(end = 5.dp),
                         border = BorderStroke(2.dp, color = item.colour),
 //        colors = ButtonDefaults.buttonColors(backgroundColor = colour)

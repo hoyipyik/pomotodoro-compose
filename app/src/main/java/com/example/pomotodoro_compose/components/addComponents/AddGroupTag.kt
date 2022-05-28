@@ -50,6 +50,8 @@ fun AddGroupTag(
 
   LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
     focusManager.clearFocus()
+    text = ""
+    colour = Purple500
 //        Log.i("/debug", "hide")
   }
 
@@ -89,6 +91,8 @@ fun AddGroupTag(
           if (text != "") {
             groupTagViewModel.addGroupTag(name = text, colour = colour)
             scope.launch { bottomSheetState.hide() }
+            text = ""
+            colour = Purple500
           }
         },
         modifier = Modifier

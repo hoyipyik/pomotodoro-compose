@@ -3,6 +3,7 @@ package com.example.pomotodoro_compose.viewModel
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.nfc.Tag
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,25 @@ class TasksViewModel : ViewModel() {
             _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
     }
 
+    fun upgradeGroupTag(type: String, id: String, value: String, name: String){
+        when(name){
+            "remove" -> {
+                val item = _tasksList.find { it.id == id }
+                item?.groupTag!!.remove(value)
+                _tasksList.find { it.id == id }?.groupTag = item.groupTag
+                _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+            }
+            "add" ->{
+                val item = _tasksList.find { it.id == id }
+                if(!item?.groupTag!!.contains(value)){
+                    item.groupTag.add(value)
+                    _tasksList.find { it.id == id }?.groupTag = item.groupTag
+                    _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                }
+            }
+        }
+    }
+
     fun upgradeTask(type: String, id: String, name: String, value: Any) {
         when (name) {
             "toToday" -> {
@@ -83,12 +103,13 @@ class TasksViewModel : ViewModel() {
         _changeFlag = true
     }
 
-    fun addTask(type: String, text: String, pomoNum: Int = 0) {
+    fun addTask(type: String, text: String, pomoNum: Int = 0, groupTag: MutableList<String> = mutableListOf("tag")) {
         val id: String = LocalDateTime.now().toString()
         val toToday: Boolean = type == "todo"
         val title: String = text
         val pomoTimes: Int = pomoNum
-        val item = TasksData(id = id, toToday = toToday, title = title, pomoTimes = pomoTimes)
+        val groupTags: MutableList<String> = groupTag
+        val item = TasksData(id = id, toToday = toToday, title = title, pomoTimes = pomoTimes, groupTag = groupTags)
         _tasksList.add(item)
         if (type == "todo") {
             _todoTasksList.add(item)

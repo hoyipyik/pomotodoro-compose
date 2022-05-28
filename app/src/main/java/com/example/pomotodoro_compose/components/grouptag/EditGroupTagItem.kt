@@ -40,6 +40,7 @@ fun EditGroupTagItem(
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()
+        editFlag = false
     }
 
     Box(
