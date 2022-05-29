@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.data
+package com.example.pomotodoro_compose.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -29,8 +29,7 @@ data class TasksData(
     @ColumnInfo(name = "pomo_times")
     var pomoTimes: Int = 0,
     @ColumnInfo(name = "group_tag")
-    var groupTag: MutableList<String> = mutableListOf("tag"),
-//    var subTasks: MutableList<SubTasksData>? = null
+    var groupTag: List<String> = listOf("tag"),
+//    var subTasks: List<SubTasksData>? = null
 )
-
 

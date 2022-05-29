@@ -23,10 +23,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -42,7 +42,7 @@ fun BoardTaskDetail(
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
-    var data: TasksData = tasksViewModel.getItem()
+    var data: TasksData by remember { mutableStateOf( tasksViewModel.getItem() ) }
     var priorityFlag by remember { mutableStateOf(data.toToday) }
     var isChecked by remember { mutableStateOf(data.isChecked) }
     var text by remember { mutableStateOf(data.title) }
@@ -54,16 +54,16 @@ fun BoardTaskDetail(
     var deleteFlag by remember { mutableStateOf(false) }
     var selectorFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem(), deleteFlag) {
-        data = tasksViewModel.getItem()
-        priorityFlag = data.toToday
-        isChecked = data.isChecked
-        text = data.title
-        editFlag = false
-        tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
-        deleteFlag = false
-        selectorFlag = false
-    }
+//    LaunchedEffect(tasksViewModel.getItem(), deleteFlag) {
+//        data = tasksViewModel.getItem()
+//        priorityFlag = data.toToday
+//        isChecked = data.isChecked
+//        text = data.title
+//        editFlag = false
+//        tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
+//        deleteFlag = false
+//        selectorFlag = false
+//    }
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
         focusManager.clearFocus()

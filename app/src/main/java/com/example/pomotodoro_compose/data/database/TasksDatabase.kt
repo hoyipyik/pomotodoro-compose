@@ -2,10 +2,11 @@ package com.example.pomotodoro_compose.data.database
 
 import android.content.Context
 import androidx.room.*
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.dao.TasksDao
 
 @Database(entities = [TasksData::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
+@TypeConverters(ListConverters::class)
 abstract class TasksDatabase : RoomDatabase() {
     abstract fun tasksDao(): TasksDao
 

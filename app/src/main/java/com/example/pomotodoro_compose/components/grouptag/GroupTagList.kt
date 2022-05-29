@@ -4,12 +4,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
-import com.example.pomotodoro_compose.components.grouptag.GroupTagItem
-import com.example.pomotodoro_compose.data.GroupTagListData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.entity.GroupTagData
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 
 
 @Composable
@@ -19,7 +17,7 @@ fun GroupTagList(
     groupTagViewModel: GroupTagViewModel
 ){
 
-    var list: MutableList<GroupTagListData> = groupTagViewModel.groupTagList
+    var list: List<GroupTagData> = groupTagViewModel.groupTagList
 
     LaunchedEffect(groupTagViewModel.changeFlag){
         list = groupTagViewModel.groupTagList

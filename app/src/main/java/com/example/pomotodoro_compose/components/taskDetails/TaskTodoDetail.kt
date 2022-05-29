@@ -19,9 +19,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -35,7 +35,7 @@ fun TodoTaskDetail(
     type: String,
     stateViewModel: StateViewModel
 ) {
-    var data: TasksData = tasksViewModel.getItem()
+    var data: TasksData by remember{ mutableStateOf(tasksViewModel.getItem() )}
 
     var mTime by remember { mutableStateOf(data.setTaskTime) }
     var pomoNum by remember { mutableStateOf(data.pomoTimes) }
@@ -46,18 +46,18 @@ fun TodoTaskDetail(
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem()) {
-//        if(tasksViewModel.getItem() != data)
-            data = tasksViewModel.getItem()
-        mTime = data.setTaskTime
-        pomoNum = data.pomoTimes
-        priorityFlag = data.priority
-        checked = data.repeat
-        reminder = data.isRemindered
-        text = data.title
-        editFlag = false
-        Log.i("/debugs", tasksViewModel.getItem().title)
-    }
+//    LaunchedEffect(tasksViewModel.getItem()) {
+////        if(tasksViewModel.getItem() != data)
+//            data = tasksViewModel.getItem()
+//        mTime = data.setTaskTime
+//        pomoNum = data.pomoTimes
+//        priorityFlag = data.priority
+//        checked = data.repeat
+//        reminder = data.isRemindered
+//        text = data.title
+//        editFlag = false
+//        Log.i("/debugs", tasksViewModel.getItem().title)
+//    }
 
     val focusManager = LocalFocusManager.current
     val focusRequester = FocusRequester()

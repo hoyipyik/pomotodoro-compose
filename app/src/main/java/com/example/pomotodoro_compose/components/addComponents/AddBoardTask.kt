@@ -25,9 +25,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.GroupTagListData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.entity.GroupTagData
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -45,15 +45,15 @@ fun AddBoardTask(
     var text by remember { mutableStateOf("") }
     val focusManager = LocalFocusManager.current
     var showSelector by remember { mutableStateOf(false) }
-    var selectorId = remember{mutableListOf<String>("tag")}
-    var selectorData = remember{ mutableListOf<GroupTagListData>().toMutableStateList()}
+    var selectorId = remember{ mutableListOf<String>("tag") }
+    var selectorData = remember{ mutableListOf<GroupTagData>().toMutableStateList()}
     // need optimism
     LaunchedEffect(!bottomSheetState.isVisible) {
         focusManager.clearFocus()
         selectorId = mutableListOf("tag")
         text = ""
         showSelector = false
-        selectorData = mutableListOf<GroupTagListData>().toMutableStateList()
+        selectorData = mutableListOf<GroupTagData>().toMutableStateList()
 //        Log.i("/debug", "hide")
     }
     Column(
@@ -97,7 +97,7 @@ fun AddBoardTask(
                         selectorId = mutableListOf("tag")
                         text = ""
                         showSelector = false
-                        selectorData = mutableListOf<GroupTagListData>().toMutableStateList()
+                        selectorData = mutableListOf<GroupTagData>().toMutableStateList()
                     }
                 },
                 modifier = Modifier

@@ -1,15 +1,16 @@
-package com.example.pomotodoro_compose.data.database
+package com.example.pomotodoro_compose.data.repository
 
 import androidx.lifecycle.LiveData
-import com.example.pomotodoro_compose.data.TasksData
-import java.net.IDN
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.dao.TasksDao
 
 class TasksRepository(private val tasksDao: TasksDao) {
-    val fullTasksData: LiveData<MutableList<TasksData>> = tasksDao.getAllTasks()
+    val fullTasksData: LiveData<List<TasksData>> = tasksDao.getAllTasks()
+    val todoTasksData: LiveData<List<TasksData>> = tasksDao.getTodoData()
     suspend fun addTask(task: TasksData) {
         tasksDao.insertTask(task)
     }
-    fun getTaskById(id: String): TasksData{
+    fun getTaskById(id: String): TasksData {
         return tasksDao.getTaskById(id = id)
     }
 

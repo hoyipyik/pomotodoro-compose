@@ -6,16 +6,17 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
-import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -28,27 +29,29 @@ fun Board(
     groupTagViewModel: GroupTagViewModel
 ) {
     val type: String = "board"
-    var list = tasksViewModel.boardTasksList
+    val list by tasksViewModel.boardTasksList.observeAsState()
     val filteredList: MutableList<TasksData> = mutableListOf()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
         LaunchedEffect(tasksViewModel.changeTagListFlag) {
-            list = tasksViewModel.boardTasksList
+//            list = tasksViewModel.boardTasksList.observeAsState().value
             tasksViewModel.restoreChangeTagListFlag()
         }
-        list.forEachIndexed{ index, data ->
+        list?.forEachIndexed{ index, data ->
             for (item in data.groupTag){
                 if(item == tasksViewModel.selectedGroupTag){
-                    filteredList.add(list[index])
+                    filteredList.add(list!![index])
                 }
             }
         }
         GroupTagListContainer(groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
-        if(list.size >= 0)
-            TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
-        else
-            BlankContainer()
+        if (list != null) {
+            if(list!!.size >= 0)
+                TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
+            else
+                BlankContainer()
+        }
     }
 }

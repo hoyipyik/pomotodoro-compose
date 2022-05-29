@@ -20,22 +20,22 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.components.TaskItem
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.ui.theme.Purple200
 import com.example.pomotodoro_compose.ui.theme.Teal200
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TasksContainer(
-    list: MutableList<TasksData>,
+    list: List<TasksData>,
     type: String,
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-      
+
     stateViewModel: StateViewModel
 ) {
 
@@ -49,18 +49,18 @@ fun TasksContainer(
                 LaunchedEffect(Unit) {
                     state.reset()
                 }
-                if(type == "todo"){
-                    list.remove(item)
-                }
+//                if(type == "todo"){
+//                    list.remove(item)
+//                }
             }
             if (state.isDismissed(DismissDirection.StartToEnd)) {
                 tasksViewModel.upgradeTask(type = type, id = item.id, value = !item.toToday, name = "toToday")
                 LaunchedEffect(Unit) {
                     state.reset()
                 }
-                if(type == "todo"){
-                    list.remove(item)
-                }
+//                if(type == "todo"){
+//                    list.remove(item)
+//                }
             }
             SwipeToDismiss(
                 state = state,

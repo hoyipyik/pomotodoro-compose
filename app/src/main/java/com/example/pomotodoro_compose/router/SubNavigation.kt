@@ -3,14 +3,16 @@ package com.example.pomotodoro_compose.router
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.pages.TimeLine
 import com.example.pomotodoro_compose.pages.Today
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -23,9 +25,9 @@ fun SubNavigation(
     scope: CoroutineScope,
     stateViewModel: StateViewModel,
 ) {
-    val list = tasksViewModel.todoTasksList
+    val list by tasksViewModel.todoTasksList.observeAsState()
     NavHost(navController = navController as NavHostController, startDestination = "today") {
-        composable("timeline") { TimeLine(type = type, list = list) }
-        composable("today") { Today(type = type, list = list, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel,state = state, scope = scope) }
+        composable("timeline") { list?.let { it1 -> TimeLine(type = type, list = it1) } }
+        composable("today") { list?.let { it1 -> Today(type = type, list = it1, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel,state = state, scope = scope) } }
     }
 }
