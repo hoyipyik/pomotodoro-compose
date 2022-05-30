@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -59,7 +60,7 @@ fun EditGroupTagItem(
                     Modifier
                         .size(20.dp)
                         .clip(CircleShape)
-                        .background(item.colour)
+                        .background(Color(item.colour))
                 )
             }
             if (editFlag) {

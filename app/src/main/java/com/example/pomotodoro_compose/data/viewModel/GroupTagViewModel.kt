@@ -1,19 +1,81 @@
 package com.example.pomotodoro_compose.data.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.pomotodoro_compose.data.api.GroupTagApi
+import com.example.pomotodoro_compose.data.api.GroupTagApiService
 import com.example.pomotodoro_compose.data.entity.GroupTagListData
-import com.example.pomotodoro_compose.data.getGroupTagList
+import com.example.pomotodoro_compose.data.entity.ToolData
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
 import java.time.LocalDateTime
 
 class GroupTagViewModel: ViewModel() {
-    private val _groupTagList = getGroupTagList().toMutableStateList()
+
+    private var api: GroupTagApiService = GroupTagApi.retrofitService
+    private lateinit var data: MutableList<GroupTagListData>
+    private lateinit var res: Response<ResponseBody>
+    private val _groupTagList = mutableListOf<GroupTagListData>().toMutableStateList()
+//    private val _groupTagList = getGroupTagList().toMutableStateList()
+
+    init {
+        getAllGroupTagData()
+    }
+    private fun getAllGroupTagData(){
+        viewModelScope.launch {
+            try {
+                data = api.getGroupTag()
+                data.forEachIndexed { _, item ->
+                    _groupTagList.add(item)
+                }
+                Log.i("/fetch_group_tag_list", data.toString())
+            } catch (e: Exception){
+                Log.e("/fetch_group_tag_list_err", e.toString())
+            }
+        }
+    }
+    private fun addGroupTagData(item: GroupTagListData) {
+        viewModelScope.launch {
+            try {
+                res = api.addGroupTag(item)
+                Log.i("/fetch_add_group_tag", res.toString())
+            } catch (e: Exception) {
+                Log.e("/fetch_add_group_tag_err", e.toString())
+            }
+        }
+    }
+    private fun updateGroupTagData(item: GroupTagListData) {
+        viewModelScope.launch {
+            try {
+                res = api.updateGroupTag(item)
+                Log.i("/fetch_update_group_tag", res.toString())
+            } catch (e: Exception) {
+                Log.e("/fetch_update_group_tag_err", e.toString())
+            }
+        }
+    }
+
+    private fun deleteGroupTagData(item: String) {
+        viewModelScope.launch {
+            try {
+                res = api.deleteGroupTag(ToolData(id = item))
+                Log.i("/fetch_delete_group_tag", res.toString())
+            } catch (e: Exception) {
+                Log.e("/fetch_delete_group_tag_err", e.toString())
+            }
+        }
+    }
+
     val groupTagList:MutableList<GroupTagListData>
-        get() = _groupTagList
+        get() = _groupTagList.toMutableStateList()
 
     private var _changeFlag by mutableStateOf(false)
     val changeFlag:Boolean
@@ -24,8 +86,9 @@ class GroupTagViewModel: ViewModel() {
     }
 
     fun addGroupTag(name: String, colour: Color){
-        val item = GroupTagListData(groupTagName = name, colour = colour, tagId = LocalDateTime.now().toString())
+        val item = GroupTagListData(groupTagName = name, colour = colour.toArgb())
         _groupTagList.add(item)
+        addGroupTagData(item)
     }
 
     fun getMatchedGroupTagData(list: MutableList<String>): MutableList<GroupTagListData>{
@@ -43,10 +106,14 @@ class GroupTagViewModel: ViewModel() {
 
     fun deleteGroupTag(tagId : String){
         _groupTagList.removeAll{ it.tagId == tagId}
+        deleteGroupTagData(tagId)
     }
 
     fun editGroupTag(tagId: String, value: String){
         _groupTagList.find { it.tagId == tagId }?.groupTagName = value
         _changeFlag = true
+        val item: GroupTagListData = _groupTagList.find { it.tagId == tagId }!!
+        item.groupTagName = value
+        updateGroupTagData(item)
     }
 }

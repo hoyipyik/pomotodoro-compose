@@ -1,6 +1,7 @@
 package com.example.pomotodoro_compose.data
 
 import android.util.Log
+import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.LiveData
 import com.example.pomotodoro_compose.data.entity.GroupTagListData
 import com.example.pomotodoro_compose.data.entity.TasksData
@@ -38,9 +39,9 @@ fun getTodoTasksList(list:MutableList<TasksData>): MutableList<TasksData>{
 
 fun getGroupTagList(): MutableList<GroupTagListData> {
     return mutableListOf(
-        GroupTagListData(groupTagName = "All", colour = Purple500, tagId = "tag"),
-        GroupTagListData(groupTagName = "Android", colour = Purple700, tagId = "tag3"),
-        GroupTagListData(groupTagName = "Python", colour = Bluelight, tagId = "tag2"),
+        GroupTagListData(groupTagName = "All", colour = Purple500.toArgb(), tagId = "tag"),
+        GroupTagListData(groupTagName = "Android", colour = Purple700.toArgb(), tagId = "tag3"),
+        GroupTagListData(groupTagName = "Python", colour = Bluelight.toArgb(), tagId = "tag2"),
 //        GroupTagListData(groupTagName = "Life", colour = Color.Yellow),
 //        GroupTagListData(groupTagName = "Open Flow", colour = Color.Magenta),
     )

@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.example.pomotodoro_compose.data.entity.GroupTagListData
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
@@ -26,7 +27,7 @@ fun GroupTagList(
     LazyRow{
 //        item { GroupTagItem(name = "All", colour = Color.Blue) }
         items(list){ item ->
-            GroupTagItem(name = item.groupTagName, id = item.tagId, colour = item.colour, tasksViewModel = tasksViewModel)
+            GroupTagItem(name = item.groupTagName, id = item.tagId, colour = Color(item.colour), tasksViewModel = tasksViewModel)
         }
     }
 }

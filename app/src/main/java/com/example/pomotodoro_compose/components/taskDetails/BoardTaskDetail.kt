@@ -54,7 +54,7 @@ fun BoardTaskDetail(
     var deleteFlag by remember { mutableStateOf(false) }
     var selectorFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem(), deleteFlag) {
+    LaunchedEffect(tasksViewModel.getItem(), deleteFlag, tasksViewModel.changeFlag) {
         data = tasksViewModel.getItem()
         priorityFlag = data.toToday
         isChecked = data.isChecked
@@ -63,6 +63,7 @@ fun BoardTaskDetail(
         tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
         deleteFlag = false
         selectorFlag = false
+        tasksViewModel.restoreChangeTagListFlag()
     }
 
     LaunchedEffect(bottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
@@ -234,11 +235,11 @@ fun BoardTaskDetail(
                                 deleteFlag = true
                             },
                             modifier = Modifier.padding(end = 5.dp),
-                            border = BorderStroke(2.dp, color = item.colour),
+                            border = BorderStroke(2.dp, color = Color(item.colour)),
                         ) {
                             Text(
                                 text = item.groupTagName,
-                                color = item.colour,
+                                color = Color(item.colour),
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -256,11 +257,11 @@ fun BoardTaskDetail(
                                 deleteFlag = true
                             },
                             modifier = Modifier.padding(end = 5.dp),
-                            border = BorderStroke(2.dp, color = item.colour),
+                            border = BorderStroke(2.dp, color = Color(item.colour)),
                         ) {
                             Text(
                                 text = item.groupTagName,
-                                color = item.colour,
+                                color = Color(item.colour),
                                 textAlign = TextAlign.Center
                             )
                         }

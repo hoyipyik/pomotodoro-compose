@@ -46,9 +46,9 @@ fun TodoTaskDetail(
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem()) {
+    LaunchedEffect(tasksViewModel.getItem(), tasksViewModel.changeFlag) {
 //        if(tasksViewModel.getItem() != data)
-            data = tasksViewModel.getItem()
+        data = tasksViewModel.getItem()
         mTime = data.setTaskTime
         pomoNum = data.pomoTimes
         priorityFlag = data.priority
@@ -57,6 +57,7 @@ fun TodoTaskDetail(
         text = data.title
         editFlag = false
         Log.i("/debugs", tasksViewModel.getItem().title)
+        tasksViewModel.restoreChangeTagListFlag()
     }
 
     val focusManager = LocalFocusManager.current

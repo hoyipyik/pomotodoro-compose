@@ -173,11 +173,11 @@ fun AddBoardTask(
                                 }
                             },
                             modifier = Modifier.padding(end = 5.dp),
-                            border = BorderStroke(2.dp, color = item.colour),
+                            border = BorderStroke(2.dp, color = Color(item.colour)),
                         ) {
                             Text(
                                 text = item.groupTagName,
-                                color = item.colour,
+                                color = Color(item.colour),
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -190,11 +190,11 @@ fun AddBoardTask(
                                 selectorId.remove(item.tagId)
                                       },
                             modifier = Modifier.padding(end = 5.dp),
-                            border = BorderStroke(2.dp, color = item.colour),
+                            border = BorderStroke(2.dp, color = Color(item.colour)),
                         ) {
                             Text(
                                 text = item.groupTagName,
-                                color = item.colour,
+                                color = Color(item.colour),
                                 textAlign = TextAlign.Center
                             )
                         }
