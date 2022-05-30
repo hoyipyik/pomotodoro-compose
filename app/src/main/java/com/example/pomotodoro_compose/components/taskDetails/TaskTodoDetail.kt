@@ -46,17 +46,21 @@ fun TodoTaskDetail(
     var text by remember { mutableStateOf(data.title) }
     var editFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem(), tasksViewModel.changeFlag) {
+    LaunchedEffect(tasksViewModel.getItem()) {
 //        if(tasksViewModel.getItem() != data)
         data = tasksViewModel.getItem()
         mTime = data.setTaskTime
         pomoNum = data.pomoTimes
-        priorityFlag = data.priority
         checked = data.repeat
         reminder = data.isRemindered
         text = data.title
         editFlag = false
+        priorityFlag = data.priority
         Log.i("/debugs", tasksViewModel.getItem().title)
+    }
+
+    LaunchedEffect(tasksViewModel.changeFlag){
+        priorityFlag = data.priority
         tasksViewModel.restoreChangeTagListFlag()
     }
 

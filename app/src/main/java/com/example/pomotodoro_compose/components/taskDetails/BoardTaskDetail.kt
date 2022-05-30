@@ -54,15 +54,19 @@ fun BoardTaskDetail(
     var deleteFlag by remember { mutableStateOf(false) }
     var selectorFlag by remember { mutableStateOf(false) }
 
-    LaunchedEffect(tasksViewModel.getItem(), deleteFlag, tasksViewModel.changeFlag) {
+    LaunchedEffect(tasksViewModel.getItem(), deleteFlag) {
         data = tasksViewModel.getItem()
-        priorityFlag = data.toToday
-        isChecked = data.isChecked
         text = data.title
         editFlag = false
+        priorityFlag = data.toToday
         tagData = groupTagViewModel.getMatchedGroupTagData(data.groupTag)
         deleteFlag = false
+        isChecked = data.isChecked
         selectorFlag = false
+    }
+
+    LaunchedEffect(tasksViewModel.changeFlag){
+        isChecked = data.isChecked
         tasksViewModel.restoreChangeTagListFlag()
     }
 
