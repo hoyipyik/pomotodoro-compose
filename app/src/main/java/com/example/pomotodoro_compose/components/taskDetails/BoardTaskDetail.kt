@@ -24,9 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

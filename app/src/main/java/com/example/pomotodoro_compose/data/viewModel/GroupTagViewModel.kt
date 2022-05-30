@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.viewModel
+package com.example.pomotodoro_compose.data.viewModel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

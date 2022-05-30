@@ -7,8 +7,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 

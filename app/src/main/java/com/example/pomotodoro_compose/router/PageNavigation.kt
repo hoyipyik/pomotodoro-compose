@@ -10,9 +10,9 @@ import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.pages.Account
 import com.example.pomotodoro_compose.pages.Board
 import com.example.pomotodoro_compose.pages.Todo
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)

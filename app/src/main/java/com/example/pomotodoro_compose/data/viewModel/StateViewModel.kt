@@ -1,14 +1,11 @@
-package com.example.pomotodoro_compose.viewModel
+package com.example.pomotodoro_compose.data.viewModel
 
-import android.util.Log
-import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.BottomNavigationData

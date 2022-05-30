@@ -3,7 +3,6 @@ package  com.example.pomotodoro_compose
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -11,9 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,14 +19,12 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.container.BottomSheetContainer
 import com.example.pomotodoro_compose.router.PageNavigation
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModelFactory
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModelFactory
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

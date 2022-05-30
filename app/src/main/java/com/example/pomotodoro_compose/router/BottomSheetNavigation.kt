@@ -3,17 +3,14 @@ package com.example.pomotodoro_compose.router
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.example.pomotodoro_compose.components.addComponents.AddGroupTag
 import com.example.pomotodoro_compose.components.addComponents.AddTask
-import com.example.pomotodoro_compose.components.TaskDetail
+import com.example.pomotodoro_compose.components.taskDetails.TaskDetail
 import com.example.pomotodoro_compose.components.pomodoro.Pomodoro
 import com.example.pomotodoro_compose.container.EditGroupTagContainer
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)

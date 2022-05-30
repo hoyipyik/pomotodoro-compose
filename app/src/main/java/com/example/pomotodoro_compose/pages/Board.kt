@@ -8,14 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
 import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.viewModel.GroupTagViewModel
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)

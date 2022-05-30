@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.viewModel
+package com.example.pomotodoro_compose.data.viewModel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

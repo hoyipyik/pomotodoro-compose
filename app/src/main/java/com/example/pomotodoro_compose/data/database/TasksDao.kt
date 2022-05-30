@@ -7,9 +7,9 @@ import com.example.pomotodoro_compose.data.TasksData
 @Dao
 interface TasksDao {
    @Query("SELECT * FROM tasks_table")
-   fun getAllTasks(): LiveData<MutableList<TasksData>>
+   fun getAllTasks(): LiveData<List<TasksData>>
 
-   @Insert
+    @Insert
    suspend fun insertTask(task: TasksData)
 
    @Query("SELECT * FROM tasks_table WHERE id = :id")

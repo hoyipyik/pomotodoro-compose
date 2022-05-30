@@ -23,8 +23,8 @@ import com.example.pomotodoro_compose.components.TaskItem
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.ui.theme.Purple200
 import com.example.pomotodoro_compose.ui.theme.Teal200
-import com.example.pomotodoro_compose.viewModel.StateViewModel
-import com.example.pomotodoro_compose.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.data.viewModel.StateViewModel
+import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)

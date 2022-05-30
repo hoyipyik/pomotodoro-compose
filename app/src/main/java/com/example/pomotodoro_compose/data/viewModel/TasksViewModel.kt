@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.viewModel
+package com.example.pomotodoro_compose.data.viewModel
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -8,27 +8,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.TasksData
 import com.example.pomotodoro_compose.data.database.TasksDatabase
 import com.example.pomotodoro_compose.data.database.TasksRepository
-import com.example.pomotodoro_compose.data.getBoardTasksList
+import com.example.pomotodoro_compose.data.getRoomDatebase
 import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.data.getTodoTasksList
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 class TasksViewModel(application: Application) : ViewModel() {
-    private var _holderList: LiveData<MutableList<TasksData>>
-    private var repository: TasksRepository
-
-    init {
-        val tasksDao = TasksDatabase.getInstance(application).tasksDao()
-        repository = TasksRepository(tasksDao)
-        _holderList = repository.fullTasksData
-    }
-
 //    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
     private var _tasksList = getTasksList().toMutableStateList()
     private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
