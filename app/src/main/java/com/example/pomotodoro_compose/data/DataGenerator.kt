@@ -1,10 +1,9 @@
 package com.example.pomotodoro_compose.data
 
-import android.app.Application
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.pomotodoro_compose.data.database.TasksDatabase
-import com.example.pomotodoro_compose.data.database.TasksRepository
+import com.example.pomotodoro_compose.data.entity.GroupTagListData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.ui.theme.Bluelight
 import com.example.pomotodoro_compose.ui.theme.Purple500
 import com.example.pomotodoro_compose.ui.theme.Purple700
@@ -48,8 +47,8 @@ fun getGroupTagList(): MutableList<GroupTagListData> {
 
 }
 
-fun getRoomDatebase(application: Application): MutableList<TasksData> {
-    val tasksDao = TasksDatabase.getInstance(application).tasksDao()
-    val repository = TasksRepository(tasksDao)
-    return repository.fullTasksData.value as MutableList<TasksData>
-}
+//fun getRoomDatebase(application: Application): MutableList<TasksData> {
+//    val tasksDao = TasksDatabase.getInstance(application).tasksDao()
+//    val repository = TasksRepository(tasksDao)
+//    return repository.fullTasksData.value as MutableList<TasksData>
+//}

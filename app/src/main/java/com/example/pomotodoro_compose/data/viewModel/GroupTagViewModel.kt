@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
-import com.example.pomotodoro_compose.data.GroupTagListData
+import com.example.pomotodoro_compose.data.entity.GroupTagListData
 import com.example.pomotodoro_compose.data.getGroupTagList
 import java.time.LocalDateTime
 

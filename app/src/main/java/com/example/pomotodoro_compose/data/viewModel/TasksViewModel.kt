@@ -4,30 +4,91 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
-import com.example.pomotodoro_compose.data.TasksData
-import com.example.pomotodoro_compose.data.database.TasksDatabase
-import com.example.pomotodoro_compose.data.database.TasksRepository
-import com.example.pomotodoro_compose.data.getRoomDatebase
-import com.example.pomotodoro_compose.data.getTasksList
+import androidx.lifecycle.viewModelScope
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.getTodoTasksList
+import com.example.pomotodoro_compose.data.api.TasksApi
+import com.example.pomotodoro_compose.data.api.TasksApiService
+import com.example.pomotodoro_compose.data.entity.ToolData
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
+import retrofit2.Response
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 class TasksViewModel(application: Application) : ViewModel() {
 //    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
-    private var _tasksList = getTasksList().toMutableStateList()
-    private var _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+
+    private val api: TasksApiService = TasksApi.retrofitService
+    private lateinit var data: MutableList<TasksData>
+    private lateinit var res: Response<ResponseBody>
+    private var _tasksList = mutableListOf<TasksData>().toMutableStateList()
+    private var _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+
+    init {
+        getAllData()
+    }
+
+    private fun getAllData(){
+        viewModelScope.launch {
+            try {
+                data = api.getFullTasksData()
+                data.forEachIndexed{ _, item ->
+                    _tasksList.add(item)
+                    if (item.toToday){
+                        _todoTasksList.add(item)
+                    }
+                }
+                Log.i("/fetchingdata", data.toString())
+
+            }catch (e: Exception){
+                Log.e("/fetchingdata_error", e.toString())
+            }
+        }
+    }
+    private fun addData(task: TasksData){
+        viewModelScope.launch{
+            try {
+                res = api.addTask(task)
+                Log.i("/fetchaddData", res.toString())
+            }catch (e: Exception){
+                Log.e("/fetchaddData_error", e.toString())
+            }
+        }
+    }
+    private fun deleteData(id: String){
+        viewModelScope.launch{
+            try {
+                res = api.deleteTask(ToolData(id))
+                Log.i("/fetchdeleteData", res.toString())
+            }catch (e: Exception){
+                Log.e("/fetchdeleteData_error", e.toString())
+            }
+        }
+    }
+    private fun updateData(task: TasksData, id: String){
+        viewModelScope.launch{
+            try {
+                res = api.upgradeTask(task)
+                Log.i("/fetchupdateData", res.toString())
+            }catch (e: Exception){
+                Log.e("/fetchupdateData_error", e.toString())
+            }
+        }
+    }
 
     val todoTasksList: MutableList<TasksData>
-        get() = _todoTasksList
+        get() = _todoTasksList.toMutableStateList()
 
     val boardTasksList: MutableList<TasksData>
-        get() = _tasksList
+        get() = _tasksList.toMutableStateList()
 
     private var _selectedId: String by mutableStateOf("")
     val selectedId
@@ -51,6 +112,7 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     fun deleteTask(type: String, id: String) {
         _tasksList.removeAll { it.id == id }
+        deleteData(id)
         if (type == "todo")
             _todoTasksList.removeAll { it.id == id }
         else
@@ -62,6 +124,7 @@ class TasksViewModel(application: Application) : ViewModel() {
             "remove" -> {
                 val item = _tasksList.find { it.id == id }
                 item?.groupTag!!.remove(value)
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.groupTag = item.groupTag
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
@@ -69,6 +132,7 @@ class TasksViewModel(application: Application) : ViewModel() {
                 val item = _tasksList.find { it.id == id }
                 if (!item?.groupTag!!.contains(value)) {
                     item.groupTag.add(value)
+                    updateData(item, id)
                     _tasksList.find { it.id == id }?.groupTag = item.groupTag
                     _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
                 }
@@ -78,36 +142,53 @@ class TasksViewModel(application: Application) : ViewModel() {
     }
 
     fun upgradeTask(type: String, id: String, name: String, value: Any?) {
+        val item = _tasksList.find { it.id == id }
         when (name) {
             "toToday" -> {
+                item!!.toToday = value as Boolean
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.toToday = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "title" -> {
+                item!!.title = value as String
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.title = value as String }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "isChecked" -> {
+                item!!.isChecked = value as Boolean
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.isChecked = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "priority" -> {
+                item!!.priority = value as Boolean
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.priority = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "repeat" -> {
+                item!!.repeat = value as Boolean
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.repeat = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "setTaskTime" -> {
+                item!!.setTaskTime = value as String
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.setTaskTime = value as String }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "pomoTimes" -> {
+                item!!.pomoTimes = value as Int
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.pomoTimes = value as Int }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "isRemindered" -> {
+                item!!.isRemindered = value as Boolean
+                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.isRemindered = value as Boolean }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
@@ -134,6 +215,7 @@ class TasksViewModel(application: Application) : ViewModel() {
             groupTag = groupTags
         )
         _tasksList.add(item)
+        addData(item)
         if (type == "todo") {
             _todoTasksList.add(item)
         }

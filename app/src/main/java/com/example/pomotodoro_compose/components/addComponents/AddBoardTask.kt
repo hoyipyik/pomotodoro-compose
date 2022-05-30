@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.GroupTagListData
+import com.example.pomotodoro_compose.data.entity.GroupTagListData
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -200,18 +200,6 @@ fun AddBoardTask(
                         }
                     }
                 }
-//                items(tagData) { item ->
-//                    OutlinedButton(
-//                        onClick = {},
-//                        modifier = Modifier.padding(end = 5.dp),
-//                        border = BorderStroke(2.dp, color = item.colour),
-////        colors = ButtonDefaults.buttonColors(backgroundColor = colour)
-//                    ) {
-//                        Text(text = item.groupTagName, color = item.colour, textAlign = TextAlign.Center)
-//                        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.height(1.dp).width(1.dp)){}
-////                                Icon(imageVector = Icons.Filled.CancelPresentation, contentDescription = null, modifier = Modifier.height(40.dp).width(35.dp))
-//                    }
-//                }
             }
         }
     }

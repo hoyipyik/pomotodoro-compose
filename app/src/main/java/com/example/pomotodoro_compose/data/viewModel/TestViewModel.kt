@@ -3,20 +3,15 @@ package com.example.pomotodoro_compose.data.viewModel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pomotodoro_compose.data.online.TasksApi
-import com.example.pomotodoro_compose.data.online.TasksApiService
-import com.example.pomotodoro_compose.data.online.TestItem
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.api.TasksApi
+import com.example.pomotodoro_compose.data.api.TasksApiService
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Response
 import java.lang.Exception
 
 class TestViewModel: ViewModel() {
     private val api: TasksApiService = TasksApi.retrofitService
-    lateinit var data: List<TestItem>
+    lateinit var data: List<TasksData>
     init {
         fetchingData()
     }
@@ -24,7 +19,8 @@ class TestViewModel: ViewModel() {
     private fun fetchingData(){
         viewModelScope.launch {
             try {
-                data = api.getTestMessage()
+                data = api.getFullTasksData()
+
                 Log.i("/fetchingdata", data.toString())
 
             }catch (e: Exception){

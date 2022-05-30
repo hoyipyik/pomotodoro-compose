@@ -1,4 +1,6 @@
-package com.example.pomotodoro_compose.data
+package com.example.pomotodoro_compose.legacy
+
+import com.example.pomotodoro_compose.legacy.SubTasksData
 
 data class TasksData1(
     val id: String = "2019210737",

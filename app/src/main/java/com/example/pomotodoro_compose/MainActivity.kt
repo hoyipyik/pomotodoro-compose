@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
 
             PomotodorocomposeTheme {
                 App()
-                val testViewModel: TestViewModel = viewModel()
+//                val testViewModel: TestViewModel = viewModel()
 //                Demo()
             }
         }

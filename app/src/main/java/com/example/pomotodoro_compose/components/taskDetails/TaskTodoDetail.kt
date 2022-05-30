@@ -19,7 +19,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope

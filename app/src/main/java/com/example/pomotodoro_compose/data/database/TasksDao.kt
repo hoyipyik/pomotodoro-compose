@@ -2,7 +2,7 @@ package com.example.pomotodoro_compose.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 
 @Dao
 interface TasksDao {
@@ -13,7 +13,7 @@ interface TasksDao {
    suspend fun insertTask(task: TasksData)
 
    @Query("SELECT * FROM tasks_table WHERE id = :id")
-   fun getTaskById(id: String): TasksData
+   fun getTaskById( id: String): TasksData
    @Update
    suspend fun updateTask(task: TasksData)
 

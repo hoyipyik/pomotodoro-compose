@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +29,7 @@ fun TaskItem(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     state: ModalBottomSheetState,
-      
+
     stateViewModel: StateViewModel,
 ) {
     val id: String = item.id

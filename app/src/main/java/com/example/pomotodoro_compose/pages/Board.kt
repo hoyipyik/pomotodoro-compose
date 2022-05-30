@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel

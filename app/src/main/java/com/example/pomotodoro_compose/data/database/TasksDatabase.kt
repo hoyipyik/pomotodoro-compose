@@ -2,7 +2,7 @@ package com.example.pomotodoro_compose.data.database
 
 import android.content.Context
 import androidx.room.*
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 
 @Database(entities = [TasksData::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)

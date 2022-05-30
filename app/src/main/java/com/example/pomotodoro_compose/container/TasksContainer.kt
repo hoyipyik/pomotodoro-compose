@@ -20,7 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.components.TaskItem
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.ui.theme.Purple200
 import com.example.pomotodoro_compose.ui.theme.Teal200
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
@@ -35,7 +35,7 @@ fun TasksContainer(
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-      
+
     stateViewModel: StateViewModel
 ) {
 

@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.pomotodoro_compose.data.BottomNavigationData
+import com.example.pomotodoro_compose.data.entity.BottomNavigationData
 
 class StateViewModel : ViewModel() {
     private var _topBarTitle by mutableStateOf("Board")

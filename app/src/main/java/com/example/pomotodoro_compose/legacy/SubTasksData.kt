@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.data
+package com.example.pomotodoro_compose.legacy
 
 data class SubTasksData(
     val id: String,

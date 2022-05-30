@@ -1,14 +1,14 @@
 package com.example.pomotodoro_compose.data.database
 
 import androidx.lifecycle.LiveData
-import com.example.pomotodoro_compose.data.TasksData
+import com.example.pomotodoro_compose.data.entity.TasksData
 
 class TasksRepository(private val tasksDao: TasksDao) {
     val fullTasksData: LiveData<List<TasksData>> = tasksDao.getAllTasks()
     suspend fun addTask(task: TasksData) {
         tasksDao.insertTask(task)
     }
-    fun getTaskById(id: String): TasksData{
+    fun getTaskById(id: String): TasksData {
         return tasksDao.getTaskById(id = id)
     }
 

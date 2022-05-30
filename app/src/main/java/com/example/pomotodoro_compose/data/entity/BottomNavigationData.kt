@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.data
+package com.example.pomotodoro_compose.data.entity
 
 import androidx.compose.ui.graphics.vector.ImageVector
 
