@@ -1,6 +1,13 @@
 package com.example.pomotodoro_compose.pages.account
 
 
+import android.app.Activity.RESULT_OK
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
@@ -10,8 +17,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
@@ -23,6 +32,9 @@ fun AccountInfoPage(
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
+    val context = LocalContext.current
+    val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse("http://123.56.107.143:4000/")) }
+
     Column(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -51,7 +63,7 @@ fun AccountInfoPage(
                         contentDescription = null,
                         tint = MaterialTheme.colors.primary
                     )
-                    Text(text = stateViewModel.accountCity, modifier = Modifier.padding(2.dp))
+                    Text(text = "Online", modifier = Modifier.padding(2.dp))
                 }
                 Spacer(modifier = Modifier.fillMaxWidth(0.2f))
                 Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.width(140.dp)) {
@@ -79,12 +91,15 @@ fun AccountInfoPage(
             Row(
                 modifier = Modifier
                     .padding(vertical = 11.dp)
-                    .height(30.dp),
+                    .height(30.dp)
+                    .clickable {
+                        context.startActivity(intent)
+                    },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(Icons.Filled.LocationOn, contentDescription = null)
+                Icon(Icons.Filled.Web, contentDescription = null)
                 Spacer(modifier = Modifier.fillMaxWidth(0.05f))
-                Text(text = "Get Location")
+                Text(text = "Use Pomotodoro Online")
                 Spacer(modifier = Modifier.fillMaxWidth(0.7f))
             }
             Row(

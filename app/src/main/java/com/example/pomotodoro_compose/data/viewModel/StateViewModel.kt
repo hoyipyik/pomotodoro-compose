@@ -63,7 +63,7 @@ class StateViewModel : ViewModel() {
         _accountInputText = ""
         _passwdInputText = ""
     }
-    private var _accountCity by mutableStateOf("Waterloo")
-    val accountCity: String
-        get() = _accountCity
+//    private var _accountCity by mutableStateOf("Waterloo")
+//    val accountCity: String
+//        get() = _accountCity
 }
