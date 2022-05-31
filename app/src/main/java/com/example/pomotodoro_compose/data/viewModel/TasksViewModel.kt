@@ -62,8 +62,9 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private fun changeLogFailFlag(flag: Boolean){
+    fun changeLogFailFlag(flag: Boolean){
         _logFailFlag = flag
+        Log.i("/fetch_fail_log_update", _logFailFlag.toString())
     }
     fun deleteAccount(id: String){
         viewModelScope.launch {
@@ -308,41 +309,13 @@ class TasksViewModel(application: Application) : ViewModel() {
                 if(msg.code == 200){
                     changeAccountId(id)
                     getAllData(id)
+                }else{
+                    changeLogFailFlag(true)
                 }
             } catch (e: Exception) {
                 Log.e("/fetch_account_log_reply_error", e.toString())
-                changeLogFailFlag(true)
             }
         }
-    }
-
-
-    private fun createNotificationChannel(context: Context, head: String) {
-        val name = "Task notification"
-        val descriptionText = "Task: $head. \n Time to work :)"
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel("Channel_id", name, importance).apply {
-            description = descriptionText
-        }
-
-        val notificationManager: NotificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
-    }
-
-    fun notificationJudger(context: Context, currentTime: LocalTime) {
-        createNotificationChannel(context = context, head = "Hi")
-//        _tasksList.forEachIndexed{ _, data ->
-//            if(data.isRemindered){
-//                val newFormatedTime: LocalTime = LocalTime.parse(data.setTaskTime, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
-//                val timeMinutes = newFormatedTime.hour * 60 + newFormatedTime.minute
-//                val currentMinutes = currentTime.hour * 60 + currentTime.minute
-//                Log.i("/notitester", newFormatedTime.toString() + data.setTaskTime)
-//                if(timeMinutes -5 >= currentMinutes){
-//                    createNotificationChannel(context = context, title = data.title)
-//                }
-//            }
-//        }
     }
 }
 

@@ -164,6 +164,7 @@ fun TopBar(
 ) {
     val title = stateViewModel.topBarTitle
     var expanded by remember { mutableStateOf(false) }
+
     val intent = Intent(Intent.ACTION_SENDTO)
     intent.data = Uri.parse("mailto:") // only email apps should handle this
     intent.putExtra(Intent.EXTRA_EMAIL, "hoyipyik@proton.me")
@@ -174,7 +175,6 @@ fun TopBar(
         putExtra(Intent.EXTRA_TEXT,
             "I am using pomotodoro to manage my work, you can try it too. :) \n" +
                     "Here is the download link: \n"+ "https://developer.android.com/training/sharing/")
-
         // (Optional) Here we're setting the title of the content
         putExtra(Intent.EXTRA_TITLE, "Try Pomotodoro here")
         type = "text/plain"
@@ -195,7 +195,7 @@ fun TopBar(
             when(currentRoute){
                 "todo" -> {
                     IconButton(onClick = {
-
+                        startActivity(context, shareIntent, null)
                     }) {
                         Icon(Icons.Filled.Share, contentDescription = null)
                     }

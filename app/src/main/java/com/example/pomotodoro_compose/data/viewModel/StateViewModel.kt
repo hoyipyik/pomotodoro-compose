@@ -63,6 +63,9 @@ class StateViewModel : ViewModel() {
         _accountInputText = ""
         _passwdInputText = ""
     }
+
+    val channelId = "pomotodoro"
+    val notificationId = 0
 //    private var _accountCity by mutableStateOf("Waterloo")
 //    val accountCity: String
 //        get() = _accountCity

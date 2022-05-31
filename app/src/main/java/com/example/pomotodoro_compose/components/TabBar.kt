@@ -17,6 +17,7 @@ fun TabBar(navController: NavHostController) {
     val currentRoute = navBackStackEntry?.destination?.route
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
         TextButton(
+            enabled = false,
             onClick = {
                 navController.navigate("timeline") {
                     currentRoute?.let { popUpTo(it) { inclusive = true } }

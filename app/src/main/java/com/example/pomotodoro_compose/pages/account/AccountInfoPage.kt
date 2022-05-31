@@ -1,8 +1,6 @@
 package com.example.pomotodoro_compose.pages.account
 
 
-import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -17,6 +15,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +33,9 @@ fun AccountInfoPage(
 ) {
     val context = LocalContext.current
     val intent = remember { Intent(Intent.ACTION_VIEW, Uri.parse("http://123.56.107.143:4000/")) }
-
+    LaunchedEffect(Unit) {
+        createNotificationChannel(stateViewModel.channelId, context)
+    }
     Column(
         modifier = Modifier.padding(20.dp),
         verticalArrangement = Arrangement.Center,
@@ -63,7 +64,7 @@ fun AccountInfoPage(
                         contentDescription = null,
                         tint = MaterialTheme.colors.primary
                     )
-                    Text(text = "Online", modifier = Modifier.padding(2.dp))
+                    Text(text = "Online Mode", modifier = Modifier.padding(2.dp))
                 }
                 Spacer(modifier = Modifier.fillMaxWidth(0.2f))
                 Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.width(140.dp)) {
@@ -109,6 +110,13 @@ fun AccountInfoPage(
                     .clickable {
                         tasksViewModel.clearAllTasks(tasksViewModel.accountId)
                         groupTagViewModel.clearAllData()
+                        cleanDataNotification(
+                            context,
+                            stateViewModel.channelId,
+                            stateViewModel.notificationId,
+                            "All your data has been cleared",
+                            "You can start a totally new journey right now :)"
+                        )
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -125,6 +133,13 @@ fun AccountInfoPage(
                         tasksViewModel.deleteAccount(tasksViewModel.accountId)
                         tasksViewModel.logout()
                         groupTagViewModel.logout()
+                        deleteAccountNotification(
+                            context,
+                            stateViewModel.channelId,
+                            stateViewModel.notificationId+1,
+                            "Your account has been deleted",
+                            "All the data has been erased from our server :)"
+                        )
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
