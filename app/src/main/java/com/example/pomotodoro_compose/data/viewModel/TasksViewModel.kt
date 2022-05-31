@@ -28,6 +28,9 @@ import java.time.LocalTime
 
 class TasksViewModel(application: Application) : ViewModel() {
 //    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
+    private var _logFailFlag by mutableStateOf(false)
+    val logFailFlag: Boolean
+        get() = _logFailFlag
 
     private val api: TasksApiService = TasksApi.retrofitService
     private lateinit var data: MutableList<TasksData>
@@ -38,6 +41,8 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     private val accountApi: AccountApiService = AccountApi.retrofitService
     var accountId: String by mutableStateOf("")
+    var doneBoardWorkNum: Int by mutableStateOf(0)
+    var doneTodoWorkNum: Int by mutableStateOf(0)
 
     init {
         if (accountId != "") {
@@ -48,10 +53,26 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
-    private fun getAllData(accountId: String) {
+    private fun changeLogFailFlag(flag: Boolean){
+        _logFailFlag = flag
+    }
+    fun deleteAccount(id: String){
+        viewModelScope.launch {
+            accountApi.deleteAccount(AccountData(accountId = id))
+        }
+    }
+
+    fun clearAllTasks(id: String){
+        _tasksList = mutableListOf<TasksData>().toMutableStateList()
+        _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+        viewModelScope.launch {
+            accountApi.clearAllData(AccountData(accountId = id))
+        }
+    }
+    private fun getAllData(id: String) {
         viewModelScope.launch {
             try {
-                data = api.getFullTasksData(AccountData(accountId = accountId, password = ""))
+                data = api.getFullTasksData(AccountData(accountId = id, password = ""))
                 data.forEachIndexed { _, item ->
                     _tasksList.add(item)
                     if (item.toToday) {
@@ -99,6 +120,10 @@ class TasksViewModel(application: Application) : ViewModel() {
                 Log.e("/fetchupdateData_error", e.toString())
             }
         }
+    }
+
+    fun logout(){
+        accountId = ""
     }
 
     val todoTasksList: MutableList<TasksData>
@@ -277,6 +302,7 @@ class TasksViewModel(application: Application) : ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("/fetch_account_log_reply_error", e.toString())
+                changeLogFailFlag(true)
             }
         }
     }

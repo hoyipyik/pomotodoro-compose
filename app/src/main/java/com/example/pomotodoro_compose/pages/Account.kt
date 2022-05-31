@@ -23,6 +23,6 @@ fun Account(
     if(tasksViewModel.accountId == "" ){
         LoginPage(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
     }else{
-        AccountInfoPage(tasksViewModel = tasksViewModel)
+        AccountInfoPage(tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)
     }
 }

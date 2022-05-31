@@ -31,6 +31,14 @@ class GroupTagViewModel: ViewModel() {
     private val accountApi: AccountApiService = AccountApi.retrofitService
     private var accountId: String by mutableStateOf("")
 
+    fun logout(){
+        accountId = ""
+    }
+
+    fun clearAllData(){
+        _groupTagList = getGroupTagList().toMutableStateList()
+    }
+
     init {
         if(accountId != ""){
             getAllGroupTagData(accountId)

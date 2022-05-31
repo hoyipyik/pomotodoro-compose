@@ -58,4 +58,12 @@ class StateViewModel : ViewModel() {
     fun passwdInputText(text: String){
         _passwdInputText = text
     }
+
+    fun restoreInputText(){
+        _accountInputText = ""
+        _passwdInputText = ""
+    }
+    private var _accountCity by mutableStateOf("Waterloo")
+    val accountCity: String
+        get() = _accountCity
 }

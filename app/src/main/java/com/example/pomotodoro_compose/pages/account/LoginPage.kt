@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -22,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
+import kotlinx.coroutines.Delay
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginPage(
@@ -29,6 +33,11 @@ fun LoginPage(
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {
+//    LaunchedEffect(tasksViewModel.logFailFlag){
+//        delay(3000L)
+//        tasksViewModel.changeLogFailFlag(false)
+//    }
+
     val focusManager = LocalFocusManager.current
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -64,6 +73,9 @@ fun LoginPage(
             onValueChange = { stateViewModel.passwdInputText(it) }
         )
         Spacer(modifier = Modifier.fillMaxHeight(0.18f))
+//        if(tasksViewModel.logFailFlag){
+//            Text(text = "Login Fail", color = MaterialTheme.colors.error)
+//        }
         Button(
             onClick = {
                 tasksViewModel.sendLogInfo(
@@ -74,6 +86,7 @@ fun LoginPage(
                     id = stateViewModel.accountInputText,
                     password = stateViewModel.passwdInputText
                 )
+                stateViewModel.restoreInputText()
                 focusManager.clearFocus()
             }, modifier = Modifier
                 .fillMaxWidth(0.8f)
