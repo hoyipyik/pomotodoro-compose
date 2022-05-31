@@ -53,6 +53,15 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
+    fun refreshData(){
+        if (accountId != "") {
+            getAllData(accountId)
+        } else {
+            _tasksList = mutableListOf<TasksData>().toMutableStateList()
+            _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+        }
+    }
+
     private fun changeLogFailFlag(flag: Boolean){
         _logFailFlag = flag
     }

@@ -2,6 +2,8 @@ package  com.example.pomotodoro_compose
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -90,7 +93,7 @@ fun PageContent(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
     Scaffold(
-        topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState) },
+        topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel, groupTagViewModel = groupTagViewModel) },
         floatingActionButton = {
             if (currentRoute != "account")
                 FloatingActionButton(onClick = {
@@ -155,12 +158,33 @@ fun TopBar(
     stateViewModel: StateViewModel,
     currentRoute: String?,
     bottomSheetState: ModalBottomSheetState,
-    scope: CoroutineScope
+    scope: CoroutineScope,
+    groupTagViewModel: GroupTagViewModel,
+    tasksViewModel: TasksViewModel
 ) {
     val title = stateViewModel.topBarTitle
+    var expanded by remember { mutableStateOf(false) }
+    val intent = Intent(Intent.ACTION_SENDTO)
+    intent.data = Uri.parse("mailto:") // only email apps should handle this
+    intent.putExtra(Intent.EXTRA_EMAIL, "hoyipyik@proton.me")
+    intent.putExtra(Intent.EXTRA_SUBJECT, "I write to give you some feedback")
+
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT,
+            "I am using pomotodoro to manage my work, you can try it too. :) \n" +
+                    "Here is the download link: \n"+ "https://developer.android.com/training/sharing/")
+
+        // (Optional) Here we're setting the title of the content
+        putExtra(Intent.EXTRA_TITLE, "Try Pomotodoro here")
+        type = "text/plain"
+    }
+    val shareIntent = Intent.createChooser(sendIntent, null)
+
+    val context = LocalContext.current
     TopAppBar(
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {expanded =  true }) {
                 Icon(Icons.Filled.MoreVert, contentDescription = null)
             }
         },
@@ -170,7 +194,9 @@ fun TopBar(
         actions = {
             when(currentRoute){
                 "todo" -> {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = {
+
+                    }) {
                         Icon(Icons.Filled.Share, contentDescription = null)
                     }
                 }
@@ -191,13 +217,34 @@ fun TopBar(
                     }
                 }
                 "account" ->{
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        startActivity(context, shareIntent, null)
+                    }) {
                         Icon(Icons.Filled.Favorite, contentDescription = null)
                     }       
                 }
             }
         },
     )
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false },
+    ) {
+        DropdownMenuItem(onClick = {
+            tasksViewModel.refreshData()
+            groupTagViewModel.refreshGroupTagData()
+        }) {
+            Text("Refresh")
+        }
+//        DropdownMenuItem(onClick = { /* Handle settings! */ }) {
+//            Text("Settings")
+//        }
+        DropdownMenuItem(onClick = {
+            startActivity(context, intent, null)
+        }) {
+            Text("Feedback")
+        }
+    }
 }
 
 

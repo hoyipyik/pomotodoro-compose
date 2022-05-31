@@ -16,6 +16,7 @@ import com.example.pomotodoro_compose.data.api.GroupTagApiService
 import com.example.pomotodoro_compose.data.entity.AccountData
 import com.example.pomotodoro_compose.data.entity.GroupTagListData
 import com.example.pomotodoro_compose.data.entity.ReplyMessage
+import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.getGroupTagList
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
@@ -40,6 +41,14 @@ class GroupTagViewModel: ViewModel() {
     }
 
     init {
+        if(accountId != ""){
+            getAllGroupTagData(accountId)
+        }else{
+            _groupTagList = getGroupTagList().toMutableStateList()
+        }
+    }
+
+    fun refreshGroupTagData(){
         if(accountId != ""){
             getAllGroupTagData(accountId)
         }else{
