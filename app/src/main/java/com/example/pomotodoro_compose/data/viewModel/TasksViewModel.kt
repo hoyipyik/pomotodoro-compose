@@ -11,15 +11,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pomotodoro_compose.data.entity.TasksData
-import com.example.pomotodoro_compose.data.getTodoTasksList
+import com.example.pomotodoro_compose.data.api.AccountApi
+import com.example.pomotodoro_compose.data.api.AccountApiService
 import com.example.pomotodoro_compose.data.api.TasksApi
 import com.example.pomotodoro_compose.data.api.TasksApiService
-import com.example.pomotodoro_compose.data.entity.ToolData
+import com.example.pomotodoro_compose.data.entity.AccountData
+import com.example.pomotodoro_compose.data.entity.ReplyMessage
+import com.example.pomotodoro_compose.data.entity.TasksData
+import com.example.pomotodoro_compose.data.getTasksList
+import com.example.pomotodoro_compose.data.getTodoTasksList
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.lang.Exception
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -29,56 +32,70 @@ class TasksViewModel(application: Application) : ViewModel() {
     private val api: TasksApiService = TasksApi.retrofitService
     private lateinit var data: MutableList<TasksData>
     private lateinit var res: Response<ResponseBody>
+
     private var _tasksList = mutableListOf<TasksData>().toMutableStateList()
     private var _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
 
+    private val accountApi: AccountApiService = AccountApi.retrofitService
+    var accountId: String by mutableStateOf("")
+
     init {
-        getAllData()
+        if (accountId != "") {
+            getAllData(accountId)
+        } else {
+            _tasksList = mutableListOf<TasksData>().toMutableStateList()
+            _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+        }
     }
 
-    private fun getAllData(){
+    private fun getAllData(accountId: String) {
         viewModelScope.launch {
             try {
-                data = api.getFullTasksData()
-                data.forEachIndexed{ _, item ->
+                data = api.getFullTasksData(AccountData(accountId = accountId, password = ""))
+                data.forEachIndexed { _, item ->
                     _tasksList.add(item)
-                    if (item.toToday){
+                    if (item.toToday) {
                         _todoTasksList.add(item)
                     }
                 }
                 Log.i("/fetchingdata", data.toString())
 
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e("/fetchingdata_error", e.toString())
             }
         }
     }
-    private fun addData(task: TasksData){
-        viewModelScope.launch{
+
+    private fun addData(task: TasksData) {
+        viewModelScope.launch {
             try {
+                task.accountId = accountId
                 res = api.addTask(task)
                 Log.i("/fetchaddData", res.toString())
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e("/fetchaddData_error", e.toString())
             }
         }
     }
-    private fun deleteData(id: String){
-        viewModelScope.launch{
+
+    private fun deleteData(id: String) {
+        viewModelScope.launch {
             try {
-                res = api.deleteTask(ToolData(id))
+                res = api.deleteTask(AccountData(accountId = accountId, id = id, password = ""))
                 Log.i("/fetchdeleteData", res.toString())
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e("/fetchdeleteData_error", e.toString())
             }
         }
     }
-    private fun updateData(task: TasksData, id: String){
-        viewModelScope.launch{
+
+    private fun updateData(task: TasksData, id: String) {
+        viewModelScope.launch {
             try {
+                task.accountId = accountId
                 res = api.upgradeTask(task)
                 Log.i("/fetchupdateData", res.toString())
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 Log.e("/fetchupdateData_error", e.toString())
             }
         }
@@ -147,49 +164,49 @@ class TasksViewModel(application: Application) : ViewModel() {
             "toToday" -> {
                 item!!.toToday = value as Boolean
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.toToday = value as Boolean }
+                _tasksList.find { it.id == id }?.let { it.toToday = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "title" -> {
                 item!!.title = value as String
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.title = value as String }
+                _tasksList.find { it.id == id }?.let { it.title = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "isChecked" -> {
                 item!!.isChecked = value as Boolean
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.isChecked = value as Boolean }
+                _tasksList.find { it.id == id }?.let { it.isChecked = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "priority" -> {
                 item!!.priority = value as Boolean
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.priority = value as Boolean }
+                _tasksList.find { it.id == id }?.let { it.priority = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "repeat" -> {
                 item!!.repeat = value as Boolean
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.repeat = value as Boolean }
+                _tasksList.find { it.id == id }?.let { it.repeat = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "setTaskTime" -> {
                 item!!.setTaskTime = value as String
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.setTaskTime = value as String }
+                _tasksList.find { it.id == id }?.let { it.setTaskTime = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "pomoTimes" -> {
                 item!!.pomoTimes = value as Int
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.pomoTimes = value as Int }
+                _tasksList.find { it.id == id }?.let { it.pomoTimes = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "isRemindered" -> {
                 item!!.isRemindered = value as Boolean
                 updateData(item, id)
-                _tasksList.find { it.id == id }?.let { it.isRemindered = value as Boolean }
+                _tasksList.find { it.id == id }?.let { it.isRemindered = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
         }
@@ -237,6 +254,28 @@ class TasksViewModel(application: Application) : ViewModel() {
     fun upgradeSelectedGroupTag(id: String) {
         _selectedGroupTag = id
     }
+
+    private fun changeAccountId(id: String){
+        accountId = id
+        Log.i("/fetch_test_accountId", accountId)
+    }
+
+    fun sendLogInfo(id: String, password: String) {
+        viewModelScope.launch {
+            try {
+                val msg: ReplyMessage =
+                    accountApi.sendAccount(AccountData(id, password))
+                Log.i("/fetch_account_log_reply", msg.toString())
+                if(msg.code == 200){
+                    changeAccountId(id)
+                    getAllData(id)
+                }
+            } catch (e: Exception) {
+                Log.e("/fetch_account_log_reply_error", e.toString())
+            }
+        }
+    }
+
 
     private fun createNotificationChannel(context: Context, head: String) {
         val name = "Task notification"

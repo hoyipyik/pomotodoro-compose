@@ -30,6 +30,7 @@ data class TasksData(
     var pomoTimes: Int = 0,
     @ColumnInfo(name = "group_tag")
     var groupTag: MutableList<String> = mutableListOf("tag"),
+    var accountId: String = ""
 //    var subTasks: MutableList<SubTasksData>? = null
 )
 

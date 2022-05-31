@@ -1,5 +1,6 @@
 package com.example.pomotodoro_compose.data.api
 
+import com.example.pomotodoro_compose.data.entity.AccountData
 import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.entity.ToolData
 import okhttp3.ResponseBody
@@ -9,10 +10,10 @@ import retrofit2.http.POST
 
 interface TasksApiService {
     @POST("/get_full_tasks")
-    suspend fun getFullTasksData(): MutableList<TasksData>
+    suspend fun getFullTasksData(@Body accountInfoGetter: AccountData): MutableList<TasksData>
 
     @POST("/delete_task")
-    suspend fun deleteTask(@Body id: ToolData): Response<ResponseBody>
+    suspend fun deleteTask(@Body accountInfoGetter: AccountData): Response<ResponseBody>
 
     @POST("/add_task")
     suspend fun addTask(@Body task: TasksData): Response<ResponseBody>

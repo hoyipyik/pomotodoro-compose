@@ -9,30 +9,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pomotodoro_compose.data.api.AccountApi
+import com.example.pomotodoro_compose.data.api.AccountApiService
 import com.example.pomotodoro_compose.data.api.GroupTagApi
 import com.example.pomotodoro_compose.data.api.GroupTagApiService
+import com.example.pomotodoro_compose.data.entity.AccountData
 import com.example.pomotodoro_compose.data.entity.GroupTagListData
-import com.example.pomotodoro_compose.data.entity.ToolData
+import com.example.pomotodoro_compose.data.entity.ReplyMessage
+import com.example.pomotodoro_compose.data.getGroupTagList
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.time.LocalDateTime
 
 class GroupTagViewModel: ViewModel() {
 
     private var api: GroupTagApiService = GroupTagApi.retrofitService
     private lateinit var data: MutableList<GroupTagListData>
     private lateinit var res: Response<ResponseBody>
-    private val _groupTagList = mutableListOf<GroupTagListData>().toMutableStateList()
+    private var _groupTagList = mutableListOf<GroupTagListData>().toMutableStateList()
 //    private val _groupTagList = getGroupTagList().toMutableStateList()
+    private val accountApi: AccountApiService = AccountApi.retrofitService
+    private var accountId: String by mutableStateOf("")
 
     init {
-        getAllGroupTagData()
+        if(accountId != ""){
+            getAllGroupTagData(accountId)
+        }else{
+            _groupTagList = getGroupTagList().toMutableStateList()
+        }
     }
-    private fun getAllGroupTagData(){
+
+    fun sendLogInfo(id: String, password: String) {
         viewModelScope.launch {
             try {
-                data = api.getGroupTag()
+                val msg: ReplyMessage =
+                    accountApi.sendAccount(AccountData(id, password))
+                Log.i("/fetch_account2_log_reply", msg.toString())
+                if(msg.code == 200){
+                    updataAccountId(id)
+                    getAllGroupTagData(id)
+                }
+            } catch (e: Exception) {
+                Log.e("/fetch_account2_log_reply_error", e.toString())
+            }
+        }
+    }
+
+    private fun updataAccountId(id: String){
+        accountId = id
+    }
+    private fun getAllGroupTagData(id :String){
+        viewModelScope.launch {
+            try {
+                data = api.getGroupTag(AccountData(accountId = id))
                 data.forEachIndexed { _, item ->
                     _groupTagList.add(item)
                 }
@@ -45,6 +74,7 @@ class GroupTagViewModel: ViewModel() {
     private fun addGroupTagData(item: GroupTagListData) {
         viewModelScope.launch {
             try {
+                item.accountId = accountId
                 res = api.addGroupTag(item)
                 Log.i("/fetch_add_group_tag", res.toString())
             } catch (e: Exception) {
@@ -55,6 +85,7 @@ class GroupTagViewModel: ViewModel() {
     private fun updateGroupTagData(item: GroupTagListData) {
         viewModelScope.launch {
             try {
+                item.accountId = accountId
                 res = api.updateGroupTag(item)
                 Log.i("/fetch_update_group_tag", res.toString())
             } catch (e: Exception) {
@@ -66,7 +97,7 @@ class GroupTagViewModel: ViewModel() {
     private fun deleteGroupTagData(item: String) {
         viewModelScope.launch {
             try {
-                res = api.deleteGroupTag(ToolData(id = item))
+                res = api.deleteGroupTag(AccountData(id = item, accountId = accountId))
                 Log.i("/fetch_delete_group_tag", res.toString())
             } catch (e: Exception) {
                 Log.e("/fetch_delete_group_tag_err", e.toString())

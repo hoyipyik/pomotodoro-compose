@@ -129,7 +129,7 @@ fun BottomBar(
     currentRoute: String?
 ) {
     Log.i("/currentRoute", currentRoute.toString())
-    var selectedItem by remember { mutableStateOf("board") }
+    var selectedItem by remember { mutableStateOf("account") }
     val items = stateViewModel.bottomNavigationData
     BottomNavigation {
         items.forEach { item ->

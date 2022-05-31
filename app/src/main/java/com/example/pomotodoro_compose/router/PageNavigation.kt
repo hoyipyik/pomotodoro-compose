@@ -26,9 +26,9 @@ fun PageNavigation(
     groupTagViewModel: GroupTagViewModel
 ) {
 
-    NavHost(navController = navController as NavHostController, startDestination = "board"){
+    NavHost(navController = navController as NavHostController, startDestination = "account"){
         composable("board"){ Board(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel,) }
         composable("todo"){ Todo(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel)}
-        composable("account"){ Account(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel)}
+        composable("account"){ Account(scope = scope, state = bottomSheetState, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel, groupTagViewModel = groupTagViewModel)}
     }
 }

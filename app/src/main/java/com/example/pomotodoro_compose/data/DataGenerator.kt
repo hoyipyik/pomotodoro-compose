@@ -40,8 +40,8 @@ fun getTodoTasksList(list:MutableList<TasksData>): MutableList<TasksData>{
 fun getGroupTagList(): MutableList<GroupTagListData> {
     return mutableListOf(
         GroupTagListData(groupTagName = "All", colour = Purple500.toArgb(), tagId = "tag"),
-        GroupTagListData(groupTagName = "Android", colour = Purple700.toArgb(), tagId = "tag3"),
-        GroupTagListData(groupTagName = "Python", colour = Bluelight.toArgb(), tagId = "tag2"),
+//        GroupTagListData(groupTagName = "Android", colour = Purple700.toArgb(), tagId = "tag3"),
+//        GroupTagListData(groupTagName = "Python", colour = Bluelight.toArgb(), tagId = "tag2"),
 //        GroupTagListData(groupTagName = "Life", colour = Color.Yellow),
 //        GroupTagListData(groupTagName = "Open Flow", colour = Color.Magenta),
     )

@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModel
 import com.example.pomotodoro_compose.data.entity.BottomNavigationData
 
 class StateViewModel : ViewModel() {
-    private var _topBarTitle by mutableStateOf("Board")
+    private var _topBarTitle by mutableStateOf("Account")
     var topBarTitle: String
         get() = _topBarTitle
         set(value) {
@@ -30,7 +30,7 @@ class StateViewModel : ViewModel() {
         get() = _botomNavigationDataList
 
 
-    private var _currentRouterPath by mutableStateOf("board")
+    private var _currentRouterPath by mutableStateOf("account")
     val currentRouterPath
         get() = _currentRouterPath
 

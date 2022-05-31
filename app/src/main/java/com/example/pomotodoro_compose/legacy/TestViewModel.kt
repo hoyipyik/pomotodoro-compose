@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.data.viewModel
+package com.example.pomotodoro_compose.legacy
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -19,7 +19,7 @@ class TestViewModel: ViewModel() {
     private fun fetchingData(){
         viewModelScope.launch {
             try {
-                data = api.getFullTasksData()
+//                data = api.getFullTasksData(accountId)
 
                 Log.i("/fetchingdata", data.toString())
 
