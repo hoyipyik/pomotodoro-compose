@@ -45,4 +45,17 @@ class StateViewModel : ViewModel() {
     fun changeCurrentRouterPath(path: String){
         _currentRouterPath = path
     }
+
+    private var _accountInputText by mutableStateOf("")
+    val accountInputText
+        get() = _accountInputText
+    private var _passwdInputText by mutableStateOf("")
+    val passwdInputText
+        get() = _passwdInputText
+    fun accountInputText(text: String){
+        _accountInputText = text
+    }
+    fun passwdInputText(text: String){
+        _passwdInputText = text
+    }
 }
