@@ -174,7 +174,12 @@ class TasksViewModel(application: Application) : ViewModel() {
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
             }
             "isChecked" -> {
-                item!!.isChecked = value as Boolean
+                if(value as Boolean) {
+                    item!!.finishTime = LocalDateTime.now().toString()
+                }else{
+                    item!!.finishTime = null
+                }
+                item.isChecked = value as Boolean
                 updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.isChecked = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()

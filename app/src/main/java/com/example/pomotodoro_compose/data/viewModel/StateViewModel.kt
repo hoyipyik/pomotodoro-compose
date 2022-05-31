@@ -53,7 +53,7 @@ class StateViewModel : ViewModel() {
     val passwdInputText
         get() = _passwdInputText
     fun accountInputText(text: String){
-        _accountInputText = text
+        _accountInputText = text.replace("\\s".toRegex(), "")
     }
     fun passwdInputText(text: String){
         _passwdInputText = text
