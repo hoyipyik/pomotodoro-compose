@@ -45,9 +45,9 @@ fun Board(
             }
         }
         GroupTagListContainer(groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
-        if(list.size >= 0)
+        if(list.size > 0)
             TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
         else
-            BlankContainer()
+            BlankContainer(type = type)
     }
 }
