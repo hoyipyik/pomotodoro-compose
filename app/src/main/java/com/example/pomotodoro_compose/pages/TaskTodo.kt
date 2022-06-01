@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.router.SubNavigation
 import com.example.pomotodoro_compose.components.TabBar
@@ -17,12 +18,13 @@ fun Todo(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    stateViewModel: StateViewModel
+    stateViewModel: StateViewModel,
+    bottomSheetNavController: NavHostController
 ) {
     val type: String = "todo"
     val navController = rememberNavController()
     Column {
         TabBar(navController = navController, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel)
-        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, scope = scope, state = state)
+        SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, scope = scope, state = state, bottomSheetNavController = bottomSheetNavController)
     }
 }

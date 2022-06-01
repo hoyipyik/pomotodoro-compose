@@ -37,7 +37,7 @@ fun TasksContainer(
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
     stateViewModel: StateViewModel,
-    bottomSheetNavController: NavHostController?
+    bottomSheetNavController: NavHostController
 ) {
 
     LazyColumn(
@@ -67,7 +67,7 @@ fun TasksContainer(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
-                    bottomSheetNavController?.let { TaskItem(bottomSheetNavController = it,type = type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel,  item = item) }
+                    TaskItem(bottomSheetNavController = bottomSheetNavController,type = type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel,  item = item)
                 },
                 dismissThresholds = { direction ->
                     FractionalThreshold(

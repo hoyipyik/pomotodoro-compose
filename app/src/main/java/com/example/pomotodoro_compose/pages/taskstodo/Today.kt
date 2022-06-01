@@ -3,6 +3,7 @@ package com.example.pomotodoro_compose.pages
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.TasksContainer
 import com.example.pomotodoro_compose.data.entity.TasksData
@@ -18,7 +19,8 @@ fun Today(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     state: ModalBottomSheetState,
-    stateViewModel: StateViewModel
+    stateViewModel: StateViewModel,
+    bottomSheetNavController: NavHostController
 ) {
     if (list.size > 0)
         TasksContainer(
@@ -28,7 +30,7 @@ fun Today(
             bottomSheetState = state,
             scope = scope,
             stateViewModel = stateViewModel,
-            bottomSheetNavController = null
+            bottomSheetNavController = bottomSheetNavController
         )
     else
         BlankContainer(type = type)

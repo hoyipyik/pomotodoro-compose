@@ -23,6 +23,7 @@ fun SubNavigation(
     state: ModalBottomSheetState,
     scope: CoroutineScope,
     stateViewModel: StateViewModel,
+    bottomSheetNavController: NavHostController,
 ) {
     var list = tasksViewModel.todoTasksList
     val timelineList = tasksViewModel.timelineList
@@ -33,6 +34,6 @@ fun SubNavigation(
 
     NavHost(navController = navController as NavHostController, startDestination = "today") {
         composable("timeline") { TimeLine( type = type, tasksViewModel = tasksViewModel) }
-        composable("today") { Today(list = list, type = type, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel,state = state, scope = scope) }
+        composable("today") { Today(list = list, type = type, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel,state = state, scope = scope, bottomSheetNavController = bottomSheetNavController) }
     }
 }
