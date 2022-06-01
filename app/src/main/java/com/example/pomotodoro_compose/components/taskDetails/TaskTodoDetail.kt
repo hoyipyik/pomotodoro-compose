@@ -78,7 +78,7 @@ fun TodoTaskDetail(
     val mTimePickerDialog = TimePickerDialog(
         mContext,
         { _, mHour: Int, mMinute: Int ->
-            mTime = "$mHour-$mMinute"
+            mTime = "$mHour:$mMinute"
         }, mHour, mMinute, false
     )
 

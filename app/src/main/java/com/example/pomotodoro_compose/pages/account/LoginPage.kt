@@ -84,16 +84,18 @@ fun LoginPage(
         }
         Button(
             onClick = {
-                tasksViewModel.sendLogInfo(
-                    id = stateViewModel.accountInputText,
-                    password = stateViewModel.passwdInputText
-                )
-                groupTagViewModel.sendLogInfo(
-                    id = stateViewModel.accountInputText,
-                    password = stateViewModel.passwdInputText
-                )
-                stateViewModel.restoreInputText()
-                focusManager.clearFocus()
+                if(stateViewModel.passwdInputText != "" && stateViewModel.accountInputText != "") {
+                    tasksViewModel.sendLogInfo(
+                        id = stateViewModel.accountInputText,
+                        password = stateViewModel.passwdInputText
+                    )
+                    groupTagViewModel.sendLogInfo(
+                        id = stateViewModel.accountInputText,
+                        password = stateViewModel.passwdInputText
+                    )
+                    stateViewModel.restoreInputText()
+                    focusManager.clearFocus()
+                }
             }, modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .height(45.dp)

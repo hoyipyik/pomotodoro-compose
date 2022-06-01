@@ -95,7 +95,8 @@ fun PageContent(
     Scaffold(
         topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel, groupTagViewModel = groupTagViewModel) },
         floatingActionButton = {
-            if (currentRoute != "account")
+            if (currentRoute != "account" )
+//                && stateViewModel.subNavRoute != "timeline")
                 FloatingActionButton(onClick = {
 //                    bottomSheetNavController.navigate("addtask") {
 //                        currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
@@ -110,7 +111,8 @@ fun PageContent(
             BottomBar(
                 navController = navController,
                 stateViewModel = stateViewModel,
-                currentRoute = currentRoute
+                currentRoute = currentRoute,
+                tasksViewModel = tasksViewModel,
             )
         }
     ) {
@@ -129,7 +131,8 @@ fun PageContent(
 fun BottomBar(
     navController: NavHostController,
     stateViewModel: StateViewModel,
-    currentRoute: String?
+    currentRoute: String?,
+    tasksViewModel: TasksViewModel
 ) {
     Log.i("/currentRoute", currentRoute.toString())
     var selectedItem by remember { mutableStateOf("account") }
@@ -140,9 +143,13 @@ fun BottomBar(
                 selected = selectedItem == item.type,
                 icon = { Icon(item.icon, contentDescription = null) },
                 onClick = {
+//                    stateViewModel.subNavRoute = "today"
                     selectedItem = item.type
                     navController.navigate(item.type) {
                         currentRoute?.let { popUpTo(it) { inclusive = true } }
+                        if(item.type == "account"){
+                            tasksViewModel.calculateTotalDoneNum()
+                        }
                     }
                     stateViewModel.changeCurrentRouterPath(item.type)
                     stateViewModel.changeTopBarTitle(item.title)

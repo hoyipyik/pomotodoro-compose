@@ -22,7 +22,7 @@ fun Todo(
     val type: String = "todo"
     val navController = rememberNavController()
     Column {
-        TabBar(navController = navController)
+        TabBar(navController = navController, tasksViewModel = tasksViewModel, stateViewModel = stateViewModel)
         SubNavigation(navController = navController, type = type, tasksViewModel = tasksViewModel,  stateViewModel = stateViewModel, scope = scope, state = state)
     }
 }

@@ -74,7 +74,7 @@ fun AccountInfoPage(
                         tint = MaterialTheme.colors.primary
                     )
                     Text(
-                        text = tasksViewModel.doneBoardWorkNum.toString() + " Tasks done",
+                        text = tasksViewModel.tasksDoneTotalNum.toString() + " Tasks done",
                         modifier = Modifier.padding(2.dp)
                     )
                 }

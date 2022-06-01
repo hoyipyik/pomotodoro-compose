@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.pomotodoro_compose.components.TaskItem
+import com.example.pomotodoro_compose.components.items.TaskItem
 import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.ui.theme.Purple200
 import com.example.pomotodoro_compose.ui.theme.Teal200

@@ -42,7 +42,10 @@ fun GroupTagListContainer(
 //                }
                 stateViewModel.changeCurrentRouteBottomSheetPath("editgrouptag")
                 scope.launch { bottomSheetState.show() }
-            }, modifier = Modifier.padding(start = 9.dp)) {
+            },
+                modifier = Modifier.padding(start = 9.dp),
+                enabled = groupTagViewModel.groupTagList.size > 1
+            ) {
                 Icon(Icons.Filled.Backspace, contentDescription = null)
             }
         }

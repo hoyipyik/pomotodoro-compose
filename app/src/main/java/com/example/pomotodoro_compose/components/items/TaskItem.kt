@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.components
+package com.example.pomotodoro_compose.components.items
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,7 +29,6 @@ fun TaskItem(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     state: ModalBottomSheetState,
-
     stateViewModel: StateViewModel,
 ) {
     val id: String = item.id

@@ -20,11 +20,19 @@ fun BlankContainer(type: String) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(painter = painterResource(id = R.drawable.sticker), contentDescription = null)
-        if (type == "todo") {
-            Text(text = "Add your todo tasks here")
-        } else {
-            Text(text = "Add tasks to the board")
+        when(type){
+            "todo" -> {
+                Image(painter = painterResource(id = R.drawable.todaytodo), contentDescription = null)
+                Text(text = "Add your todo tasks here")
+            }
+            "board" -> {
+                Image(painter = painterResource(id = R.drawable.sticker), contentDescription = null)
+                Text(text = "Add tasks to the board")
+            }
+            "timeline" -> {
+                Image(painter = painterResource(id = R.drawable.timeline), contentDescription = null)
+                Text(text = "No tasks scheduled")
+            }
         }
     }
 }

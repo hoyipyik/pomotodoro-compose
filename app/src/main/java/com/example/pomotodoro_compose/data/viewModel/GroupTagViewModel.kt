@@ -34,6 +34,7 @@ class GroupTagViewModel: ViewModel() {
 
     fun logout(){
         accountId = ""
+        _groupTagList = getGroupTagList().toMutableStateList()
     }
 
     fun clearAllData(){
