@@ -188,6 +188,18 @@ fun TopBar(
     }
     val shareIntent = Intent.createChooser(sendIntent, null)
 
+    val shareResultIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT,"Here are my results: \n"
+        + "Accomplished tasks number: ${tasksViewModel.doneTodoWorkNum} \n" +
+                "Unchecked tasks number ${tasksViewModel.unfinishedTodoWorkNum} \n" +
+                "Overdue tasks number ${tasksViewModel.overdueTaskNum}")
+        // (Optional) Here we're setting the title of the content
+        putExtra(Intent.EXTRA_TITLE, "Pomotodoro Result")
+        type = "text/plain"
+    }
+    val shareResultsIntent = Intent.createChooser(shareResultIntent, null)
+
     val context = LocalContext.current
     TopAppBar(
         navigationIcon = {
@@ -202,7 +214,7 @@ fun TopBar(
             when(currentRoute){
                 "todo" -> {
                     IconButton(onClick = {
-                        startActivity(context, shareIntent, null)
+                        startActivity(context, shareResultsIntent, null)
                     }) {
                         Icon(Icons.Filled.Share, contentDescription = null)
                     }
