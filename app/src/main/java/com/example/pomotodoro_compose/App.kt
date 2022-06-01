@@ -191,7 +191,7 @@ fun TopBar(
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT,
             "I am using pomotodoro to manage my work, you can try it too. :) \n" +
-                    "Here is the download link: \n"+ "https://123.56.107.143/index.php/s/o9EWaFXt9QfCrtQ")
+                    "Here is the download link: \n"+ "https://123.56.107.143/index.php/s/BdMSZYjztwbNxY9")
         // (Optional) Here we're setting the title of the content
         putExtra(Intent.EXTRA_TITLE, "Try Pomotodoro here")
         type = "text/plain"
