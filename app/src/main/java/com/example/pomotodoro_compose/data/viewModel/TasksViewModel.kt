@@ -117,6 +117,8 @@ class TasksViewModel(application: Application) : ViewModel() {
                     _overdueTaskNum += 1
                     _todoTasksList[index].isOverdue = true
                     Log.i("/overdue", "overdue")
+                }else{
+                    _todoTasksList[index].isOverdue = false
                 }
             }
         }
