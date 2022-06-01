@@ -59,7 +59,7 @@ fun TodoTaskDetail(
         Log.i("/debugs", tasksViewModel.getItem().title)
     }
 
-    LaunchedEffect(tasksViewModel.changeFlag){
+    LaunchedEffect(tasksViewModel.changeFlag) {
         priorityFlag = data.priority
         tasksViewModel.restoreChangeTagListFlag()
     }
@@ -79,6 +79,12 @@ fun TodoTaskDetail(
         mContext,
         { _, mHour: Int, mMinute: Int ->
             mTime = "$mHour:$mMinute"
+            tasksViewModel.upgradeTask(
+                type = type,
+                id = data.id,
+                name = "setTaskTime",
+                value = mTime
+            )
         }, mHour, mMinute, false
     )
 
@@ -88,15 +94,15 @@ fun TodoTaskDetail(
 //        Log.i("/debug", "hide")
     }
 
-    LaunchedEffect(mTime != "Set Task Time") {
-        tasksViewModel.upgradeTask(
-            type = type,
-            id = data.id,
-            name = "setTaskTime",
-            value = mTime
-        )
-        Log.i("/check", mTime)
-    }
+//    LaunchedEffect(mTime != "Set Task Time") {
+//        tasksViewModel.upgradeTask(
+//            type = type,
+//            id = data.id,
+//            name = "setTaskTime",
+//            value = mTime
+//        )
+//        Log.i("/check", mTime)
+//    }
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -241,7 +247,7 @@ fun TodoTaskDetail(
             modifier = Modifier.padding(top = 5.dp, bottom = 15.dp),
         ) {
             IconButton(onClick = {
-                if(mTime != "Set Task Time"){
+                if (mTime != "Set Task Time") {
                     reminder = !reminder
                     tasksViewModel.upgradeTask(
                         type = type,

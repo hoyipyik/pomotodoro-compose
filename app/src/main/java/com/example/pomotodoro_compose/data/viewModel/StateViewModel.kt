@@ -29,6 +29,7 @@ class StateViewModel : ViewModel() {
     val bottomNavigationData
         get() = _botomNavigationDataList
 
+    var subNavRoute by mutableStateOf("today")
 
     private var _currentRouterPath by mutableStateOf("account")
     val currentRouterPath

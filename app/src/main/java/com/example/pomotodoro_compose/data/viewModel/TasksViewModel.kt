@@ -25,6 +25,8 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 class TasksViewModel(application: Application) : ViewModel() {
 //    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
@@ -41,16 +43,84 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     private val accountApi: AccountApiService = AccountApi.retrofitService
     var accountId: String by mutableStateOf("")
-    var doneBoardWorkNum: Int by mutableStateOf(0)
-    var doneTodoWorkNum: Int by mutableStateOf(0)
+    private  var _tasksDoneTotalNum: Int by mutableStateOf(0)
+    val tasksDoneTotalNum: Int
+        get() = _tasksDoneTotalNum
+    private var _doneTodoWorkNum: Int by mutableStateOf(0)
+    val doneTodoWorkNum: Int
+        get() = _doneTodoWorkNum
+    private var _unfinishedTodoWorkNum: Int by mutableStateOf(0)
+    val unfinishedTodoWorkNum: Int
+        get() = _unfinishedTodoWorkNum
+    private var _overdueTaskNum: Int by mutableStateOf(0)
+    val overdueTaskNum: Int
+        get() = _overdueTaskNum
+    private var _timelineList = mutableListOf<TasksData>().toMutableStateList()
+    val timelineList
+        get() = _timelineList
 
     init {
         if (accountId != "") {
             getAllData(accountId)
         } else {
             _tasksList = mutableListOf<TasksData>().toMutableStateList()
-            _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+            _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
         }
+    }
+
+    fun timelineCalcalation(){
+        calculateDoneTodoTaskNum()
+        calculateOverdueTaskNum()
+        timelineListGeneration()
+    }
+
+    private fun timelineListGeneration(){
+        _timelineList = _todoTasksList.toMutableStateList()
+        Log.i("/test_work", "timelineListGeneration: ${_timelineList.size}")
+        _timelineList.sortBy { it.finishTime.toString() }
+        _timelineList.sortBy { it.isChecked }
+        _timelineList.sortBy { !it.isOverdue }
+        for (item in _timelineList){
+            Log.i("/test_work_item", item.title.toString())
+        }
+    }
+    fun calculateTotalDoneNum(){
+        _tasksDoneTotalNum = 0
+        for (item in _tasksList){
+            if (item.isChecked){
+                _tasksDoneTotalNum += 1
+            }
+        }
+    }
+
+    private fun calculateDoneTodoTaskNum(){
+        _doneTodoWorkNum = 0
+        _unfinishedTodoWorkNum = 0
+        for (i in 0 until _todoTasksList.size){
+            if (_todoTasksList[i].isChecked){
+                _doneTodoWorkNum += 1
+            }else{
+                _unfinishedTodoWorkNum += 1
+            }
+        }
+    }
+    private fun calculateOverdueTaskNum(){
+        _overdueTaskNum = 0
+        _todoTasksList.forEachIndexed{ index, data ->
+            if(data.setTaskTime != "Set Task Time"){
+//                val taskTime = LocalTime.parse(data.setTaskTime, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
+                val nowH = LocalTime.now().hour
+                val nowM = LocalTime.now().minute
+                val taskTimeH = data.setTaskTime.split(":")[0].toInt()
+                val taskTimeM = data.setTaskTime.split(":")[1].toInt()
+                if((taskTimeH < nowH || (taskTimeH == nowH && taskTimeM <= nowM)) && !data.isChecked && data.isRemindered){
+                    _overdueTaskNum += 1
+                    _todoTasksList[index].isOverdue = true
+                    Log.i("/overdue", "overdue")
+                }
+            }
+        }
+
     }
 
     fun refreshData(){
@@ -58,7 +128,7 @@ class TasksViewModel(application: Application) : ViewModel() {
             getAllData(accountId)
         } else {
             _tasksList = mutableListOf<TasksData>().toMutableStateList()
-            _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+            _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
         }
     }
 
@@ -75,65 +145,77 @@ class TasksViewModel(application: Application) : ViewModel() {
     fun clearAllTasks(id: String){
         _tasksList = mutableListOf<TasksData>().toMutableStateList()
         _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+        calculateTotalDoneNum()
         viewModelScope.launch {
             accountApi.clearAllData(AccountData(accountId = id))
         }
     }
     private fun getAllData(id: String) {
-        viewModelScope.launch {
-            try {
-                data = api.getFullTasksData(AccountData(accountId = id, password = ""))
-                data.forEachIndexed { _, item ->
-                    _tasksList.add(item)
-                    if (item.toToday) {
-                        _todoTasksList.add(item)
+        if(accountId != "") {
+            viewModelScope.launch {
+                try {
+                    data = api.getFullTasksData(AccountData(accountId = id, password = ""))
+                    data.forEachIndexed { _, item ->
+                        _tasksList.add(item)
+                        if (item.toToday) {
+                            _todoTasksList.add(item)
+                        }
                     }
-                }
-                Log.i("/fetchingdata", data.toString())
+                    calculateTotalDoneNum()
+                    Log.i("/fetchingdata", data.toString())
 
-            } catch (e: Exception) {
-                Log.e("/fetchingdata_error", e.toString())
+                } catch (e: Exception) {
+                    Log.e("/fetchingdata_error", e.toString())
+                }
             }
         }
     }
 
     private fun addData(task: TasksData) {
-        viewModelScope.launch {
-            try {
-                task.accountId = accountId
-                res = api.addTask(task)
-                Log.i("/fetchaddData", res.toString())
-            } catch (e: Exception) {
-                Log.e("/fetchaddData_error", e.toString())
+        if(accountId != "") {
+            viewModelScope.launch {
+                try {
+                    task.accountId = accountId
+                    res = api.addTask(task)
+                    Log.i("/fetchaddData", res.toString())
+                } catch (e: Exception) {
+                    Log.e("/fetchaddData_error", e.toString())
+                }
             }
         }
     }
 
     private fun deleteData(id: String) {
-        viewModelScope.launch {
-            try {
-                res = api.deleteTask(AccountData(accountId = accountId, id = id, password = ""))
-                Log.i("/fetchdeleteData", res.toString())
-            } catch (e: Exception) {
-                Log.e("/fetchdeleteData_error", e.toString())
+        if(accountId != "") {
+            viewModelScope.launch {
+                try {
+                    res = api.deleteTask(AccountData(accountId = accountId, id = id, password = ""))
+                    Log.i("/fetchdeleteData", res.toString())
+                } catch (e: Exception) {
+                    Log.e("/fetchdeleteData_error", e.toString())
+                }
             }
         }
     }
 
     private fun updateData(task: TasksData, id: String) {
-        viewModelScope.launch {
-            try {
-                task.accountId = accountId
-                res = api.upgradeTask(task)
-                Log.i("/fetchupdateData", res.toString())
-            } catch (e: Exception) {
-                Log.e("/fetchupdateData_error", e.toString())
+        if(accountId != "") {
+            viewModelScope.launch {
+                try {
+                    task.accountId = accountId
+                    res = api.upgradeTask(task)
+                    Log.i("/fetchupdateData", res.toString())
+                } catch (e: Exception) {
+                    Log.e("/fetchupdateData_error", e.toString())
+                }
             }
         }
     }
 
     fun logout(){
         accountId = ""
+        _tasksList = mutableListOf<TasksData>().toMutableStateList()
+        _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
     }
 
     val todoTasksList: MutableList<TasksData>
@@ -164,11 +246,11 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     fun deleteTask(type: String, id: String) {
         _tasksList.removeAll { it.id == id }
-        deleteData(id)
         if (type == "todo")
             _todoTasksList.removeAll { it.id == id }
         else
             _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+        deleteData(id)
     }
 
     fun upgradeGroupTag(type: String, id: String, value: String, name: String) {
@@ -176,17 +258,17 @@ class TasksViewModel(application: Application) : ViewModel() {
             "remove" -> {
                 val item = _tasksList.find { it.id == id }
                 item?.groupTag!!.remove(value)
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.groupTag = item.groupTag
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "add" -> {
                 val item = _tasksList.find { it.id == id }
                 if (!item?.groupTag!!.contains(value)) {
                     item.groupTag.add(value)
-                    updateData(item, id)
                     _tasksList.find { it.id == id }?.groupTag = item.groupTag
                     _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                    updateData(item, id)
                 }
             }
         }
@@ -198,15 +280,15 @@ class TasksViewModel(application: Application) : ViewModel() {
         when (name) {
             "toToday" -> {
                 item!!.toToday = value as Boolean
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.toToday = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "title" -> {
                 item!!.title = value as String
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.title = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "isChecked" -> {
                 if(value as Boolean) {
@@ -215,39 +297,39 @@ class TasksViewModel(application: Application) : ViewModel() {
                     item!!.finishTime = null
                 }
                 item.isChecked = value as Boolean
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.isChecked = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "priority" -> {
                 item!!.priority = value as Boolean
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.priority = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "repeat" -> {
                 item!!.repeat = value as Boolean
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.repeat = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "setTaskTime" -> {
                 item!!.setTaskTime = value as String
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.setTaskTime = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "pomoTimes" -> {
                 item!!.pomoTimes = value as Int
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.pomoTimes = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
             "isRemindered" -> {
                 item!!.isRemindered = value as Boolean
-                updateData(item, id)
                 _tasksList.find { it.id == id }?.let { it.isRemindered = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
+                updateData(item, id)
             }
         }
         _changeFlag = true
@@ -272,10 +354,10 @@ class TasksViewModel(application: Application) : ViewModel() {
             groupTag = groupTags
         )
         _tasksList.add(item)
-        addData(item)
         if (type == "todo") {
             _todoTasksList.add(item)
         }
+        addData(item)
     }
 
     fun getItem(id: String = _selectedId): TasksData {
