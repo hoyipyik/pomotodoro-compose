@@ -113,7 +113,7 @@ class TasksViewModel(application: Application) : ViewModel() {
                 val nowM = LocalTime.now().minute
                 val taskTimeH = data.setTaskTime.split(":")[0].toInt()
                 val taskTimeM = data.setTaskTime.split(":")[1].toInt()
-                if((taskTimeH < nowH || (taskTimeH == nowH && taskTimeM <= nowM)) && !data.isChecked && data.isRemindered){
+                if((taskTimeH < nowH || (taskTimeH == nowH && taskTimeM <= nowM))  && data.isRemindered){
                     _overdueTaskNum += 1
                     _todoTasksList[index].isOverdue = true
                     Log.i("/overdue", "overdue")
