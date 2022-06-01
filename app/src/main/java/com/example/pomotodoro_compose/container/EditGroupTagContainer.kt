@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.components.grouptag.EditGroupTagItem
@@ -20,9 +21,15 @@ fun EditGroupTagContainer(
     bottomSheetState: ModalBottomSheetState,
     tasksViewModel: TasksViewModel
 ) {
-    val list = groupTagViewModel.groupTagList
+    var list = groupTagViewModel.groupTagList
+    LaunchedEffect(groupTagViewModel.groupTagDeleteFlag){
+        list = groupTagViewModel.groupTagList
+        groupTagViewModel.restoreGroupTagDeleteFlag()
+    }
     LazyColumn(
-        Modifier.fillMaxWidth().padding(vertical = 12.dp)
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp)
     ){
         items(list){ item ->
             if (item.tagId != "tag")

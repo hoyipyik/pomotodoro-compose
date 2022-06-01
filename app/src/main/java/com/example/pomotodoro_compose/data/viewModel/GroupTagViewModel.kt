@@ -153,8 +153,17 @@ class GroupTagViewModel: ViewModel() {
         return result
     }
 
+    private var _groupTagDeleteFlag by mutableStateOf(false)
+    val groupTagDeleteFlag:Boolean
+        get() = _groupTagDeleteFlag
+
+    fun restoreGroupTagDeleteFlag(){
+        _groupTagDeleteFlag = false
+    }
+
     fun deleteGroupTag(tagId : String){
         _groupTagList.removeAll{ it.tagId == tagId}
+        _groupTagDeleteFlag = true
         deleteGroupTagData(tagId)
     }
 

@@ -115,7 +115,7 @@ fun AccountInfoPage(
                             stateViewModel.channelId,
                             stateViewModel.notificationId,
                             "All your data has been cleared",
-                            "You can start a totally new journey right now :)"
+                            "You can start a totally new journey right now."
                         )
                     },
                 verticalAlignment = Alignment.CenterVertically
@@ -155,6 +155,13 @@ fun AccountInfoPage(
                     .clickable {
                         tasksViewModel.logout()
                         groupTagViewModel.logout()
+                        cleanDataNotification(
+                            context,
+                            stateViewModel.channelId,
+                            stateViewModel.notificationId,
+                            "You have been logged out",
+                            "Attention: \n You will lose your data after closing the app !"
+                        )
                     },
                 verticalAlignment = Alignment.CenterVertically
             ) {
