@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.components.items.TaskItem
 import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.ui.theme.Purple200
@@ -35,8 +36,8 @@ fun TasksContainer(
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-
-    stateViewModel: StateViewModel
+    stateViewModel: StateViewModel,
+    bottomSheetNavController: NavHostController?
 ) {
 
     LazyColumn(
@@ -66,7 +67,7 @@ fun TasksContainer(
                 state = state,
                 background = { SwipBackground(state = state) },
                 dismissContent = {
-                    TaskItem(item, type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel,  )
+                    bottomSheetNavController?.let { TaskItem(bottomSheetNavController = it,type = type, tasksViewModel = tasksViewModel, scope = scope, state = bottomSheetState, stateViewModel = stateViewModel,  item = item) }
                 },
                 dismissThresholds = { direction ->
                     FractionalThreshold(

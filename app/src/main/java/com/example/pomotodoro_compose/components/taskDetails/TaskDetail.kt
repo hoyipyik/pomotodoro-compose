@@ -17,7 +17,6 @@ fun TaskDetail(
     tasksViewModel: TasksViewModel,
     scope: CoroutineScope,
     bottomSheetState: ModalBottomSheetState,
-      
     stateViewModel: StateViewModel,
     groupTagViewModel: GroupTagViewModel
 ) {

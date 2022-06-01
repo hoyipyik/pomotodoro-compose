@@ -65,7 +65,7 @@ fun AddBoardTask(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
+            modifier = Modifier.padding(top = 12.dp, bottom = 7.dp),
         ) {
             OutlinedTextField(
                 modifier = Modifier
@@ -108,7 +108,7 @@ fun AddBoardTask(
             }
         }
         Row(
-            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+            modifier = Modifier.padding(top = 7.dp, bottom = 7.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -154,7 +154,7 @@ fun AddBoardTask(
         }
         Row(
             modifier = Modifier
-                .padding(top = 5.dp, bottom = 15.dp)
+                .padding(top = 13.dp, bottom = 35.dp)
                 .fillMaxWidth(0.74f)
                 .height(50.dp)
                 .clip(RoundedCornerShape(10.dp))

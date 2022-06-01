@@ -27,7 +27,8 @@ fun Today(
             tasksViewModel = tasksViewModel,
             bottomSheetState = state,
             scope = scope,
-            stateViewModel = stateViewModel
+            stateViewModel = stateViewModel,
+            bottomSheetNavController = null
         )
     else
         BlankContainer(type = type)

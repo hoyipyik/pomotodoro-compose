@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.container.GroupTagListContainer
 import com.example.pomotodoro_compose.container.TasksContainer
@@ -24,7 +25,8 @@ fun Board(
     state: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
     stateViewModel: StateViewModel,
-    groupTagViewModel: GroupTagViewModel
+    groupTagViewModel: GroupTagViewModel,
+    bottomSheetNavController: NavHostController
 ) {
     val type: String = "board"
     var list = tasksViewModel.boardTasksList
@@ -46,7 +48,7 @@ fun Board(
         }
         GroupTagListContainer(groupTagViewModel = groupTagViewModel, tasksViewModel = tasksViewModel, type = type, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
         if(filteredList.size > 0)
-            TasksContainer(list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
+            TasksContainer(bottomSheetNavController = bottomSheetNavController, list = filteredList, type = type, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = state, stateViewModel = stateViewModel)
         else
             BlankContainer(type = type)
     }

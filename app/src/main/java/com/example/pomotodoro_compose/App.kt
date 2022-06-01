@@ -39,6 +39,7 @@ fun App() {
     )
     val groupTagViewModel: GroupTagViewModel = viewModel()
     val navController = rememberNavController()
+    val bottomSheetNavController = rememberNavController()
     val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,)
     val scope = rememberCoroutineScope()
 
@@ -51,6 +52,7 @@ fun App() {
             SheetContent(
                 groupTagViewModel = groupTagViewModel,
                 scope = scope,
+                bottomSheetNavController = bottomSheetNavController,
                 bottomSheetState = bottomSheetState,
                 stateViewModel = stateViewModel,
                 tasksViewModel = tasksViewModel
@@ -59,6 +61,7 @@ fun App() {
     ) {
         PageContent(
             scope = scope,
+            bottomSheetNavController = bottomSheetNavController,
             groupTagViewModel = groupTagViewModel,
             bottomSheetState = bottomSheetState,
             navController = navController,
@@ -75,9 +78,10 @@ fun SheetContent(
     tasksViewModel: TasksViewModel,
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope,
-    groupTagViewModel: GroupTagViewModel
+    groupTagViewModel: GroupTagViewModel,
+    bottomSheetNavController: NavHostController
 ) {
-    BottomSheetContainer(groupTagViewModel = groupTagViewModel, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+    BottomSheetContainer(bottomSheetNavController = bottomSheetNavController, groupTagViewModel = groupTagViewModel, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -88,19 +92,24 @@ fun PageContent(
     stateViewModel: StateViewModel,
     bottomSheetState: ModalBottomSheetState,
     tasksViewModel: TasksViewModel,
-    groupTagViewModel: GroupTagViewModel
+    groupTagViewModel: GroupTagViewModel,
+    bottomSheetNavController: NavHostController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    val navBackStackEntry2 by bottomSheetNavController.currentBackStackEntryAsState()
+    val currentRouteBottomSheet = navBackStackEntry2?.destination?.route
     Scaffold(
         topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel, groupTagViewModel = groupTagViewModel) },
         floatingActionButton = {
             if (currentRoute != "account"
                 && stateViewModel.subNavRoute != "timeline")
                 FloatingActionButton(onClick = {
-//                    bottomSheetNavController.navigate("addtask") {
-//                        currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
-//                    }
+                    if(currentRoute == "board") {
+                        bottomSheetNavController.navigate("addtask") {
+                            currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
+                        }
+                    }
                     stateViewModel.changeCurrentRouteBottomSheetPath("addtask")
                     scope.launch { bottomSheetState.show() }
                 }) {
@@ -118,6 +127,7 @@ fun PageContent(
     ) {
         PageNavigation(
             scope = scope,
+            bottomSheetNavController = bottomSheetNavController,
             groupTagViewModel = groupTagViewModel,
             bottomSheetState = bottomSheetState,
             navController = navController,

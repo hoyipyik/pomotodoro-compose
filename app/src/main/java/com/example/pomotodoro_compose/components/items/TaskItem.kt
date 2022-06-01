@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.example.pomotodoro_compose.data.entity.TasksData
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
@@ -30,6 +31,7 @@ fun TaskItem(
     scope: CoroutineScope,
     state: ModalBottomSheetState,
     stateViewModel: StateViewModel,
+    bottomSheetNavController: NavHostController,
 ) {
     val id: String = item.id
     val toToday: Boolean = item.toToday
@@ -101,9 +103,11 @@ fun TaskItem(
                 )
             IconButton(
                 onClick = {
-//                    bottomSheetNavController.navigate("taskdetail") {
-//                        popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
-//                    }
+                    if (type == "board"){
+                        bottomSheetNavController.navigate("taskdetail") {
+                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
+                        }
+                }
                     stateViewModel.changeCurrentRouteBottomSheetPath("taskdetail")
                     tasksViewModel.sendId(id)
                     scope.launch {
