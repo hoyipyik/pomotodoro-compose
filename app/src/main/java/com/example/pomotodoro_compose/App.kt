@@ -303,8 +303,8 @@ fun TopBar(
         onDismissRequest = { expanded = false },
     ) {
         DropdownMenuItem(onClick = {
-            tasksViewModel.refreshData()
-            groupTagViewModel.refreshGroupTagData()
+//            tasksViewModel.refreshData()
+//            groupTagViewModel.refreshGroupTagData()
         }) {
             Text("Refresh")
         }
