@@ -25,15 +25,15 @@
         android:translateY="32.4">
         <path
             android:pathData="M39.924,79.609C39.924,57.549 57.806,39.664 79.868,39.664V3.717C37.953,3.717 3.974,37.693 3.974,79.609V79.609H39.924Z"
-            android:fillColor="#005D57"
+            android:fillColor="#04518D"
             android:fillType="evenOdd"/>
         <path
             android:pathData="M39.924,79.609H3.974C3.974,121.522 37.953,155.5 79.868,155.5V119.553C57.806,119.553 39.924,101.669 39.924,79.609"
-            android:fillColor="#007D51"
+            android:fillColor="#0060CA"
             android:fillType="evenOdd"/>
         <path
             android:pathData="M155.759,79.609H119.81C119.81,101.669 101.927,119.553 79.868,119.553V155.5C121.781,155.5 155.759,121.522 155.759,79.609"
-            android:fillColor="#37EFBA"
+            android:fillColor="#F1f1f1"
             android:fillType="evenOdd"/>
         <group>
             <clip-path
@@ -52,7 +52,7 @@
                 android:fillType="evenOdd"/>
             <path
                 android:pathData="M119.811,79.609H155.76V19.694C155.76,10.868 148.606,3.717 139.783,3.717H79.866V39.664C101.928,39.664 119.811,57.549 119.811,79.609"
-                android:fillColor="#1EB980"
+                android:fillColor="#03A9F4"
                 android:fillType="evenOdd"/>
         </group>
     </group>
