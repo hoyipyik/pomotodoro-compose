@@ -33,8 +33,12 @@ fun Pomodoro(
         }
         return null
     }
-
     val context = LocalContext.current
+    LaunchedEffect(!bottomSheetState.isVisible){
+        val window = context.findActivity()?.window
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
     DisposableEffect(Unit) {
         val window = context.findActivity()?.window
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
