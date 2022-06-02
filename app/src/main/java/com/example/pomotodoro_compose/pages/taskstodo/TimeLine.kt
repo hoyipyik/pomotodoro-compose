@@ -72,7 +72,7 @@ fun TimeLine(type: String, tasksViewModel: TasksViewModel) {
             }
 
             LazyColumn(
-                modifier = Modifier.padding(vertical = 20.dp, horizontal = 10.dp).clip(RoundedCornerShape(6.dp))
+                modifier = Modifier.padding(top = 10.dp, bottom = 58.dp, start = 10.dp, end = 10.dp).clip(RoundedCornerShape(6.dp))
             ) {
                 items(timeline) {
                     TimelineItem(item = it)
