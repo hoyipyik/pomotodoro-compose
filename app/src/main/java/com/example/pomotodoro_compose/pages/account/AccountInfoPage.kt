@@ -3,9 +3,6 @@ package com.example.pomotodoro_compose.pages.account
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
@@ -24,6 +21,9 @@ import androidx.compose.ui.unit.dp
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.tools.cleanDataNotification
+import com.example.pomotodoro_compose.tools.createNotificationChannel
+import com.example.pomotodoro_compose.tools.deleteAccountNotification
 
 @Composable
 fun AccountInfoPage(
@@ -160,7 +160,7 @@ fun AccountInfoPage(
                             stateViewModel.channelId,
                             stateViewModel.notificationId,
                             "You have been logged out",
-                            "Attention: \n You will lose your data after closing the app !"
+                            "Attention: \nYou will lose your data after closing the app !"
                         )
                     },
                 verticalAlignment = Alignment.CenterVertically

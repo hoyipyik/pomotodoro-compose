@@ -14,6 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.tools.findActivity
+import com.example.pomotodoro_compose.tools.timesUpNotification
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
@@ -25,14 +27,7 @@ fun Pomodoro(
     bottomSheetState: ModalBottomSheetState,
     scope: CoroutineScope
 ) {
-    fun Context.findActivity(): Activity? {
-        var context = this
-        while (context is ContextWrapper) {
-            if (context is Activity) return context
-            context = context.baseContext
-        }
-        return null
-    }
+
     val context = LocalContext.current
     LaunchedEffect(!bottomSheetState.isVisible){
         val window = context.findActivity()?.window
@@ -87,6 +82,13 @@ fun Pomodoro(
                 }
 
                 isWork = !isWork
+                timesUpNotification(
+                    context,
+                    stateViewModel.channelId,
+                    stateViewModel.notificationId+3,
+                    "Time's Up",
+                    "Attention: \nGo to next section XD"
+                )
             }
         }
     }
