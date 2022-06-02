@@ -3,6 +3,7 @@ package com.example.pomotodoro_compose.components.pomodoro
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -30,8 +31,11 @@ fun Pomodoro(
 
     val context = LocalContext.current
     LaunchedEffect(!bottomSheetState.isVisible){
-        val window = context.findActivity()?.window
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if(!bottomSheetState.isVisible) {
+            Log.i("/display", "work")
+            val window = context.findActivity()?.window
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     DisposableEffect(Unit) {
