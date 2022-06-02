@@ -6,20 +6,23 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
+    primary = Blue200,
+    primaryVariant = Blue700,
     secondary = Teal200,
-    onSecondary = Color(0xFF444441)
+    onSecondary = Gray900,
+    onPrimary = Background
 
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
+    primary = Blue700,
+    primaryVariant = Blue700,
     secondary = Teal200,
-    onSecondary = Color(0xFFF1f1f1),
+    onSecondary = Gray200,
+    onPrimary = Color.White,
 //    /* Other default colors to override
 //    background = Color.LightGray,
 //    surface = Color.White,
@@ -35,6 +38,17 @@ fun PomotodorocomposeTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
+    if(darkTheme){
+        systemUiController.setSystemBarsColor(
+            color = Color(0xFF121212)
+        )
+    }else{
+        systemUiController.setSystemBarsColor(
+            color = Color.White
+        )
+    }
+
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

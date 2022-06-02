@@ -2,6 +2,7 @@ package com.example.pomotodoro_compose.pages.account
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -11,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.pomotodoro_compose.R
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
@@ -41,20 +45,21 @@ fun LoginPage(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.fillMaxHeight(0.04f))
-        Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = null,
+        Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+        Text(
+            text = "Pomotodoro",
+            fontFamily = MaterialTheme.typography.h1.fontFamily,
+            textAlign = TextAlign.Center,
+            fontSize = 30.sp,
             modifier = Modifier
                 .fillMaxWidth(0.8f)
-                .fillMaxHeight(0.15f)
         )
-        Spacer(modifier = Modifier.fillMaxHeight(0.03f))
+        Spacer(modifier = Modifier.fillMaxHeight(0.1f))
         Row {
             Text(text = "Login", color = MaterialTheme.colors.primary)
             Text(text = " / Signup")
         }
-        Spacer(modifier = Modifier.fillMaxHeight(0.03f))
+        Spacer(modifier = Modifier.fillMaxHeight(0.02f))
         OutlinedTextField(
             value = stateViewModel.accountInputText,
             label = { Text(text = "Account") },
@@ -63,7 +68,7 @@ fun LoginPage(
                 keyboardType = KeyboardType.Text
             )
         )
-        Spacer(modifier = Modifier.padding(10.dp))
+        Spacer(modifier = Modifier.fillMaxHeight(0.03f))
         OutlinedTextField(
             value = stateViewModel.passwdInputText,
             label = { Text(text = "Password") },
@@ -80,7 +85,7 @@ fun LoginPage(
                 Spacer(modifier = Modifier.fillMaxHeight(0.08f))
             }
         }else{
-            Spacer(modifier = Modifier.fillMaxHeight(0.18f))
+            Spacer(modifier = Modifier.fillMaxHeight(0.14f))
         }
         Button(
             onClick = {

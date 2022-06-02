@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -89,7 +90,7 @@ fun AddGroupTag(
             groupTagViewModel.addGroupTag(name = text, colour = colour)
             scope.launch { bottomSheetState.hide() }
             text = ""
-            colour = Purple500
+            colour = Blue500
           }
         },
         modifier = Modifier
@@ -105,7 +106,7 @@ fun AddGroupTag(
       modifier = Modifier.padding(top = 1.dp, bottom = 25.dp, start = 10.dp, end = 10.dp)
 //        .fillMaxWidth(0.85f),
     ) {
-      for (it in listOf<Color>(Color.LightGray, Purple700, Purple500, Purple200, Bluelight, Teal200, Color.Red)) {
+      for (it in listOf<Color>(Blue700, Blue900, Blue200, Teal200, Green500, Orange200, Color.Red)) {
         IconButton(
           onClick = { colour = it },
 //          modifier = Modifier.width(40.dp)

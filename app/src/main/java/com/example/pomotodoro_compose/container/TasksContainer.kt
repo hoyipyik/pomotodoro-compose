@@ -26,6 +26,7 @@ import com.example.pomotodoro_compose.ui.theme.Purple200
 import com.example.pomotodoro_compose.ui.theme.Teal200
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
+import com.example.pomotodoro_compose.ui.theme.Blue200
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -93,7 +94,7 @@ fun SwipBackground(state: DismissState) {
     )
     val colour = when (state.dismissDirection) {
         DismissDirection.EndToStart -> Teal200
-        DismissDirection.StartToEnd -> Purple200
+        DismissDirection.StartToEnd -> Blue200
         null -> Color.Unspecified
     }
     Row(
@@ -101,11 +102,11 @@ fun SwipBackground(state: DismissState) {
         horizontalArrangement = Arrangement.Center
     ){
         Spacer(modifier = Modifier
-            .fillMaxWidth(0.05f)
+            .fillMaxWidth(0.06f)
             .padding())
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.948f)
+                .fillMaxWidth(0.936f)
                 .clip(RoundedCornerShape(10.dp))
                 .fillMaxHeight(0.85f)
                 .background(color = colour),

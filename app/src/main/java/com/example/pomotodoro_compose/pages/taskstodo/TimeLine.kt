@@ -19,9 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.pomotodoro_compose.components.items.TimelineItem
 import com.example.pomotodoro_compose.container.BlankContainer
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
-import com.example.pomotodoro_compose.ui.theme.Purple200
-import com.example.pomotodoro_compose.ui.theme.Purple500
-import com.example.pomotodoro_compose.ui.theme.Purple700
+import com.example.pomotodoro_compose.ui.theme.*
 
 
 @Composable
@@ -42,7 +40,7 @@ fun TimeLine(type: String, tasksViewModel: TasksViewModel) {
                     modifier = Modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Purple200)
+                        .background(Blue200)
                         .align(CenterVertically)
                 ) {
                     Spacer(modifier = Modifier.fillMaxSize(0.14f))
@@ -53,7 +51,7 @@ fun TimeLine(type: String, tasksViewModel: TasksViewModel) {
                     modifier = Modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Purple500)
+                        .background(Blue500)
                         .align(CenterVertically)
                 ) {
                     Spacer(modifier = Modifier.fillMaxSize(0.14f))
@@ -64,7 +62,7 @@ fun TimeLine(type: String, tasksViewModel: TasksViewModel) {
                     modifier = Modifier
                         .size(100.dp)
                         .clip(RoundedCornerShape(10.dp))
-                        .background(Purple700)
+                        .background(Blue700)
                         .align(CenterVertically)
                 ) {
                     Spacer(modifier = Modifier.fillMaxSize(0.14f))

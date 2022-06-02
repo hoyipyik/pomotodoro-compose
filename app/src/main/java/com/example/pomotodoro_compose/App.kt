@@ -6,13 +6,18 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
@@ -21,11 +26,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.pomotodoro_compose.container.BottomSheetContainer
-import com.example.pomotodoro_compose.router.PageNavigation
 import com.example.pomotodoro_compose.data.viewModel.GroupTagViewModel
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModelFactory
+import com.example.pomotodoro_compose.router.PageNavigation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -34,13 +39,14 @@ import kotlinx.coroutines.launch
 fun App() {
     val context: Context = LocalContext.current
     val stateViewModel: StateViewModel = viewModel()
-    val tasksViewModel : TasksViewModel = viewModel(
+    val tasksViewModel: TasksViewModel = viewModel(
         factory = TasksViewModelFactory(context.applicationContext as Application)
     )
     val groupTagViewModel: GroupTagViewModel = viewModel()
     val navController = rememberNavController()
     val bottomSheetNavController = rememberNavController()
-    val bottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden,)
+    val bottomSheetState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
 
 
@@ -81,7 +87,14 @@ fun SheetContent(
     groupTagViewModel: GroupTagViewModel,
     bottomSheetNavController: NavHostController
 ) {
-    BottomSheetContainer(bottomSheetNavController = bottomSheetNavController, groupTagViewModel = groupTagViewModel, stateViewModel = stateViewModel, tasksViewModel = tasksViewModel, scope = scope, bottomSheetState = bottomSheetState)
+    BottomSheetContainer(
+        bottomSheetNavController = bottomSheetNavController,
+        groupTagViewModel = groupTagViewModel,
+        stateViewModel = stateViewModel,
+        tasksViewModel = tasksViewModel,
+        scope = scope,
+        bottomSheetState = bottomSheetState
+    )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -100,19 +113,32 @@ fun PageContent(
     val navBackStackEntry2 by bottomSheetNavController.currentBackStackEntryAsState()
     val currentRouteBottomSheet = navBackStackEntry2?.destination?.route
     Scaffold(
-        topBar = { TopBar(stateViewModel = stateViewModel, currentRoute = currentRoute, scope = scope, bottomSheetState = bottomSheetState, tasksViewModel = tasksViewModel, groupTagViewModel = groupTagViewModel) },
+        topBar = {
+            TopBar(
+                stateViewModel = stateViewModel,
+                currentRoute = currentRoute,
+                scope = scope,
+                bottomSheetState = bottomSheetState,
+                tasksViewModel = tasksViewModel,
+                groupTagViewModel = groupTagViewModel
+            )
+        },
         floatingActionButton = {
             if (currentRoute != "account"
-                && stateViewModel.subNavRoute != "timeline")
-                FloatingActionButton(onClick = {
-                    if(currentRoute == "board") {
-                        bottomSheetNavController.navigate("addtask") {
-                            currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
+                && stateViewModel.subNavRoute != "timeline"
+            )
+                FloatingActionButton(
+                    onClick = {
+                        if (currentRoute == "board") {
+                            bottomSheetNavController.navigate("addtask") {
+                                currentRouteBottomSheet?.let { popUpTo(it) { inclusive = true } }
+                            }
                         }
-                    }
-                    stateViewModel.changeCurrentRouteBottomSheetPath("addtask")
-                    scope.launch { bottomSheetState.show() }
-                }) {
+                        stateViewModel.changeCurrentRouteBottomSheetPath("addtask")
+                        scope.launch { bottomSheetState.show() }
+                    },
+                    backgroundColor = MaterialTheme.colors.primary,
+                ) {
                     Icon(Icons.Filled.Add, contentDescription = null)
                 }
         },
@@ -147,7 +173,9 @@ fun BottomBar(
     Log.i("/currentRoute", currentRoute.toString())
     var selectedItem by remember { mutableStateOf("account") }
     val items = stateViewModel.bottomNavigationData
-    BottomNavigation {
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colors.onPrimary,
+    ) {
         items.forEach { item ->
             BottomNavigationItem(
                 selected = selectedItem == item.type,
@@ -157,7 +185,7 @@ fun BottomBar(
                     selectedItem = item.type
                     navController.navigate(item.type) {
                         currentRoute?.let { popUpTo(it) { inclusive = true } }
-                        if(item.type == "account"){
+                        if (item.type == "account") {
                             tasksViewModel.calculateTotalDoneNum()
                         }
                     }
@@ -189,9 +217,11 @@ fun TopBar(
 
     val sendIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT,
+        putExtra(
+            Intent.EXTRA_TEXT,
             "I am using pomotodoro to manage my work, you can try it too. :) \n" +
-                    "Here is the download link: \n"+ "https://123.56.107.143/index.php/s/BdMSZYjztwbNxY9")
+                    "Here is the download link: \n" + "https://123.56.107.143/index.php/s/BdMSZYjztwbNxY9"
+        )
         // (Optional) Here we're setting the title of the content
         putExtra(Intent.EXTRA_TITLE, "Try Pomotodoro here")
         type = "text/plain"
@@ -200,10 +230,12 @@ fun TopBar(
 
     val shareResultIntent: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TEXT,"Here are my results: \n"
-        + "Accomplished tasks number: ${tasksViewModel.doneTodoWorkNum} \n" +
-                "Unchecked tasks number ${tasksViewModel.unfinishedTodoWorkNum} \n" +
-                "Overdue tasks number ${tasksViewModel.overdueTaskNum}")
+        putExtra(
+            Intent.EXTRA_TEXT, "Here are my results: \n"
+                    + "Accomplished tasks number: ${tasksViewModel.doneTodoWorkNum} \n" +
+                    "Unchecked tasks number ${tasksViewModel.unfinishedTodoWorkNum} \n" +
+                    "Overdue tasks number ${tasksViewModel.overdueTaskNum}"
+        )
         // (Optional) Here we're setting the title of the content
         putExtra(Intent.EXTRA_TITLE, "Pomotodoro Result")
         type = "text/plain"
@@ -212,16 +244,21 @@ fun TopBar(
 
     val context = LocalContext.current
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.onPrimary,
         navigationIcon = {
-            IconButton(onClick = {expanded =  true }) {
-                Icon(Icons.Filled.MoreVert, contentDescription = null)
+            IconButton(onClick = { expanded = true }) {
+                Icon(
+                    Icons.Filled.MoreVert,
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.primary
+                )
             }
         },
         title = {
             Text(text = title)
         },
         actions = {
-            when(currentRoute){
+            when (currentRoute) {
                 "todo" -> {
                     IconButton(onClick = {
                         startActivity(context, shareResultsIntent, null)
@@ -229,14 +266,20 @@ fun TopBar(
                         Icon(Icons.Filled.Share, contentDescription = null)
                     }
                 }
-                "board" ->{
-                    Button(onClick = {
+                "board" -> {
+                    Button(
+                        onClick = {
 //                        bottomSheetNavController.navigate("addgrouptag") {
 //                            popUpTo(stateViewModel.currentRouteBottomSheetPath) { inclusive = true }
 //                        }
-                        stateViewModel.changeCurrentRouteBottomSheetPath("addgrouptag")
-                        scope.launch { bottomSheetState.show() }
-                    }, colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent)) {
+                            stateViewModel.changeCurrentRouteBottomSheetPath("addgrouptag")
+                            scope.launch { bottomSheetState.show() }
+                        },
+                        modifier = Modifier
+                            .width(139.dp)
+                            .padding(8.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                    ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -245,12 +288,12 @@ fun TopBar(
                         }
                     }
                 }
-                "account" ->{
+                "account" -> {
                     IconButton(onClick = {
                         startActivity(context, shareIntent, null)
                     }) {
                         Icon(Icons.Filled.Favorite, contentDescription = null)
-                    }       
+                    }
                 }
             }
         },

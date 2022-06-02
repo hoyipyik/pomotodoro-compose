@@ -52,7 +52,7 @@ fun TaskItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(0.88f)
                 .align(Alignment.Center)
                 .height(70.dp)
                 .padding(top = 0.dp, bottom = 10.dp)
