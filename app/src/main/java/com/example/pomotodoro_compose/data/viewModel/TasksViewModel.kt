@@ -139,6 +139,7 @@ class TasksViewModel(application: Application) : ViewModel() {
         Log.i("/fetch_fail_log_update", _logFailFlag.toString())
     }
     fun deleteAccount(id: String){
+        upgradeSelectedGroupTag("tag")
         viewModelScope.launch {
             accountApi.deleteAccount(AccountData(accountId = id))
         }
@@ -147,6 +148,7 @@ class TasksViewModel(application: Application) : ViewModel() {
     fun clearAllTasks(id: String){
         _tasksList = mutableListOf<TasksData>().toMutableStateList()
         _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
+        upgradeSelectedGroupTag("tag")
         calculateTotalDoneNum()
         viewModelScope.launch {
             accountApi.clearAllData(AccountData(accountId = id))
@@ -216,6 +218,7 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     fun logout(){
         accountId = ""
+        upgradeSelectedGroupTag("tag")
         _tasksList = mutableListOf<TasksData>().toMutableStateList()
         _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
     }

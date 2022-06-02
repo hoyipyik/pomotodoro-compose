@@ -185,7 +185,7 @@ fun BoardTaskDetail(
             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = if(selectorFlag) "Selector" else "Tags", fontWeight = FontWeight.Bold, modifier = Modifier.width(58.dp))
+            Text(text = if(selectorFlag) "Selector" else "Tags", fontWeight = FontWeight.Bold, modifier = Modifier.width(66.dp))
             Spacer(modifier = Modifier.padding(5.dp))
             Text(text = if(selectorFlag)"  Tag to add  " else "Tap to delete")
             Spacer(modifier = Modifier.padding(5.dp))
