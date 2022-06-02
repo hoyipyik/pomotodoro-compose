@@ -1,4 +1,4 @@
-package com.example.pomotodoro_compose.pages
+package com.example.pomotodoro_compose.pages.taskstodo
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

@@ -8,8 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.pomotodoro_compose.pages.TimeLine
-import com.example.pomotodoro_compose.pages.Today
+import com.example.pomotodoro_compose.pages.taskstodo.TimeLine
+import com.example.pomotodoro_compose.pages.taskstodo.Today
 import com.example.pomotodoro_compose.data.viewModel.StateViewModel
 import com.example.pomotodoro_compose.data.viewModel.TasksViewModel
 import kotlinx.coroutines.CoroutineScope

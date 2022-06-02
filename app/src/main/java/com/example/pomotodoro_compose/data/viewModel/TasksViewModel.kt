@@ -1,9 +1,6 @@
 package com.example.pomotodoro_compose.data.viewModel
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,18 +15,15 @@ import com.example.pomotodoro_compose.data.api.TasksApiService
 import com.example.pomotodoro_compose.data.entity.AccountData
 import com.example.pomotodoro_compose.data.entity.ReplyMessage
 import com.example.pomotodoro_compose.data.entity.TasksData
-import com.example.pomotodoro_compose.data.getTasksList
 import com.example.pomotodoro_compose.data.getTodoTasksList
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import retrofit2.Response
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 class TasksViewModel(application: Application) : ViewModel() {
-//    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
+    //    private var _tasksList = getBoardTasksList(_holderList).toMutableStateList()
     private var _logFailFlag by mutableStateOf(false)
     val logFailFlag: Boolean
         get() = _logFailFlag
@@ -43,7 +37,7 @@ class TasksViewModel(application: Application) : ViewModel() {
 
     private val accountApi: AccountApiService = AccountApi.retrofitService
     var accountId: String by mutableStateOf("")
-    private  var _tasksDoneTotalNum: Int by mutableStateOf(0)
+    private var _tasksDoneTotalNum: Int by mutableStateOf(0)
     val tasksDoneTotalNum: Int
         get() = _tasksDoneTotalNum
     private var _doneTodoWorkNum: Int by mutableStateOf(0)
@@ -68,64 +62,80 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun timelineCalcalation(){
+    fun timelineCalcalation() {
         calculateDoneTodoTaskNum()
         calculateOverdueTaskNum()
         timelineListGeneration()
     }
 
-    private fun timelineListGeneration(){
+    private fun timelineListGeneration() {
         _timelineList = _todoTasksList.toMutableStateList()
         Log.i("/test_work", "timelineListGeneration: ${_timelineList.size}")
         _timelineList.sortBy { it.finishTime.toString() }
         _timelineList.sortBy { it.isChecked }
         _timelineList.sortBy { !it.isOverdue }
-        for (item in _timelineList){
+        for (item in _timelineList) {
             Log.i("/test_work_item", item.title.toString())
         }
     }
-    fun calculateTotalDoneNum(){
+
+    fun calculateTotalDoneNum() {
         _tasksDoneTotalNum = 0
-        for (item in _tasksList){
-            if (item.isChecked){
+        for (item in _tasksList) {
+            if (item.isChecked) {
                 _tasksDoneTotalNum += 1
             }
         }
     }
 
-    private fun calculateDoneTodoTaskNum(){
+    private fun calculateDoneTodoTaskNum() {
         _doneTodoWorkNum = 0
         _unfinishedTodoWorkNum = 0
-        for (i in 0 until _todoTasksList.size){
-            if (_todoTasksList[i].isChecked){
+        for (i in 0 until _todoTasksList.size) {
+            if (_todoTasksList[i].isChecked) {
                 _doneTodoWorkNum += 1
-            }else{
+            } else {
                 _unfinishedTodoWorkNum += 1
             }
         }
     }
-    private fun calculateOverdueTaskNum(){
+
+    private fun calculateOverdueTaskNum() {
         _overdueTaskNum = 0
-        _todoTasksList.forEachIndexed{ index, data ->
-            if(data.setTaskTime != "Set Task Time"){
+        _todoTasksList.forEachIndexed { index, data ->
+            if (data.setTaskTime != "Set Task Time") {
 //                val taskTime = LocalTime.parse(data.setTaskTime, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
                 val nowH = LocalTime.now().hour
                 val nowM = LocalTime.now().minute
                 val taskTimeH = data.setTaskTime.split(":")[0].toInt()
                 val taskTimeM = data.setTaskTime.split(":")[1].toInt()
-                if((taskTimeH < nowH || (taskTimeH == nowH && taskTimeM <= nowM))  && data.isRemindered){
-                    _overdueTaskNum += 1
-                    _todoTasksList[index].isOverdue = true
-                    Log.i("/overdue", "overdue")
+                if (!data.isChecked) {
+                    if (
+                        (taskTimeH < nowH || (taskTimeH == nowH && taskTimeM <= nowM)) && data.isRemindered) {
+                        _overdueTaskNum += 1
+                        _todoTasksList[index].isOverdue = true
+                        Log.i("/overdue", "overdue")
+                    } else {
+                        _todoTasksList[index].isOverdue = false
+                    }
                 }else{
-                    _todoTasksList[index].isOverdue = false
+                    val finishtimeH = LocalDateTime.parse(data.finishTime).hour
+                    val finishtimeM = LocalDateTime.parse(data.finishTime).minute
+                    if (
+                        (finishtimeH > taskTimeH || (finishtimeH == taskTimeH && finishtimeM > taskTimeM)) && data.isRemindered) {
+                        _overdueTaskNum += 1
+                        _todoTasksList[index].isOverdue = true
+                        Log.i("/overdue", "overdue")
+                    } else {
+                        _todoTasksList[index].isOverdue = false
+                    }
                 }
             }
         }
 
     }
 
-    fun refreshData(){
+    fun refreshData() {
         if (accountId != "") {
             getAllData(accountId)
         } else {
@@ -134,18 +144,19 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun changeLogFailFlag(flag: Boolean){
+    fun changeLogFailFlag(flag: Boolean) {
         _logFailFlag = flag
         Log.i("/fetch_fail_log_update", _logFailFlag.toString())
     }
-    fun deleteAccount(id: String){
+
+    fun deleteAccount(id: String) {
         upgradeSelectedGroupTag("tag")
         viewModelScope.launch {
             accountApi.deleteAccount(AccountData(accountId = id))
         }
     }
 
-    fun clearAllTasks(id: String){
+    fun clearAllTasks(id: String) {
         _tasksList = mutableListOf<TasksData>().toMutableStateList()
         _todoTasksList = mutableListOf<TasksData>().toMutableStateList()
         upgradeSelectedGroupTag("tag")
@@ -154,8 +165,9 @@ class TasksViewModel(application: Application) : ViewModel() {
             accountApi.clearAllData(AccountData(accountId = id))
         }
     }
+
     private fun getAllData(id: String) {
-        if(accountId != "") {
+        if (accountId != "") {
             viewModelScope.launch {
                 try {
                     data = api.getFullTasksData(AccountData(accountId = id, password = ""))
@@ -176,7 +188,7 @@ class TasksViewModel(application: Application) : ViewModel() {
     }
 
     private fun addData(task: TasksData) {
-        if(accountId != "") {
+        if (accountId != "") {
             viewModelScope.launch {
                 try {
                     task.accountId = accountId
@@ -190,7 +202,7 @@ class TasksViewModel(application: Application) : ViewModel() {
     }
 
     private fun deleteData(id: String) {
-        if(accountId != "") {
+        if (accountId != "") {
             viewModelScope.launch {
                 try {
                     res = api.deleteTask(AccountData(accountId = accountId, id = id, password = ""))
@@ -203,7 +215,7 @@ class TasksViewModel(application: Application) : ViewModel() {
     }
 
     private fun updateData(task: TasksData, id: String) {
-        if(accountId != "") {
+        if (accountId != "") {
             viewModelScope.launch {
                 try {
                     task.accountId = accountId
@@ -216,7 +228,7 @@ class TasksViewModel(application: Application) : ViewModel() {
         }
     }
 
-    fun logout(){
+    fun logout() {
         accountId = ""
         upgradeSelectedGroupTag("tag")
         _tasksList = mutableListOf<TasksData>().toMutableStateList()
@@ -296,12 +308,12 @@ class TasksViewModel(application: Application) : ViewModel() {
                 updateData(item, id)
             }
             "isChecked" -> {
-                if(value as Boolean) {
+                if (value as Boolean) {
                     item!!.finishTime = LocalDateTime.now().toString()
-                }else{
+                } else {
                     item!!.finishTime = null
                 }
-                item.isChecked = value as Boolean
+                item.isChecked = value
                 _tasksList.find { it.id == id }?.let { it.isChecked = value }
                 _todoTasksList = getTodoTasksList(_tasksList).toMutableStateList()
                 updateData(item, id)
@@ -382,7 +394,7 @@ class TasksViewModel(application: Application) : ViewModel() {
         _selectedGroupTag = id
     }
 
-    private fun changeAccountId(id: String){
+    private fun changeAccountId(id: String) {
         accountId = id
         Log.i("/fetch_test_accountId", accountId)
     }
@@ -393,10 +405,10 @@ class TasksViewModel(application: Application) : ViewModel() {
                 val msg: ReplyMessage =
                     accountApi.sendAccount(AccountData(id, password))
                 Log.i("/fetch_account_log_reply", msg.toString())
-                if(msg.code == 200){
+                if (msg.code == 200) {
                     changeAccountId(id)
                     getAllData(id)
-                }else{
+                } else {
                     changeLogFailFlag(true)
                 }
             } catch (e: Exception) {
