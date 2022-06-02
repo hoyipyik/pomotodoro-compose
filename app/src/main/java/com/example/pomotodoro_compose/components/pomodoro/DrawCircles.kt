@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import com.example.pomotodoro_compose.ui.theme.Blue500
 import com.example.pomotodoro_compose.ui.theme.Purple500
 import kotlinx.coroutines.isActive
 
@@ -39,7 +40,7 @@ fun DrawCircles() {
         rotate(-90f) {
             val offset = circleStrokeWidth / 2
             drawArc(
-                Brush.sweepGradient(listOf(Purple500, Purple500)),
+                Brush.sweepGradient(listOf(Blue500, Blue500)),
                 startAngle,
                 angle1.value,
                 false,
