@@ -83,7 +83,7 @@ fun TasksContainer(
             )
         }
         item {
-            Box(Modifier.height(58.dp).fillMaxWidth())
+            Box(Modifier.height(70.dp).fillMaxWidth())
         }
     }
 }
