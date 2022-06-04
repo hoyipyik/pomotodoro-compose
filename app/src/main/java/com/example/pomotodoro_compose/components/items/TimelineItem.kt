@@ -8,6 +8,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.NoteAdd
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +61,7 @@ fun TimelineItem(item: TasksData) {
                     .fillMaxWidth()
             ) {
                 Icon(
-                    Icons.Filled.Schedule,
+                    Icons.Outlined.NoteAdd,
                     contentDescription = "timestamp",
                     Modifier
                         .size(20.dp)
@@ -72,7 +74,7 @@ fun TimelineItem(item: TasksData) {
                 )
                 if (item.isChecked) {
                     Icon(
-                        Icons.Filled.SentimentSatisfied,
+                        Icons.Filled.TaskAlt,
                         contentDescription = "timestamp",
                         Modifier
                             .size(20.dp)

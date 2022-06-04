@@ -71,6 +71,7 @@ class TasksViewModel(application: Application) : ViewModel() {
     private fun timelineListGeneration() {
         _timelineList = _todoTasksList.toMutableStateList()
         Log.i("/test_work", "timelineListGeneration: ${_timelineList.size}")
+        _timelineList.sortBy { it.setTaskTime }
         _timelineList.sortBy { it.finishTime.toString() }
         _timelineList.sortBy { it.isChecked }
         _timelineList.sortBy { !it.isOverdue }
