@@ -82,6 +82,9 @@ fun TasksContainer(
 //                directions = setOf(DismissDirection.EndToStart)
             )
         }
+        item {
+            Box(Modifier.height(58.dp).fillMaxWidth())
+        }
     }
 }
 
