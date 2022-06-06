@@ -401,19 +401,21 @@ class TasksViewModel(application: Application) : ViewModel() {
     }
 
     fun sendLogInfo(id: String, password: String) {
-        viewModelScope.launch {
-            try {
-                val msg: ReplyMessage =
-                    accountApi.sendAccount(AccountData(id, password))
-                Log.i("/fetch_account_log_reply", msg.toString())
-                if (msg.code == 200) {
-                    changeAccountId(id)
-                    getAllData(id)
-                } else {
-                    changeLogFailFlag(true)
+        if (id != "" && password != "") {
+            viewModelScope.launch {
+                try {
+                    val msg: ReplyMessage =
+                        accountApi.sendAccount(AccountData(id, password))
+                    Log.i("/fetch_account_log_reply", msg.toString())
+                    if (msg.code == 200) {
+                        changeAccountId(id)
+                        getAllData(id)
+                    } else {
+                        changeLogFailFlag(true)
+                    }
+                } catch (e: Exception) {
+                    Log.e("/fetch_account_log_reply_error", e.toString())
                 }
-            } catch (e: Exception) {
-                Log.e("/fetch_account_log_reply_error", e.toString())
             }
         }
     }
